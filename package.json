@@ -1,0 +1,63 @@
+{
+  "name": "wu_h5",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build:dev": "vue-cli-service build --mode development",
+    "build:prod": "vue-cli-service build --mode production",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vue/server-renderer": "^3.2.11",
+    "axios": "^0.19.2",
+    "axios-retry": "^3.2.2",
+    "compressorjs": "^1.1.1",
+    "core-js": "^3.6.5",
+    "exif-js": "^2.3.0",
+    "good-storage": "^1.1.1",
+    "html2canvas": "^1.0.0-rc.7",
+    "js-cookie": "^3.0.1",
+    "qrcode": "^1.4.4",
+    "qs": "^6.9.4",
+    "vant": "^3.2.2",
+    "vconsole": "^3.3.4",
+    "vue": "^3.0.0",
+    "vue-meta": "^3.0.0-alpha.7",
+    "vue-router": "^4.0.11",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "debugger": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
