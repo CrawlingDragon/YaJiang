@@ -1,34 +1,35 @@
 module.exports = {
-  transpileDependencies: ["vue-meta"],
+  transpileDependencies: ['vue-meta'],
+  filenameHashing: true,
   css: {
     loaderOptions: {
       // 给 stylus-loader 传递选项
       stylus: {
-        import: "~@/common/css/base.styl"
-      }
-    }
+        import: '~@/common/css/base.styl',
+      },
+    },
   },
-  publicPath: "./",
-  filenameHashing: true,
+  publicPath: './',
+  // filenameHashing: true,
   configureWebpack: {
     externals: {
-      BMapGL: "BMapGL"
-    }
+      BMapGL: 'BMapGL',
+    },
   },
   devServer: {
     hot: true,
     port: 8082,
     proxy: {
-      "/api": {
+      '/api': {
         target: process.env.VUE_APP_API,
         changeOrigin: true,
         ws: true,
         secure: false,
         pathRewrite: {
-          "^/api": ""
-        }
-      }
-    }
-  }
+          '^/api': '',
+        },
+      },
+    },
+  },
 };
 // http://beta.sx.114nz.com/
