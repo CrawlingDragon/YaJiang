@@ -6,7 +6,7 @@
   <router-view v-slot="{ Component }">
     <keep-alive
       exclude="Login,mLogin,findPassword,sign,lookExpert,live,messageDetail"
-      include="searchOnline,applyVip,index,area,intoHospital"
+      include="searchOnline,applyVip,index,area,intoHospital,indexOnline"
     >
       <component :is="Component" />
     </keep-alive>

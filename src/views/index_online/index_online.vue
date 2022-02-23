@@ -54,7 +54,11 @@
     <!-- </van-pull-refresh> -->
     <router-view v-slot="{ Component }">
       <keep-alive>
-        <component :is="Component" @getCrop="getCrop" />
+        <component
+          :is="Component"
+          @getCrop="getCrop"
+          v-model:fetchAddress="fetchAddress"
+        />
       </keep-alive>
     </router-view>
     <Foot></Foot>
@@ -62,66 +66,67 @@
 </template>
 <script>
 var Before_scollH = 0;
-import Header from "@/components/header/header.vue";
-import OnlineItem from "@/components/online_item/online_item";
-import { ImagePreview } from "vant";
-import { mapState } from "vuex";
-import Foot from "@/components/foot/foot";
-import { useMeta } from "vue-meta";
-import { setStorageAddress } from "@/common/js/latelyAddress";
+import Header from '@/components/header/header.vue';
+import OnlineItem from '@/components/online_item/online_item';
+import { ImagePreview } from 'vant';
+import { mapState } from 'vuex';
+import Foot from '@/components/foot/foot';
+import { useMeta } from 'vue-meta';
+import { setStorageAddress } from '@/common/js/latelyAddress';
 export default {
   setup() {
     useMeta({
-      title: "网诊"
+      title: '网诊',
     });
   },
-  name: "indexOnline",
+  name: 'indexOnline',
   components: {
     Header,
     OnlineItem,
     [ImagePreview.Component.name]: ImagePreview.Component,
-    Foot
+    Foot,
   },
-  beforeRouteLeave(to, from, next) {
-    // ... to
-    window.scrollTo(0, 0);
-    next();
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   // ... to
+  //   // window.scrollTo(0, 0);
+  //   // next();
+  // },
   props: {},
   data() {
     return {
       addressFlag: false,
       onlineArr: [],
-      crop: "作物",
-      areaName: "全部",
+      crop: '作物',
+      areaName: '全部',
       page: 0,
       loading: false,
       finished: false,
-      area: "",
-      scollType: "",
+      area: '',
+      scollType: '',
       secondNav: true,
-      fid: ""
+      fid: '',
+      fetchAddress: '全部地区',
       // isLoading: false //下拉model
     };
   },
   computed: {
-    ...mapState(["mid", "uId"]),
+    ...mapState(['mid', 'uId']),
     computedAddress() {
-      if (this.address === "全部地区") {
-        return "全部地区";
+      if (this.fetchAddress === '全部地区') {
+        return '全部地区';
       } else {
-        let result = this.address.split(",");
+        let result = this.fetchAddress.split(',');
         return result[result.length - 1];
       }
     },
-    address() {
-      let routeAddress = this.$route.query.axiosAddress;
-      if (!routeAddress) {
-        return "全部地区";
-      } else {
-        return routeAddress;
-      }
-    }
+    // address() {
+    //   let routeAddress = this.$route.query.axiosAddress;
+    //   if (!routeAddress) {
+    //     return '全部地区';
+    //   } else {
+    //     return routeAddress;
+    //   }
+    // },
   },
   watch: {
     fid() {
@@ -130,18 +135,21 @@ export default {
       this.page = 0;
       this.getIndexData();
     },
-    address() {
+    fetchAddress() {
       this.onlineArr = [];
       this.page = 0;
       this.getIndexData();
-    }
+    },
   },
   created() {},
   mounted() {
-    window.addEventListener("scroll", this.scrollHandler);
+    window.addEventListener('scroll', this.scrollHandler);
   },
   unmounted() {
-    window.removeEventListener("scroll", this.scrollHandler);
+    window.removeEventListener('scroll', this.scrollHandler);
+  },
+  activated() {
+    this.secondNav = true;
   },
   methods: {
     getCrop(item) {
@@ -158,12 +166,12 @@ export default {
       if (differH == 0) {
         return false;
       }
-      this.scollType = differH > 0 ? "down" : "up";
+      this.scollType = differH >= 0 ? 'down' : 'up';
       Before_scollH = After_scollH;
     },
     scroll(val) {
       if (val.isFixed) {
-        if (this.scollType == "down") {
+        if (this.scollType == 'down') {
           //显示导航
           this.secondNav = false;
           // console.log('down :>> ');
@@ -181,19 +189,19 @@ export default {
       // 获取首页数据
       this.page += 1;
       this.$axios
-        .fetchPost("/Mobile/Wen/index", {
+        .fetchPost('/Mobile/Wen/index', {
           mId: this.initMid,
           fId: this.fid,
-          location: this.address,
+          location: this.fetchAddress,
           // areaId: this.area,
           page: this.page,
           uId: this.uId,
-          isall: "all"
+          isall: 'all',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
-            if (this.address !== "全部地区") {
-              setStorageAddress("onlineLatelyAddressArray", this.address);
+            if (this.fetchAddress !== '全部地区') {
+              setStorageAddress('onlineLatelyAddressArray', this.fetchAddress);
             }
 
             this.onlineArr = this.onlineArr.concat(res.data.data);
@@ -213,12 +221,12 @@ export default {
       this.addressFlag = false;
     },
     goBack() {
-      this.$router.push({ path: "/index" });
+      this.$router.push({ path: '/index' });
     },
     openBox() {
       this.$router.push({
-        path: "/index_online/index_online_address",
-        query: { address: this.computedAddress, axiosAddress: this.address }
+        path: '/index_online/index_online_address',
+        query: { address: this.computedAddress, axiosAddress: this.fetchAddress },
       });
     },
     preverImg(item) {
@@ -226,16 +234,16 @@ export default {
       ImagePreview({
         images: item.arr,
         startPosition: item.index,
-        closeable: true
+        closeable: true,
       });
     },
     goToChooseCrop() {
       this.$router.push({
-        path: "/index_online/ask_choose_crop",
-        query: { crop: this.crop }
+        path: '/index_online/ask_choose_crop',
+        query: { crop: this.crop },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

@@ -9,7 +9,7 @@ module.exports = {
       },
     },
   },
-  publicPath: './',
+  publicPath: '/',
   // filenameHashing: true,
   configureWebpack: {
     externals: {
@@ -18,7 +18,7 @@ module.exports = {
   },
   devServer: {
     hot: true,
-    port: 8082,
+    port: 8084,
     proxy: {
       '/api': {
         target: process.env.VUE_APP_API,

@@ -93,6 +93,12 @@ export default {
         this.noResult = false;
       }
     },
+    cropName(newVal) {
+      if (newVal == undefined) {
+        return;
+      }
+      this.getCropList();
+    },
   },
   mounted() {
     this.getCropList();

@@ -30,12 +30,12 @@
               fail:
                 geoViewAddress == '定位失败' ||
                 geoViewAddress == '定位中...' ||
-                geoViewAddress == ''
+                geoViewAddress == '',
             }"
             @click="clickGeoAddress"
           >
             <div class="icon"></div>
-            <div>{{ geoViewAddress || "定位失败" }}</div>
+            <div>{{ geoViewAddress || '定位失败' }}</div>
           </div>
           <!--  最近选择地址 -->
           <div class="choosed-area" @click="goToIndexOnline('全部地区')">
@@ -88,64 +88,66 @@
   </div>
 </template>
 <script>
-import Headers from "@/components/header/header.vue";
-import { geo } from "@/common/js/baidu_locationAddress.js";
-import { mapState, useStore } from "vuex";
-import { computed, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
-import { Toast } from "vant";
-import storage from "good-storage";
+import Headers from '@/components/header/header.vue';
+import { geo } from '@/common/js/baidu_locationAddress.js';
+import { mapState, useStore } from 'vuex';
+import { computed, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { Toast } from 'vant';
+import storage from 'good-storage';
 
 export default {
-  name: "index_online_address",
+  name: 'index_online_address',
   metaInfo() {
     return {
-      title: "切换地区"
+      title: '切换地区',
     };
   },
   components: { Headers },
-  setup() {
+  setup(props, { emit }) {
     const router = useRouter();
     const store = useStore();
     const geoViewAddress = computed(() => store.getters.geoViewAddress);
     const geoAddress = computed(() => store.state.geoAddress);
     const { geolocationAgain } = geo();
     onUnmounted(() => {
-      console.log("geoAddress", geoAddress);
-      if (geoViewAddress.value == "定位中...") {
-        store.commit("setGeoAddress", "定位失败");
+      console.log('geoAddress', geoAddress);
+      if (geoViewAddress.value == '定位中...') {
+        store.commit('setGeoAddress', '定位失败');
         return;
       }
     });
     async function clickGeoAddress() {
       //点击定位地址
       // 如果是定位失败。重新定位
-      if (geoViewAddress.value == "定位中...") {
-        Toast("定位中");
+      if (geoViewAddress.value == '定位中...') {
+        Toast('定位中');
         return;
       }
-      if (geoViewAddress.value === "定位失败") {
-        store.commit("setGeoAddress", "定位中...");
+      if (geoViewAddress.value === '定位失败') {
+        store.commit('setGeoAddress', '定位中...');
         await geolocationAgain();
         return;
         // to do
       }
       //路由到首页网诊
       setTimeout(() => {
+        emit('update:fetchAddress', geoAddress.value);
         router.push({
-          path: "/index_online",
-          query: { address: geoAddress.value, axiosAddress: geoAddress.value }
+          path: '/index_online',
+          // query: { address: geoAddress.value, axiosAddress: geoAddress.value },
         });
       }, 300);
     }
     return {
       clickGeoAddress,
-      geoViewAddress
+      geoViewAddress,
     };
   },
+  emits: ['update:fetchAddress'],
   data() {
     return {
-      value: "",
+      value: '',
       hotCity: [],
       list: [],
       searchAddress: [],
@@ -153,34 +155,34 @@ export default {
       noData: false,
       show: true,
       barTop: 64,
-      storageArr: storage.get("onlineLatelyAddressArray", [])
+      storageArr: storage.get('onlineLatelyAddressArray', []),
     };
   },
   activated() {
-    this.value = "";
+    this.value = '';
     this.searchBox = false;
-    this.storageArr = storage.get("onlineLatelyAddressArray", []);
-    console.log(" this.storageArr", this.storageArr);
+    this.storageArr = storage.get('onlineLatelyAddressArray', []);
+    console.log(' this.storageArr', this.storageArr);
   },
   computed: {
-    ...mapState(["geoAddress", "latelyAddressArray"]),
+    ...mapState(['geoAddress', 'latelyAddressArray']),
     initSearchListAll() {
       let arr = [];
-      this.list.forEach(item => {
+      this.list.forEach((item) => {
         arr = arr.concat(item.items);
       });
       return arr;
     },
     computedList() {
       let arr = [];
-      arr = this.list.filter(item => {
+      arr = this.list.filter((item) => {
         return item.items.length != 0;
       });
       return arr;
     },
     indexList() {
       let arr = [];
-      this.list.forEach(item => {
+      this.list.forEach((item) => {
         if (item.items.length != 0) {
           arr.push(item.index);
         }
@@ -189,8 +191,8 @@ export default {
     },
     latelyAddressArrayComputed() {
       let arr = [];
-      this.storageArr.forEach(item => {
-        let x = item.split(",");
+      this.storageArr.forEach((item) => {
+        let x = item.split(',');
         let y = x[x.length - 1];
         arr.push(y);
       });
@@ -201,7 +203,7 @@ export default {
     },
     currentAxiosAddress() {
       return this.$route.query.axiosAddress;
-    }
+    },
   },
 
   mounted() {
@@ -210,7 +212,7 @@ export default {
 
   methods: {
     onSearch(val) {
-      if (val != "") {
+      if (val != '') {
         this.page = 0;
         this.searchAddress = [];
         this.searchBox = true;
@@ -221,13 +223,13 @@ export default {
           this.noData = false;
         }
       }
-      if (val == "") {
+      if (val == '') {
         this.searchAddress = [];
         this.searchBox = false;
       }
     },
     filtrate(val) {
-      this.initSearchListAll.forEach(item => {
+      this.initSearchListAll.forEach((item) => {
         let name = item.name;
         if (name.includes(val)) {
           this.searchAddress.push(item);
@@ -241,31 +243,32 @@ export default {
     choose(it) {
       setTimeout(() => {
         this.$router.push({
-          path: "/index_online",
-          query: { address: it.data, axiosAddress: it.data }
+          path: '/index_online',
+          // query: { address: it.data, axiosAddress: it.data },
         });
+        this.$emit('update:fetchAddress', it.data);
         this.searchBox = false;
       }, 100);
     },
     goToIndexOnline(index) {
       //  选择最近选择地址
-      if (index === "全部地区") {
+      if (index === '全部地区') {
         this.$router.push({
-          path: "/index_online",
-          query: { address: "全部地区" }
+          path: '/index_online',
         });
+        this.$emit('update:fetchAddress', '全部地区');
       } else {
-        let storageArr = storage.get("onlineLatelyAddressArray", []);
+        let storageArr = storage.get('onlineLatelyAddressArray', []);
         let address = storageArr[index];
         this.$router.push({
-          path: "/index_online",
-          query: { address: address, axiosAddress: address }
+          path: '/index_online',
         });
+        this.$emit('update:fetchAddress', address);
       }
       this.searchBox = false;
     },
     getAreaList() {
-      this.$axios.fetchGet("Mobile/Position/getAreaPostion").then(res => {
+      this.$axios.fetchGet('Mobile/Position/getAreaPostion').then((res) => {
         if (res.data.code == 0) {
           this.hotCity = res.data.data.hotcity.letterlist;
           this.list = res.data.data.lists;
@@ -276,14 +279,14 @@ export default {
     },
     computedBarTop() {
       let h = this.$refs.historyRef.getBoundingClientRect().height;
-      console.log("h", h);
+      console.log('h', h);
       if (h > 0) {
         this.barTop = h + 64;
       } else {
         this.barTop = 64;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
