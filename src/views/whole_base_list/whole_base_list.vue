@@ -8,25 +8,17 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <li
-          v-for="item in list"
-          :key="item.id"
-          @click="goToBaseDetail(item.qrcode)"
-        >
+        <li v-for="item in list" :key="item.id" @click="goToQuHref(item.qr_page_url)">
           <div
             class="status"
             :class="{
               glod: item.ctype == '8',
               base: item.ctype == '6',
-              none: item.ctype == '0'
+              none: item.ctype == '0',
             }"
           >
             {{
-              item.ctype == "8"
-                ? "金牌认证"
-                : item.ctype == "6"
-                ? "基地认证"
-                : "未认证"
+              item.ctype == '8' ? '金牌认证' : item.ctype == '6' ? '基地认证' : '未认证'
             }}
           </div>
           <van-image class="img" :src="item.logo"></van-image>
@@ -42,6 +34,7 @@
               <span>{{ item.mpublic }}</span>
             </div>
           </div>
+          <div class="router-icon" @click.stop="goToBaseDetail(item.qrcode)"></div>
         </li>
       </van-list>
     </ul>
@@ -49,15 +42,15 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header.vue";
-import { mapState } from "vuex";
+import Header from '@/components/header/header.vue';
+import { mapState } from 'vuex';
 
 export default {
-  name: "wholeBaseList",
+  name: 'wholeBaseList',
   components: { Header },
   props: {},
   metaInfo: {
-    title: "基地列表"
+    title: '基地列表',
   },
   data() {
     return {
@@ -66,11 +59,11 @@ export default {
       finished: false,
       page: 0,
       noData: false,
-      baseUrl: "http://demo.datav.114nz.com/base_code/#/?gbasecode="
+      baseUrl: 'http://demo.datav.114nz.com/base_code/#/?gbasecode=',
     };
   },
   computed: {
-    ...mapState(["uId", "axiosAddress"])
+    ...mapState(['uId', 'axiosAddress']),
   },
   created() {},
   watch: {},
@@ -87,13 +80,13 @@ export default {
       // 或者基地列表
       this.page += 1;
       this.$axios
-        .fetchPost("/Mobile/Mpublic/getFineBaseCom", {
+        .fetchPost('/Mobile/Mpublic/getFineBaseCom', {
           // mId: this.initMid,
           page: this.page,
-          isall: "all",
-          location: this.axiosAddress
+          isall: 'all',
+          location: this.axiosAddress,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = this.list.concat(res.data.data);
             this.loading = false;
@@ -106,10 +99,14 @@ export default {
         });
     },
     goToBaseDetail(url) {
-      window.open(url, "blank");
+      // 去基地码
+      window.open(url, 'blank');
       // window.location.href = url;
-    }
-  }
+    },
+    goToQuHref(qr_page_url) {
+      window.open(qr_page_url, '_blank');
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -191,4 +188,12 @@ export default {
     color #999
     padding 15px 0
     text-align center
+  .router-icon
+    position absolute
+    right 15px
+    top 30px
+    width 25px
+    height 25px
+    background url('./1.png') center no-repeat
+    background-size cover
 </style>
