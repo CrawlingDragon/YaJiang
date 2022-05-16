@@ -1,10 +1,6 @@
 <template>
   <div>
-    <van-action-sheet
-      v-model:show="zuowuShow"
-      cancel-text="确定"
-      @cancel="onZuowuCancel"
-    >
+    <van-action-sheet v-model:show="zuowuShow" cancel-text="确定" @cancel="onZuowuCancel">
       <div class="zuowuContent">
         <van-checkbox-group v-model="result">
           <div class="item" v-for="item in chooseData" :key="item">
@@ -28,15 +24,15 @@
 </template>
 <script>
 export default {
-  name: "",
+  name: '',
   components: {},
   props: {
     chooseData: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return { zuowuShow: false, result: [] };
@@ -47,10 +43,10 @@ export default {
   unmounted() {},
   methods: {
     onZuowuCancel() {
-      this.$emit("emitArray", this.result);
+      this.$emit('emitArray', this.result);
       this.zuowuShow = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -69,14 +65,14 @@ export default {
       height 100%
       font-size 16px
       background #FAFAFA
-      /deep/.van-checkbox
+      :deep().van-checkbox
         width 100%
         height 100%
         display block
         position absolute
         left 0
         right 0
-      /deep/.van-checkbox__icon
+      :deep().van-checkbox__icon
         position absolute
         width 100%
         height 100%

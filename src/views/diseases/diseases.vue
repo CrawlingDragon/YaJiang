@@ -1,26 +1,30 @@
 <template>
   <div class="diseases-container">
-    <Header
-      header="x"
-      @clickFastRightIcon="clickHeader"
-      @rightIcon="showHeader"
-    ></Header>
+    <Header header="x" @clickFastRightIcon="clickHeader" @rightIcon="showHeader"></Header>
     <div
-      class="title"
+      class="title f22"
       @click.stop="showBox"
       :class="{ lessIndex: titleZindex, noDataClass: !kindList.length }"
     >
       {{ initDis }}
-      <van-icon name="arrow-down" class="down" />
+      <van-icon name="play" class="arrow-icon" :size="size" />
     </div>
     <div class="my-container">
-      <van-popup v-model:show="show" class="pop" :overlay="false" closeable>
+      <van-popup
+        v-model:show="show"
+        class="pop"
+        :overlay="false"
+        position="top"
+        :closeable="true"
+        duration="0"
+      >
         <div class="list">
           <div
-            class="item"
+            class="item f20"
             v-for="item in kindList"
             :key="item.catid"
             @click="changeDis(item)"
+            :class="{ active: initDis === item.catname }"
           >
             {{ item.catname }}
           </div>
@@ -38,7 +42,7 @@
         <li v-for="item in list" :key="item.id" @click="goToDetail(item)">
           <div class="wrap">
             <van-image class="img" :src="item.thumb" fit="cover"></van-image>
-            <p class="p1">{{ item.title }}</p>
+            <p class="p1 f20">{{ item.title }}</p>
           </div>
         </li>
       </van-list>
@@ -47,17 +51,17 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-// import type { PopupPosition, PopupCloseIconPosition } from "vant";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
+import { inject } from 'vue';
 export default {
-  name: "diseases",
+  name: 'diseases',
   components: { Header },
   setup() {
-    useMeta({
-      title: "病虫害库"
-    });
+    useTitles('病虫害库');
+    const size = inject('size');
+    return { size };
   },
   props: {},
   data() {
@@ -68,19 +72,19 @@ export default {
       loading: false,
       finished: false,
       page: 0,
-      catId: "",
+      catId: '',
       titleZindex: false,
-      initDis: "蔬菜虫害"
+      initDis: '蔬菜虫害',
     };
   },
   computed: {
-    ...mapState(["initMid"]),
+    ...mapState(['initMid']),
     noData() {
       return this.finished && this.list.length === 0;
-    }
+    },
   },
   watch: {
-    $route() {}
+    $route() {},
   },
   created() {},
   mounted() {
@@ -106,11 +110,11 @@ export default {
     onLoad() {
       this.page += 1;
       this.$axios
-        .fetchPost("/Mobile/Picture/getList", {
+        .fetchPost('/Mobile/Picture/getList', {
           catId: this.catId,
-          page: this.page
+          page: this.page,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = this.list.concat(res.data.data);
             this.loading = false;
@@ -122,8 +126,8 @@ export default {
     },
     getKind() {
       this.$axios
-        .fetchPost("Mobile/Picture/getCategorys", { mId: this.initMid })
-        .then(res => {
+        .fetchPost('Mobile/Picture/getCategorys', { mId: this.initMid })
+        .then((res) => {
           if (res.data.code == 0) {
             this.kindList = res.data.data;
           }
@@ -131,7 +135,7 @@ export default {
     },
     // 返回一个特定的 DOM 节点，作为挂载的父节点
     getContainer() {
-      return document.querySelector(".my-container");
+      return document.querySelector('.my-container');
     },
     showBox() {
       if (!this.kindList.length) {
@@ -141,16 +145,62 @@ export default {
     },
     goToDetail(item) {
       this.$router.push({
-        path: "/diseases_detail",
+        path: '/diseases_detail',
         query: {
           catid: item.catid,
-          id: item.id
-        }
+          id: item.id,
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .diseases-container {
+    .title {
+      top: 12px;
+    }
+    .list {
+      padding: 15px 42px 15px 15px;
+    }
+    :deep().pop {
+      margin-top: 55px;
+      .van-popup__close-icon {
+        font-size: 50px;
+        top: 22px;
+        right: 22px;
+      }
+    }
+  }
+}
+.diseases-container {
+  & > .title {
+    color: $f-color;
+    display: flex;
+    align-items: center;
+    .arrow-icon {
+      color: $theme-color;
+      transform: rotate(90deg);
+    }
+  }
+  .list {
+    padding: 15px;
+    .item {
+      &.active {
+        background: $theme-color;
+        color: #fff;
+      }
+    }
+  }
+  :deep().pop {
+    .van-popup__close-icon {
+      top: 22px;
+      right: 22px;
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .diseases-container
   position relative
@@ -177,7 +227,7 @@ export default {
       .wrap
         .img
           width 100%
-          height 127px
+          height 152px
           background #FFDCC4
         .p1
           height 48px
@@ -189,13 +239,15 @@ export default {
           text-overflow ellipsis
           white-space nowrap
           background #fff
-/deep/.pop
+
+:deep().pop
   width 100%
   height auto
-  top 116px
-  padding 15px 15px 0
+  margin-top 40px
+  background #ebebeb
   .list
-    margin-bottom 15px
+    padding 15px
+    background #fff
     color #333333
     font-size 15px
     & > .item

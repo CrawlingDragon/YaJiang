@@ -1,41 +1,38 @@
 <template>
   <!-- 资讯相关item -->
   <div class="Message_item-container">
-    <div class="t">{{ list.title }}</div>
+    <div class="left">
+      <div class="t f22 l-h">{{ list.title }}</div>
+      <div class="time f18">
+        <span v-show="index">{{ list.mpublic_name }}</span> {{ list.inputtime }}
+      </div>
+    </div>
     <van-image
       class="img"
       :src="list.thumb"
       radius="8px"
       fit="cover"
-      v-if="list.thumb && list.thumb != ''"
+      v-if="list?.thumb != ''"
     ></van-image>
-    <div class="time">
-      {{ list.inputtime }} <span v-show="index">{{ list.mpublic_name }}</span>
-    </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Message_item",
+  name: 'Message_item',
   components: {},
   props: {
     list: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
+      },
     },
     index: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
+
   methods: {
     // goToMessageDetail(image) {
     //   //轮播图去资讯详情页
@@ -44,31 +41,46 @@ export default {
     //     query: { id: image.id, catid: image.catid },
     //   });
     // },
-  }
+  },
 };
 </script>
-<style lang="stylus" scoped>
-.Message_item-container
-  padding 15px 0
-  padding-right 12px
-  margin-left 12px
-  .t
-    font-size 14px
-    color #333333
-    line-height 16px
-    overflow hidden
-    text-overflow ellipsis
-    white-space nowrap
-    word-break break-all
-  .img
-    width 100%
-    height 115px
-    border-radius 8px
-    margin 7px 0 2px 0
-  .time
-    font-size 12px
-    color #999999
-    margin-top 8px
-    span
-      float right
+<style lang="scss" scoped>
+.old {
+  .Message_item-container {
+    .t {
+      margin-bottom: 53px;
+    }
+  }
+}
+.Message_item-container {
+  padding: 15px 0;
+  padding-right: 12px;
+  margin-left: 12px;
+  display: flex;
+  .left {
+    flex: 1;
+    min-width: 0;
+    .t {
+      font-size: 14px;
+      color: #333333;
+      line-height: 1.2;
+      margin-bottom: 25px;
+    }
+    .time {
+      font-size: 12px;
+      color: $f-color-three;
+      span {
+        float: left;
+        margin-right: 15px;
+      }
+    }
+  }
+  .img {
+    width: 121px;
+    height: 75px;
+    border-radius: 8px;
+    border-radius: 8px;
+    margin-left: 20px;
+  }
+}
 </style>

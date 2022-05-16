@@ -9,7 +9,7 @@
       </div>
     </van-overlay>
     <!-- style="z-index:-21" -->
-    <div class="share-box before-show-box" ref="shareDom" style="z-index:-21">
+    <div class="share-box before-show-box" ref="shareDom" style="z-index: -21">
       <img class="logo" :src="item.logo" />
       <p class="p1">{{ item.companyname }}</p>
       <van-image :src="url" class="share-img" fit="cover"></van-image>
@@ -18,21 +18,21 @@
   </div>
 </template>
 <script>
-import QRCode from "qrcode";
-import html2canvas from "html2canvas";
+import QRCode from 'qrcode';
+import html2canvas from 'html2canvas';
 export default {
-  name: "erweima_share",
+  name: 'erweima_share',
   components: {},
   props: {
     item: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
-    return { popup_show: true, shareObj: "", url: "", show: "", imgUrl: "" };
+    return { popup_show: true, shareObj: '', url: '', show: '', imgUrl: '' };
   },
   computed: {},
   watch: {},
@@ -52,9 +52,9 @@ export default {
         allowTaint: true,
         taintTest: false,
         x: 0,
-        y: window.pageYOffset
-      }).then(canvas => {
-        let dataURL = canvas.toDataURL("image/png");
+        y: window.pageYOffset,
+      }).then((canvas) => {
+        let dataURL = canvas.toDataURL('image/png');
         this.imgUrl = dataURL;
         // document.getElementById("shareCanvas").appendChild(canvas);
       });
@@ -62,20 +62,19 @@ export default {
     showPopup(companyname, logo, qrcode) {
       this.shareObj = { companyname, logo, qrcode };
       QRCode.toDataURL(qrcode)
-        .then(url => {
+        .then((url) => {
           this.url = url;
           // console.log(url);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
       this.popup_show = true;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
-@import '../../../common/css/base.styl'
 .container
   width 100%
   height 100%

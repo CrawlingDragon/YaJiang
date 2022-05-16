@@ -13,7 +13,7 @@
         placeholder="请输入手机号"
         :rules="[
           { validator: validatorPhone, message: '手机格式不正确' },
-          { required: true }
+          { required: true },
         ]"
       />
       <van-field
@@ -25,7 +25,7 @@
       />
       <router-link class="forget" to="/find_password">忘记密码？</router-link>
       <Deal v-model:checked="checked"></Deal>
-      <div style="margin: 16px;">
+      <div style="margin: 16px">
         <van-button
           round
           block
@@ -42,36 +42,36 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import Deal from "@/components/base/deal/deal.vue";
-import { useMeta } from "vue-meta";
-import { mapMutations, mapState, mapActions } from "vuex";
+import Header from '@/components/header/header';
+import Deal from '@/components/base/deal/deal.vue';
+import { useTitles } from '@/common/js/useTitles';
+import { mapMutations, mapState, mapActions } from 'vuex';
 export default {
   setup() {
-    useMeta({ title: "登录" });
+    useTitles('登录');
   },
-  name: "Login",
+  name: 'Login',
   components: { Header, Deal },
   props: {},
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       checked: false,
       clickTrue: false,
-      userAgreement: {}
+      userAgreement: {},
     };
   },
   created() {},
   computed: {
-    ...mapState(["uId"])
+    ...mapState(['uId']),
   },
   watch: {},
   mounted() {},
   unmounted() {},
   methods: {
-    ...mapMutations(["setUid", "setLogined"]),
-    ...mapActions(["saveUserInfo"]),
+    ...mapMutations(['setUid', 'setLogined']),
+    ...mapActions(['saveUserInfo']),
     validatorPhone(val) {
       // 验证手机号码
       if (/^1(3|4|5|6|7|8|9)\d{9}$/.test(val)) {
@@ -83,39 +83,39 @@ export default {
     },
     onSubmit() {
       if (!this.checked) {
-        this.$toast("必须先同意用户协议和隐私政策");
+        this.$toast('必须先同意用户协议和隐私政策');
         return;
       }
       this.$axios
-        .fetchPost("Mobile/Member/login", {
+        .fetchPost('Mobile/Member/login', {
           username: this.username,
-          password: this.password
+          password: this.password,
         })
-        .then(res => {
+        .then((res) => {
           const data = res.data;
           if (data.code == 0) {
             this.saveUserInfo(data.data);
             this.$toast(data.message);
             setTimeout(() => {
               this.$router.push({
-                path: "/index"
+                path: '/index',
               });
             }, 500);
           } else {
             this.$dialog
               .alert({
-                title: "登录失败",
+                title: '登录失败',
                 message: data.message,
-                confirmButtonText: "知道了",
-                confirmButtonColor: "#338aff"
+                confirmButtonText: '知道了',
+                confirmButtonColor: '#338aff',
               })
               .then(() => {
                 // on close
               });
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

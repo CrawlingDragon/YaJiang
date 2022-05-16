@@ -17,23 +17,22 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import OnlineItem from "@/components/online_item/online_item";
-import { mapState } from "vuex";
-import { ImagePreview } from "vant";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header';
+import OnlineItem from '@/components/online_item/online_item';
+import { mapState } from 'vuex';
+import { ImagePreview } from 'vant';
+import { useTitles } from '@/common/js/useTitles';
+
 export default {
   setup() {
-    const { meta } = useMeta({
-      title: "线上网诊"
-    });
-    return { meta };
+    const title = useTitles('线上网诊');
+    return { title };
   },
-  name: "hospitalOnline",
+  name: 'hospitalOnline',
   components: {
     Header,
     OnlineItem,
-    [ImagePreview.Component.name]: ImagePreview.Component
+    [ImagePreview.Component.name]: ImagePreview.Component,
   },
 
   props: {},
@@ -43,17 +42,17 @@ export default {
       loading: false,
       finished: false,
       page: 0,
-      noData: false
+      noData: false,
     };
   },
   created() {},
   computed: {
-    ...mapState(["mid", "hospitalName"])
+    ...mapState(['mid', 'hospitalName']),
   },
 
   watch: {},
   mounted() {
-    this.meta.title = this.hospitalName;
+    this.title = this.hospitalName;
   },
   methods: {
     onLoad() {
@@ -64,7 +63,7 @@ export default {
       ImagePreview({
         images: item.arr,
         startPosition: item.index,
-        closeable: true
+        closeable: true,
       });
     },
     getList() {
@@ -72,12 +71,12 @@ export default {
       this.page += 1;
       this.noData = false;
       this.$axios
-        .fetchPost("/Mobile/Wen/index", {
+        .fetchPost('/Mobile/Wen/index', {
           mId: this.mid,
           page: this.page,
-          isall: "self"
+          isall: 'self',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = this.list.concat(res.data.data);
             this.loading = false;
@@ -88,8 +87,8 @@ export default {
             this.finished = true;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

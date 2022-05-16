@@ -1,0 +1,63 @@
+.f15 {
+  font-size: $f12 !important;
+}
+.f16 {
+  //普通版-老年版 12-16
+  font-size: $f12 !important;
+}
+.f17 {
+  font-size: $f15 !important;
+}
+.f18 {
+  //普通版-老年版 14-18
+  font-size: $f14 !important;
+}
+.f20 {
+  //普通版-老年版 16-22
+  font-size: $f16 !important;
+}
+.f22 {
+  //普通版-老年版 18-24
+  font-size: $f16 !important;
+}
+.f24 {
+  //普通版-老年版 20-30
+  font-size: $f18 !important;
+}
+.f30 {
+  //普通版-老年版 20-30
+  font-size: $f20 !important;
+}
+.old {
+  .f15 {
+    font-size: $f15 !important;
+  }
+  .f16 {
+    font-size: $f16 !important;
+  }
+  .f17 {
+    font-size: $f17 !important;
+  }
+  .f18 {
+    font-size: $f18 !important;
+  }
+  .f20 {
+    font-size: $f20 !important;
+  }
+  .f22 {
+    font-size: $f22 !important;
+  }
+
+  .f24 {
+    font-size: $f24 !important;
+  }
+  .f30 {
+    font-size: $f30 !important;
+  }
+  .l-h {
+    line-height: $line-height !important;
+  }
+  .noData {
+    font-size: $f20 !important;
+  }
+}

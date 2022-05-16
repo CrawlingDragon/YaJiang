@@ -4,8 +4,8 @@
     <div class="top">
       <van-image class="img" :src="list.avatar" fit="cover"></van-image>
       <div class="right">
-        <div class="name">{{ list.realname }}</div>
-        <div class="title">{{ list.groupname }}</div>
+        <div class="name f22 l-h">{{ list.realname }}</div>
+        <div class="title f20 l-h">{{ list.groupname }}</div>
         <div class="address" v-if="list.company">{{ list.company }}</div>
         <div
           class="address time"
@@ -27,7 +27,7 @@
         v-show="!isSelfExpert"
         v-if="list.cnt_joinhospital >= 1"
         :class="{
-          noBorder: list.cnt_answer == 0 || list.cnt_joinhospital == 0
+          noBorder: list.cnt_answer == 0 || list.cnt_joinhospital == 0,
         }"
       >
         {{ list.cnt_joinhospital }}家加入医院
@@ -36,24 +36,28 @@
   </div>
 </template>
 <script>
+import { useTitles } from '../../common/js/useTitles';
 export default {
-  name: "Recommend_expert",
+  name: 'Recommend_expert',
   components: {},
   props: {
     list: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
+      },
     },
     isSelfExpert: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+  },
+  setup() {
+    useTitles('医院专家');
   },
   data() {
     return {
-      routeName: ""
+      routeName: '',
     };
   },
   computed: {
@@ -62,9 +66,9 @@ export default {
         return [];
       }
       let skill = this.list.skill;
-      let arr = skill.split(",");
+      let arr = skill.split(',');
       return arr;
-    }
+    },
   },
   watch: {},
   mounted() {
@@ -73,13 +77,53 @@ export default {
   methods: {
     goToExpert(id) {
       this.$router.push({
-        path: "/expert",
-        query: { id: id }
+        path: '/expert',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .recommend_expert-container {
+    height: 100%;
+    padding: 0;
+    .top {
+      .img {
+        width: 90px;
+        height: 90px;
+      }
+      .right {
+        display: flex;
+        align-items: center;
+        .name {
+          margin-bottom: 0;
+          margin-right: 15px;
+          color: $f-color;
+          width: auto;
+        }
+        .title {
+          flex: 1;
+          margin: 0;
+          color: $f-color-second;
+          overflow: auto;
+          white-space: normal;
+          text-overflow: initial;
+        }
+        .address {
+          display: none;
+        }
+      }
+    }
+
+    .join,
+    .kind {
+      display: none;
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .recommend_expert-container
   background #F5F5F5
@@ -106,7 +150,7 @@ export default {
         font-size 12px
         line-height 14px
         margin-bottom 5px
-        color #999999
+        color #363A44
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
@@ -114,7 +158,7 @@ export default {
         font-size 12px
         line-height 14px
         margin-bottom 5px
-        color #999999
+        color #363A44
         line-height 16px
         overflow hidden
         text-overflow ellipsis
@@ -144,7 +188,7 @@ export default {
     .answer-number
       padding-right 10px
     .join-number
-      border-left 1px solid #999999
+      border-left 1px solid #363A44
       padding-left 10px
       &.noBorder
         border none

@@ -16,17 +16,13 @@
       <div class="hot" v-show="!showResult" style="padding-left: 12px">
         <div class="title">热搜词</div>
         <ul class="hot-ul">
-          <li
-            v-for="item in hot"
-            :key="item.title"
-            @click="goToHospital(item.mid)"
-          >
+          <li v-for="item in hot" :key="item.title" @click="goToHospital(item.mid)">
             {{ item.title }}
           </li>
         </ul>
       </div>
       <div class="hot" v-if="hispital.length != 0" v-show="!showResult">
-        <div class="title" style="margin-bottom:5px">历史搜索</div>
+        <div class="title" style="margin-bottom: 5px">历史搜索</div>
         <ul class="history-ul">
           <li v-for="item in hispital" :key="item.title" @click="search(item)">
             {{ item.title }}
@@ -37,11 +33,7 @@
       <div class="result-box" v-show="showResult">
         <div class="title" v-show="list.length != 0">搜索结果</div>
         <ul>
-          <li
-            v-for="item in list"
-            :key="item.mid"
-            @click="goToHospital(item.mid)"
-          >
+          <li v-for="item in list" :key="item.mid" @click="goToHospital(item.mid)">
             <van-image class="img" :src="item.logo" fit="cover"></van-image>
             <div class="right">
               <div class="name">
@@ -64,31 +56,30 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapState, mapMutations } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import { mapState, mapMutations } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-    useMeta({
-      title: "搜索医院"
-    });
+   
+    useTitles('搜索医院')
   },
-  name: "searchHospital",
+  name: 'searchHospital',
   components: { Header },
   props: {},
   data() {
     return {
-      value: "",
+      value: '',
       // location: this.$route.query.location,
       list: [],
       hispital: [],
       hot: [],
       noData: false,
-      showResult: false
+      showResult: false,
     };
   },
   computed: {
-    ...mapState(["uId", "axiosAddress"])
+    ...mapState(['uId', 'axiosAddress']),
   },
   watch: {},
   mounted() {
@@ -104,13 +95,13 @@ export default {
         this.showResult = true;
       }
     },
-    ...mapMutations(["setMid"]),
+    ...mapMutations(['setMid']),
     onSearch(val) {
       this.getSearchresult(val);
       this.showResult = true;
     },
     onCancel() {
-      this.$router.push({ path: "/into_hospital" });
+      this.$router.push({ path: '/into_hospital' });
     },
     search(item) {
       this.showResult = true;
@@ -121,13 +112,13 @@ export default {
     getSearchresult(keyword) {
       this.noData = false;
       this.$axios
-        .fetchPost("Mobile/Entrance/lists", {
+        .fetchPost('Mobile/Entrance/lists', {
           keyword: keyword,
           location: this.axiosAddress,
           uId: this.uId,
-          page_size: 200
+          page_size: 200,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
             this.getHispital();
@@ -139,15 +130,15 @@ export default {
     },
     getHispital() {
       this.$axios
-        .fetchPost("Mobile/Entrance/getHistory", { uId: this.uId })
-        .then(res => {
+        .fetchPost('Mobile/Entrance/getHistory', { uId: this.uId })
+        .then((res) => {
           if (res.data.code == 0) {
             this.hispital = res.data.data;
           }
         });
     },
     gerHot() {
-      this.$axios.fetchPost("Mobile/Entrance/getHotwords").then(res => {
+      this.$axios.fetchPost('Mobile/Entrance/getHotwords').then((res) => {
         if (res.data.code == 0) {
           this.hot = res.data.data;
         }
@@ -157,21 +148,21 @@ export default {
       this.setMid(mid);
       setTimeout(() => {
         this.$router.push({
-          path: "/hospital"
+          path: '/hospital',
         });
       }, 100);
     },
     clearHispital() {
       this.$axios
-        .fetchPost("/Mobile/Entrance/clearRecord", { uId: this.uId })
-        .then(res => {
+        .fetchPost('/Mobile/Entrance/clearRecord', { uId: this.uId })
+        .then((res) => {
           if (res.data.code == 0) {
             this.$toast(res.data.message);
             this.getHispital();
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -251,7 +242,7 @@ export default {
               width 70px
               text-align center
           .knid
-            color #999999
+            color #363A44
             font-size 12px
             margin-top 6px
 </style>

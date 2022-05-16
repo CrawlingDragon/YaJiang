@@ -156,7 +156,7 @@ export default {
           line-height 20px
         .p2
           font-size 12px
-          color #999999
+          color #363A44
           margin-top 5px
         .join-time
           display flex
@@ -173,7 +173,7 @@ export default {
           display flex
           align-items center
           margin-top 10px
-          color #999999
+          color #363A44
           font-size 12px
           margin-left 2px
           .icon

@@ -17,17 +17,15 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import OnlineItem from "@/components/online_item/online_item";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import OnlineItem from '@/components/online_item/online_item';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "搜索结果"
-    });
+    useTitles('搜索结果');
   },
-  name: "searchOnlineCrop",
+  name: 'searchOnlineCrop',
 
   components: { Header, OnlineItem },
   props: {},
@@ -38,7 +36,7 @@ export default {
       online: [],
       loading: false,
       finished: false,
-      page: 0
+      page: 0,
     };
   },
   created() {},
@@ -52,12 +50,12 @@ export default {
     getSearchResult() {
       this.page += 1;
       this.$axios
-        .fetchPost("Mobile/Wen/index", {
+        .fetchPost('Mobile/Wen/index', {
           fId: this.fid,
           page: this.page,
-          isall: "all"
+          isall: 'all',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.loading = false;
             this.online = this.online.concat(res.data.data);
@@ -65,8 +63,8 @@ export default {
             this.finished = true;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -74,7 +72,7 @@ export default {
   .title
     padding 21px 0 15px 12px
     font-size 14px
-    color #999999
+    color #363A44
   .crop-ul
     padding-left 12px
     background #fff

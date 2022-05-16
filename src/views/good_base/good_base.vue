@@ -8,16 +8,10 @@
           :class="{
             glod: item.ctype == '8',
             base: item.ctype == '6',
-            none: item.ctype == '0'
+            none: item.ctype == '0',
           }"
         >
-          {{
-            item.ctype == "8"
-              ? "金牌认证"
-              : item.ctype == "6"
-              ? "基地认证"
-              : "未认证"
-          }}
+          {{ item.ctype == '8' ? '金牌认证' : item.ctype == '6' ? '基地认证' : '未认证' }}
         </div>
         <van-image class="img" :src="item.logo"></van-image>
         <div class="text">
@@ -35,26 +29,26 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({ title: "优质基地" });
+    useTitles('优质基地');
   },
-  name: "goodBase",
+  name: 'goodBase',
   components: { Header },
   props: {},
 
   data() {
     return {
       list: [],
-      noData: false
+      noData: false,
     };
   },
   computed: {
-    ...mapState(["uId", "mid"])
+    ...mapState(['uId', 'mid']),
   },
   created() {},
   watch: {},
@@ -66,13 +60,13 @@ export default {
     getBaseList(mid) {
       // 或者基地列表
       this.$axios
-        .fetchPost("/Mobile/Mpublic/getFineBaseCom", {
+        .fetchPost('/Mobile/Mpublic/getFineBaseCom', {
           mId: mid,
           uId: this.uId,
           pagesize: 50,
-          isall: "self"
+          isall: 'self',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
           } else if (res.data.code == 201) {
@@ -82,11 +76,11 @@ export default {
     },
     goToBaseDetail(id) {
       this.$router.push({
-        path: "/base_detail",
-        query: { id: id }
+        path: '/base_detail',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -136,7 +130,7 @@ export default {
           line-height 20px
         .p2
           font-size 12px
-          color #999999
+          color #363A44
           margin-top 5px
         .join-time
           display flex

@@ -21,19 +21,17 @@
   </div>
 </template>
 <script>
-import HospitalHeader from "@/components/hospital_header/hospital_header";
-import MessageItem from "@/components/message_item/message_item";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import HospitalHeader from '@/components/hospital_header/hospital_header';
+import MessageItem from '@/components/message_item/message_item';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    const { meta } = useMeta({
-      title: "资讯列表"
-    });
-    return { meta };
+    const title = useTitles('资讯列表');
+    return { title };
   },
-  name: "hospitalMessage",
+  name: 'hospitalMessage',
   components: { MessageItem, HospitalHeader },
   props: {},
   data() {
@@ -42,20 +40,20 @@ export default {
       loading: false,
       finished: false,
       page: 0,
-      noData: false
+      noData: false,
     };
   },
   computed: {
-    ...mapState(["mid", "hospitalName"])
+    ...mapState(['mid', 'hospitalName']),
   },
   created() {},
   watch: {
     $route() {
       // this.$emit("footer", false)
-    }
+    },
   },
   mounted() {
-    this.meta.title = this.hospitalName;
+    this.title = this.hospitalName;
   },
   methods: {
     onLoad() {
@@ -65,11 +63,11 @@ export default {
       this.page += 1;
       this.noData = false;
       this.$axios
-        .fetchPost("Mobile/Mpublic/getNewslist", {
+        .fetchPost('Mobile/Mpublic/getNewslist', {
           mId: this.mid,
-          page: this.page
+          page: this.page,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.loading = false;
             this.list = this.list.concat(res.data.data);
@@ -86,14 +84,14 @@ export default {
     goToMessageDetail(id, catId) {
       // 路由  资讯详情页
       this.$router.push({
-        path: "/message_detail",
+        path: '/message_detail',
         query: {
           id: id,
-          catid: catId
-        }
+          catid: catId,
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

@@ -8,70 +8,58 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <li v-for="item in list" :key="item.id" @click="goToDetal(item.id)">
-          <van-image
-            class="img"
-            fit="cover"
-            radius="5px"
-            :src="item.thumb"
-          ></van-image>
+        <li v-for="item in list" :key="item.id" @click="goToDetail(item.id)">
+          <van-image class="img" fit="cover" radius="5px" :src="item.thumb"></van-image>
           <p class="p1">{{ item.title }}</p>
         </li>
       </van-list>
     </ul>
   </div>
 </template>
-<script>
-import Header from "@/components/header/header";
-import { useMeta } from "vue-meta";
-export default {
-  setup() {
-    useMeta({
-      title: "培训视频"
-    });
-  },
-  name: "videoList",
-  components: { Header },
+<script setup lang="ts">
+import Header from '@/components/header/header.vue';
+import { useTitles } from '@/common/js/useTitles';
+import { getVideo } from '@/service/getVideo';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+useTitles('培训视频');
 
-  props: {},
-  data() {
-    return {
-      list: [],
-      page: 0,
-      loading: false,
-      finished: false
-    };
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
-  methods: {
-    onLoad() {
-      this.getList();
-    },
-    getList() {
-      this.page += 1;
-      this.$axios
-        .fetchPost("Mobile/Video/getVideoList", {
-          page: this.page,
-          pagesize: 7
-        })
-        .then(res => {
-          if (res.data.code == 0) {
-            this.loading = false;
-            this.list = this.list.concat(res.data.data);
-          } else if (res.data.code == 201) {
-            this.finished = true;
-          }
-        });
-    },
-    goToDetal(id) {
-      this.$router.push({
-        path: "/video_detail",
-        query: { id: id }
-      });
-    }
+interface Video {
+  id: string;
+  thumb: string;
+  title: string;
+}
+const list = ref<Video[]>([]);
+const page = ref(1);
+const loading = ref(false);
+const finished = ref(false);
+function onLoad() {
+  getList();
+}
+
+//请求视频列表
+async function getList() {
+  const data = await getVideo({ page: page.value });
+  page.value += 1;
+  loading.value = false;
+  list.value = list.value.concat(data);
+  // code == 201 ,表示再无数据
+  if (data?.code === 201) {
+    finished.value = true;
   }
+}
+function goToDetail(id: string) {
+  router.push({
+    path: '/video_detail',
+    query: { id: id },
+  });
+}
+</script>
+<script lang="ts">
+export default {
+  setup() {},
+  name: 'videoList',
 };
 </script>
 <style lang="stylus" scoped>

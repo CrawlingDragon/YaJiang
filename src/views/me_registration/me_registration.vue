@@ -13,32 +13,27 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import RegistrationItem from "@/components/register_item/register_item";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import RegistrationItem from '@/components/register_item/register_item.vue';
+import { mapState } from 'vuex';
+import { useTitles } from '../../common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "挂号记录"
-    });
+    useTitles('挂号记录');
   },
-  name: "meRegistration",
+  name: 'meRegistration',
   components: { Header, RegistrationItem },
-  props: {},
-
   data() {
     return {
       list: [],
-      noData: false
+      noData: false,
     };
   },
-  created() {},
+
   computed: {
-    ...mapState(["uId"])
+    ...mapState(['uId']),
   },
-  watch: {},
   mounted() {
     this.getRegistration();
   },
@@ -46,16 +41,16 @@ export default {
     getRegistration() {
       this.noData = false;
       this.$axios
-        .fetchPost("/Mobile/User/getSubscribe", { uId: this.uId })
-        .then(res => {
+        .fetchPost('/Mobile/User/getSubscribe', { uId: this.uId })
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
           } else if (res.data.code == 201) {
             this.noData = true;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

@@ -1,15 +1,7 @@
 <template>
   <div class="me_answer-container">
-    <Header :indexHeader="false"></Header>
-    <van-tabs
-      v-model="active"
-      sticky
-      color="#599524"
-      title-active-color="#599524"
-      class="tabs"
-      :offset-top="num"
-      @scroll="scroll"
-    >
+    <Header :header="'xx'"></Header>
+    <van-tabs v-model="active" class="tabs" @scroll="scroll" swipeable>
       <van-tab title="我问的" class="tab">
         <div class="wrap">
           <van-list
@@ -42,7 +34,8 @@
         </div>
         <van-empty description="暂无解答" v-if="noData2"></van-empty>
       </van-tab>
-      <van-tab title="咨询我的" class="tab" v-if="identity == 1">
+      <van-tab title="咨询我的" class="tab">
+        <!-- v-if="identity == 1" -->
         <div class="wrap">
           <van-list
             v-model:loading="loading3"
@@ -62,16 +55,14 @@
   </div>
 </template>
 <script>
-import Header from '@/components/header/header';
-import OnlineItem from '@/components/online_item/online_item';
+import Header from '@/components/hospital_header/hospital_header.vue';
+import OnlineItem from '@/components/online_item/online_item.vue';
 import { mapState } from 'vuex';
-import { useMeta } from 'vue-meta';
+import { useTitles } from '@/common/js/useTitles';
 var Before_scollH = 0;
 export default {
   setup() {
-    useMeta({
-      title: '问答管理',
-    });
+    useTitles('问答管理');
   },
   name: 'meAnswer',
   components: { Header, OnlineItem },
@@ -231,21 +222,46 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.me_answer-container
-  .tabs
-    .tab
-      margin-top 10px
-      .wrap
-        width 100%
-        height 100%
-        background #fff
-        padding 0 12px
-      .item
-        border-bottom 1px solid #e5e5e5
-        &:last-child
-          border none
-  .van-sticky
-    position relative
-    z-index 3
+<style lang="scss" scoped>
+.old {
+  .me_answer-container {
+    .tabs {
+      :deep().van-tabs__wrap {
+        top: -55px;
+        height: 55px;
+      }
+    }
+  }
+}
+.me_answer-container {
+  .tabs {
+    .tab {
+      margin-top: 10px;
+      .wrap {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        padding: 0 12px;
+      }
+      .item {
+        border-bottom: 1px solid #e5e5e5;
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+    :deep().van-tabs__wrap {
+      position: absolute;
+      z-index: 1111;
+      top: -44px;
+      width: 256px;
+    }
+    :deep().van-tabs__line {
+      background: $theme-color !important;
+    }
+    :deep().van-tab {
+      flex: 1 auto;
+    }
+  }
+}
 </style>

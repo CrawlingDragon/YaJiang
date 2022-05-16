@@ -5,28 +5,24 @@
       <div class="text">{{ item.classname }}</div>
       <div class="btns">
         <div class="btn look" @click="preview">预览</div>
-        <div class="btn take" @click="clickTake" v-if="item.status == 0">
-          订阅
-        </div>
+        <div class="btn take" @click="clickTake" v-if="item.status == 0">订阅</div>
         <div class="cancel btn" @click="clickCancel" v-else>取消</div>
-        <div class="cancel btn" v-if="item.status == 1" @click="management">
-          农事管理
-        </div>
+        <div class="cancel btn" v-if="item.status == 1" @click="management">农事管理</div>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "take_case_item",
+  name: 'take_case_item',
   components: {},
   props: {
     item: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {};
@@ -39,12 +35,12 @@ export default {
     clickTake() {
       this.$dialog
         .confirm({
-          message: "确定订阅",
-          confirmButtonColor: "#155BBB"
+          message: '确定订阅',
+          confirmButtonColor: '#155BBB',
         })
         .then(() => {
           // on confirm
-          this.$emit("clickLook", { status: "dingyue", pId: this.item.id });
+          this.$emit('clickLook', { status: 'dingyue', pId: this.item.id });
         })
         .catch(() => {
           // on cancel
@@ -53,12 +49,12 @@ export default {
     clickCancel() {
       this.$dialog
         .confirm({
-          message: "确定取消",
-          confirmButtonColor: "#155BBB"
+          message: '确定取消',
+          confirmButtonColor: '#155BBB',
         })
         .then(() => {
           // on confirm
-          this.$emit("clickLook", { status: "templatedel", pId: this.item.id });
+          this.$emit('clickLook', { status: 'templatedel', pId: this.item.id });
         })
         .catch(() => {
           // on cancel
@@ -67,17 +63,17 @@ export default {
     management() {
       // 农事管理
       this.$router.push({
-        path: "/cropManagement",
-        query: { pId: this.item.id, gId: this.item.gid }
+        path: '/cropManagement',
+        query: { pId: this.item.id, gId: this.item.gid },
       });
     },
     preview() {
       this.$router.push({
-        path: "/preview",
-        query: { pId: this.item.id, gId: this.item.gid }
+        path: '/preview',
+        query: { pId: this.item.id, gId: this.item.gid },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -125,5 +121,5 @@ export default {
           color #FF6600
         &.cancel
           background: #F6F6F6;
-          border: 1px solid #999999;
+          border: 1px solid #363A44;
 </style>

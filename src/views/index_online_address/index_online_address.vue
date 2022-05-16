@@ -20,7 +20,7 @@
           :class="{ searchBox: searchBox }"
         />
       </form>
-      <div style="background:#ebebeb">
+      <div style="background: #ebebeb">
         <div class="now-choose-title">当前选择:{{ currentSelectAddress }}</div>
         <div class="tip-title">定位/最近访问</div>
         <div class="choose-wrap">
@@ -38,9 +38,7 @@
             <div>{{ geoViewAddress || '定位失败' }}</div>
           </div>
           <!--  最近选择地址 -->
-          <div class="choosed-area" @click="goToIndexOnline('全部地区')">
-            全部地区
-          </div>
+          <div class="choosed-area" @click="goToIndexOnline('全部地区')">全部地区</div>
           <div
             class="choosed-area"
             @click="goToIndexOnline(index)"
@@ -331,7 +329,7 @@ export default {
         right 0
     .tip-title
       font-size 14px
-      color: #999999;
+      color: #363A44;
       margin 15px 0
       padding-left 12px
     .choose-wrap
@@ -398,7 +396,7 @@ export default {
       line-height 40px
       border-bottom 1px solid #e5e5e5
       text-indent 20px
-/deep/.van-index-bar__sidebar
+:deep().van-index-bar__sidebar
   z-index 1
 .now-choose-title
   line-height: 40px

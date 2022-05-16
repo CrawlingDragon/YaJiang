@@ -51,44 +51,44 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  name: "askChooseCrop",
+  name: 'askChooseCrop',
   metaInfo: {
-    title: "选择作物"
+    title: '选择作物',
   },
   components: {},
   props: {},
   data() {
     return {
-      value: "",
+      value: '',
       list: [],
       hispitalList: [],
       cropName: this.$route.query.crop,
       searchResult: [],
       searchResultShow: false,
       noResult: false,
-      barTop: 54
+      barTop: 54,
     };
   },
   created() {},
   computed: {
-    ...mapState(["uId"]),
+    ...mapState(['uId']),
     letterList() {
       let arr = [];
-      this.list.forEach(el => {
+      this.list.forEach((el) => {
         arr.push(el.letter);
       });
       return arr;
     },
     crops() {
       let arr = [];
-      this.list.forEach(el => {
+      this.list.forEach((el) => {
         arr = arr.concat(el.index);
       });
       return arr;
-    }
+    },
   },
   watch: {
     searchResult(newVal) {
@@ -97,7 +97,7 @@ export default {
       } else {
         this.noResult = false;
       }
-    }
+    },
   },
   mounted() {
     this.getCropList();
@@ -105,20 +105,20 @@ export default {
   methods: {
     onSearch(val) {
       this.searchResult = [];
-      this.crops.forEach(el => {
+      this.crops.forEach((el) => {
         if (el.name.indexOf(val) >= 0) {
           this.searchResult.push(el);
         }
       });
       this.searchResultShow = true;
-      if (val == "") {
+      if (val == '') {
         this.searchResultShow = false;
       }
     },
     choose(item) {
       //搜索历史 选择作物
       this.$router.go(-1);
-      this.$emit("getCrop", item);
+      this.$emit('getCrop', item);
       this.searchResultShow = false;
     },
     onCancel() {
@@ -127,8 +127,8 @@ export default {
     },
     getCropList() {
       this.$axios
-        .fetchPost("Mobile/Mpublic/getCropIndexQuery", { uId: this.uId })
-        .then(res => {
+        .fetchPost('Mobile/Mpublic/getCropIndexQuery', { uId: this.uId })
+        .then((res) => {
           if (res.data.code == 0) {
             this.hispitalList = res.data.historydata;
             // this.hispitalList = [];
@@ -141,14 +141,14 @@ export default {
     },
     computedBarTop() {
       let h = this.$refs.historyRef.getBoundingClientRect().height;
-      console.log("h", h);
+      console.log('h', h);
       if (h > 0) {
         this.barTop = h + 54;
       } else {
         this.barTop = 54;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -189,7 +189,7 @@ export default {
 
       .small-title
         font-size 12px
-        color #999999
+        color #363A44
         line-height 12px
         padding 15px 0
       li

@@ -30,15 +30,15 @@
 </template>
 <script>
 export default {
-  name: "fram_item",
+  name: 'fram_item',
   components: {},
   props: {
     item: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {};
@@ -51,15 +51,15 @@ export default {
     showPriviewImg(imgList, index) {
       let obj = {
         imgList,
-        index
+        index,
       };
-      this.$emit("priview", obj);
+      this.$emit('priview', obj);
     },
     deteleFramHistory(id) {
       // 删除农事记录
       this.$dialog
         .confirm({
-          message: "确定删除"
+          message: '确定删除',
         })
         .then(() => {
           // on confirm
@@ -70,27 +70,25 @@ export default {
         });
     },
     detetleHistory(id) {
-      this.$axios
-        .fetchGet("/Mobile/User/delfarmerdata", { Id: id })
-        .then(res => {
-          if (res.data.code == 0) {
-            this.$emit("deteleHistory", id);
-          }
-        });
+      this.$axios.fetchGet('/Mobile/User/delfarmerdata', { Id: id }).then((res) => {
+        if (res.data.code == 0) {
+          this.$emit('deteleHistory', id);
+        }
+      });
     },
     edit(id) {
       this.$router.push({
-        path: "/base_edit",
-        query: { id: id }
+        path: '/base_edit',
+        query: { id: id },
       });
     },
     detail(id) {
       this.$router.push({
-        path: "/base_edit",
-        query: { id: id }
+        path: '/base_edit',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -128,7 +126,7 @@ export default {
       height: 0; //避免被内容撑开多余的高度
       margin-right 1%
       display inline-block
-      /deep/img
+      :deep()img
         position absolute
     .edit-bar
       display flex
@@ -141,7 +139,7 @@ export default {
         font-size: 14px;
         font-family: Microsoft YaHei;
         font-weight: 400;
-        color: #999999;
+        color: #363A44;
         .edit-icon
           width 15px
           height 15px
@@ -153,7 +151,7 @@ export default {
         font-size: 14px;
         font-family: Microsoft YaHei;
         font-weight: 400;
-        color: #999999;
+        color: #363A44;
         display flex
         .van-icon-close
           font-size 20px

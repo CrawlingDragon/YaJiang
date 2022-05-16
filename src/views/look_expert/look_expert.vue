@@ -15,61 +15,39 @@
     </ul>
   </div>
 </template>
-<script>
-import Header from "@/components/header/header";
-import RecommendExpert from "@/components/recommend_expert/recommend_expert";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+<script setup lang="ts">
+import Header from '@/components/header/header.vue';
+import RecommendExpert from '@/components/recommend_expert/recommend_expert.vue';
+import { useStore } from 'vuex';
+import { computed, ref } from 'vue';
+import { getExport } from '@/service/getExpert';
+import { useTitles } from '@/common/js/useTitles';
+//title
+useTitles('专家');
+// store
+const store = useStore();
+const initMid = computed(() => store.state.initMid);
 
-export default {
-  setup() {
-    useMeta({
-      title: "专家"
-    });
-  },
-  name: "lookExpert",
-  components: { Header, RecommendExpert },
-  props: {},
-  data() {
-    return {
-      list: [],
-      loading: false,
-      finished: false,
-      page: 0
-    };
-  },
-  created() {},
-  computed: {
-    ...mapState(["mid"])
-  },
-  watch: {},
-  mounted() {},
-  methods: {
-    onLoad() {
-      this.getExpertList();
-    },
-    getExpertList() {
-      // 获取专家列表
-      this.page += 1;
-      this.$axios
-        .fetchPost("/Mobile/User/expertList", {
-          // mId: this.mid,
-          pagesize: 8,
-          page: this.page,
-          isall: "all"
-        })
-        .then(res => {
-          if (res.data.code == 0) {
-            this.loading = false;
-            this.list = this.list.concat(res.data.data);
-          } else if (res.data.code == 201) {
-            this.finished = true;
-          }
-        });
-    }
+//请求专家列表
+const list = ref([]);
+const loading = ref(false);
+const finished = ref(false);
+const page = ref(1);
+function onLoad() {
+  getExpertList();
+}
+async function getExpertList() {
+  // 获取专家列表
+  const data = await getExport({ mid: initMid.value, page: page.value });
+  loading.value = false;
+  list.value = list.value.concat(data);
+  page.value += 1;
+  if (data?.code == 201) {
+    finished.value = true;
   }
-};
+}
 </script>
+
 <style lang="stylus" scoped>
 .look_expert-container
   .expert-ul
@@ -87,6 +65,6 @@ export default {
       vertical-align top
       .recommend_expert-container
         min-height 185px
-        /deep/.time
+        :deep().time
           display none
 </style>

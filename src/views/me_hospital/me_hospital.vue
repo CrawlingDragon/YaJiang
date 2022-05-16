@@ -6,7 +6,7 @@
         <RecommendHospital :list="item"></RecommendHospital>
       </li>
     </ul>
-    <div class="title" v-show="!noData && initShow">已加入{{ total }}家医院</div>
+    <div class="title f18" v-show="!noData && initShow">已加入{{ total }}家医院</div>
     <van-empty description="您还没有加入过医院" v-if="noData"></van-empty>
   </div>
 </template>
@@ -14,12 +14,10 @@
 import Header from '@/components/header/header';
 import RecommendHospital from '@/components/recommend_hospital/recommend_hospital';
 import { mapState } from 'vuex';
-import { useMeta } from 'vue-meta';
+import { useTitles } from '../../common/js/useTitles';
 export default {
   setup() {
-    useMeta({
-      title: '我加入的医院',
-    });
+    useTitles('我加入的医院');
   },
   name: 'meHospital',
   components: { Header, RecommendHospital },
@@ -59,12 +57,37 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .me_hospital-container {
+    .me-ul {
+      li {
+        width: 100%;
+        height: 105px;
+        .recommend-hospital-wrap {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+.me_hospital-container {
+  .title {
+    font-size: 12px;
+    color: $f-color-second;
+    padding: 15px 0;
+    text-align: center;
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .me_hospital-container
   .me-ul
-    margin-left: 12px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding-left: 12px;
+    padding-top: 15px;
+    margin-bottom: 15px;
+    background #fff
+    margin-top 15px
     li
       display: inline-block;
       padding-right: 12px;
@@ -76,16 +99,11 @@ export default {
       .recommend-hospital-wrap
         overflow hidden
         padding-bottom 5px
-        /deep/.p3
+        :deep().p3
           display -webkit-box
           overflow hidden
           text-overflow ellipsis
           word-break break-all
           -webkit-line-clamp 3
           -webkit-box-orient vertical
-  .title
-    font-size 12px
-    color #999999
-    padding 15px 0
-    text-align center
 </style>

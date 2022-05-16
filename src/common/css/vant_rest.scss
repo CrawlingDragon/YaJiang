@@ -1,0 +1,62 @@
+.old {
+  .van-search {
+    .van-search__content {
+      height: 48px;
+      align-items: center;
+      border-radius: 48px;
+      .van-cell {
+        font-size: 20px;
+      }
+      .van-icon-search {
+        font-size: 33px;
+      }
+    }
+    .van-search__action {
+      color: $theme-color;
+      font-size: 20px;
+    }
+  }
+  .van-empty__description {
+    font-size: 20px;
+  }
+  .van-field__label {
+    font-size: $f22;
+  }
+  .van-form {
+    .van-cell {
+      height: 55px;
+      align-items: center;
+      .van-field__control {
+        font-size: $f22;
+      }
+    }
+  }
+  .van-index-bar {
+    .van-index-anchor {
+      font-size: 18px;
+      height: 36px;
+      line-height: 36px;
+    }
+    .van-cell {
+      font-size: $f18;
+      line-height: $f18;
+    }
+    .van-index-bar__index {
+      font-size: $f18;
+      line-height: $f18;
+    }
+  }
+  .van-list__finished-text {
+    font-size: 18px;
+  }
+  .van-cell__title {
+    font-size: 24px;
+  }
+  .van-tab {
+    font-size: 17px;
+  }
+  .van-tab--active {
+    font-size: 20px;
+    color: $theme-color;
+  }
+}

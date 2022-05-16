@@ -8,9 +8,7 @@
       <div class="btn1 btn" @click="management" v-if="baseItem.status === 1">
         农事管理
       </div>
-      <div class="btn2 btn" @click="record" v-if="baseItem.status === 1">
-        农事记录
-      </div>
+      <div class="btn2 btn" @click="record" v-if="baseItem.status === 1">农事记录</div>
       <div class="checking" v-if="baseItem.status === 0">
         <van-icon name="clock-o" class="clock" />
         <span>审核中</span>
@@ -23,18 +21,18 @@
   </div>
 </template>
 <script>
-import ErweimaShare from "@/components/base/erweima_share/erweima_share.vue";
+import ErweimaShare from '@/components/base/erweima_share/erweima_share.vue';
 
 export default {
-  name: "base_center_item",
+  name: 'base_center_item',
   components: { ErweimaShare },
   props: {
     baseItem: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
     return {};
@@ -46,28 +44,28 @@ export default {
   methods: {
     edit() {
       this.$router.push({
-        path: "/baseInfoEdit",
-        query: { from: "edit" }
+        path: '/baseInfoEdit',
+        query: { from: 'edit' },
       });
     },
     management() {
       this.$router.push({
-        name: "cropManagement",
-        query: { pId: this.baseItem.pid, gId: this.baseItem.gid }
+        name: 'cropManagement',
+        query: { pId: this.baseItem.pid, gId: this.baseItem.gid },
       });
     },
     record() {
       this.$router.push({
-        name: "cropRecord",
-        query: { pId: this.baseItem.pid, gId: this.baseItem.gid }
+        name: 'cropRecord',
+        query: { pId: this.baseItem.pid, gId: this.baseItem.gid },
       });
     },
     takeCase() {
       this.$router.push({
-        path: "/allCase"
+        path: '/allCase',
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -82,7 +80,7 @@ export default {
     margin-right 10px
     border-radius: 8px;
     position relative
-  /deep/.share
+  :deep().share
     position absolute
     right 2px
     bottom 2px

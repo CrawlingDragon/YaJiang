@@ -7,26 +7,16 @@
         :class="{
           glod: base.ctype == '8',
           base: base.ctype == '6',
-          none: base.ctype == '0'
+          none: base.ctype == '0',
         }"
       >
-        {{
-          base.ctype == "8"
-            ? "金牌认证"
-            : base.ctype == "6"
-            ? "基地认证"
-            : "未认证"
-        }}
+        {{ base.ctype == '8' ? '金牌认证' : base.ctype == '6' ? '基地认证' : '未认证' }}
       </div>
       <div class="company">
         <van-image class="company-avator" round :src="base.logo"></van-image>
         <p class="name">{{ base.name }}</p>
         <div class="share" @click="shareShow = true"></div>
-        <van-overlay
-          :show="shareShow"
-          @click="shareShow = false"
-          z-index="1111"
-        >
+        <van-overlay :show="shareShow" @click="shareShow = false" z-index="1111">
           <div class="wrapper" @click.stop>
             <!-- <van-image :src="base.logo" fit="cover" round class="logo-img"></van-image> -->
             <!-- <div class="title">{{base.name}}</div> -->
@@ -94,38 +84,36 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import { mapMutations } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header';
+import { mapMutations } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "基地详情"
-    });
+    useTitles('基地详情');
   },
 
-  name: "baseDetail",
+  name: 'baseDetail',
   components: { Header },
   props: {},
   data() {
     return {
       id: this.$route.query.id,
-      base: "",
+      base: '',
       shareShow: false,
-      noData: true
+      noData: true,
     };
   },
   computed: {},
   created() {},
   watch: {
-    $route() {}
+    $route() {},
   },
   mounted() {
     this.getBaseData();
   },
   methods: {
-    ...mapMutations(["setMid"]),
+    ...mapMutations(['setMid']),
     clickTel() {
       this.$refs.tel.click();
     },
@@ -133,8 +121,8 @@ export default {
     getBaseData() {
       // 基地详情
       this.$axios
-        .fetchPost("/Mobile/Mpublic/getBaseDetail", { id: this.id })
-        .then(res => {
+        .fetchPost('/Mobile/Mpublic/getBaseDetail', { id: this.id })
+        .then((res) => {
           if (res.data.code == 0) {
             this.noData = false;
             this.base = res.data.data;
@@ -146,25 +134,25 @@ export default {
     goToPerson() {
       // 点击去到个人主页
       this.$router.push({
-        path: "/expert",
-        query: { id: this.base.uId }
+        path: '/expert',
+        query: { id: this.base.uId },
       });
     },
     goToLocation(location) {
       this.$router.push({
-        path: "/base_location",
+        path: '/base_location',
         query: {
-          location: location
-        }
+          location: location,
+        },
       });
     },
     goToHospital(mid) {
       this.setMid(mid);
       this.$router.push({
-        path: "/hospital"
+        path: '/hospital',
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

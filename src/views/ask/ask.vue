@@ -49,7 +49,7 @@
         v-model:address="address"
       ></Loacl>
       <div class="sub">
-        <van-button round block type="info" native-type="submit" class="btn">
+        <van-button round block type="info" native-type="submit" class="btn f20">
           提交
         </van-button>
       </div>
@@ -64,39 +64,39 @@
 </template>
 
 <script>
-import Header from "@/components/header/header";
-import HospitalHeader from "@/components/hospital_header/hospital_header";
-import Foot from "@/components/foot/foot";
-import Loacl from "@/components/local/local.vue";
-import { useMeta } from "vue-meta";
-import { mapState } from "vuex";
-import Compressor from "compressorjs";
+import Header from '@/components/header/header';
+import HospitalHeader from '@/components/hospital_header/hospital_header';
+import Foot from '@/components/foot/foot';
+import Loacl from '@/components/local/local.vue';
+import { useTitles } from '@/common/js/useTitles';
+import { mapState } from 'vuex';
+import Compressor from 'compressorjs';
+import { onActivated } from 'vue';
 export default {
   setup() {
-    const { meta } = useMeta({ title: "提问" });
-    return { meta };
+    useTitles('提问');
   },
-  name: "ask",
+  name: 'ask',
   components: { Header, Foot, HospitalHeader, Loacl },
   props: {},
   data() {
     return {
-      address: "定位中···",
-      message: "",
-      crop: "请选择",
-      fid: "",
+      address: '定位中···',
+      message: '',
+      crop: '雷笋',
+      fid: '',
       uploader: [],
       imgList: [],
       imgListTiny: [],
-      ismember: "",
-      isShaoxing: "",
-      userInfo: "",
-      locationTime: "first",
-      submitBoolean: true
+      ismember: '',
+      isShaoxing: '',
+      userInfo: '',
+      locationTime: 'first',
+      submitBoolean: true,
     };
   },
   computed: {
-    ...mapState(["uId", "mid", "initMid", "hospitalName"]),
+    ...mapState(['uId', 'mid', 'initMid', 'hospitalName']),
     from() {
       return this.$route.query.from;
     },
@@ -109,23 +109,19 @@ export default {
     // localRef() {
     //   return this.$refs.localRef.addressObj;
     // },
-    ...mapState(["uId"])
+    ...mapState(['uId']),
   },
-  created() {},
-  watch: {},
-  mounted() {
-    this.meta.title = this.from === "hospital" ? this.hospitalName : "提问";
-  },
+
   methods: {
     onSubmit(values) {
-      if (values.message == "") {
-        this.$toast("问题描述不能为空");
+      if (values.message == '') {
+        this.$toast('问题描述不能为空');
         return;
       } else if (values.message.length <= 9) {
-        this.$toast("问题描述不能少余10个字");
+        this.$toast('问题描述不能少余10个字');
         return;
-      } else if (this.address == "定位中···") {
-        this.$toast("地址定位中,请稍等");
+      } else if (this.address == '定位中···') {
+        this.$toast('地址定位中,请稍等');
         return;
       }
       this.subAsk();
@@ -133,8 +129,8 @@ export default {
     goToChooseCrop() {
       //选择作物
       this.$router.push({
-        path: "/ask/ask_choose_crop",
-        query: { crop: this.crop == "请选择" ? "" : this.crop }
+        path: '/ask/ask_choose_crop',
+        query: { crop: this.crop == '请选择' ? '' : this.crop },
       });
     },
     getCrop(crop) {
@@ -159,22 +155,20 @@ export default {
         success(result) {
           let formData = new FormData();
           // console.log("result", result);
-          formData.append("urls[]", result, result.name);
-          that.$axios
-            .fetchPost("/Mobile/Wen/OssUploadFile", formData)
-            .then(res => {
-              // console.log("res :>> ", res);
-              if (res.data.code == 0) {
-                that.imgList.push(res.data.data);
-                that.imgListTiny.push(res.data.data_tiny);
-                // this.uploader.push({url:res.data.data,name:'img'})
-              } else {
-                that.$toast(res.data.message);
-                let index = detail.index;
-                that.uploader.splice(index, 1);
-              }
-            });
-        }
+          formData.append('urls[]', result, result.name);
+          that.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
+            // console.log("res :>> ", res);
+            if (res.data.code == 0) {
+              that.imgList.push(res.data.data);
+              that.imgListTiny.push(res.data.data_tiny);
+              // this.uploader.push({url:res.data.data,name:'img'})
+            } else {
+              that.$toast(res.data.message);
+              let index = detail.index;
+              that.uploader.splice(index, 1);
+            }
+          });
+        },
       });
     },
     deleteItem(file, val) {
@@ -190,13 +184,13 @@ export default {
         content: this.message, //发布内容
         fId: this.fid, //作物ID
         expertId: this.expertId,
-        picurl: this.imgList.join(","),
-        picurl_tiny: this.imgListTiny.join(","),
-        location: this.address === "抱歉未定位到" ? "定位失败" : this.address
+        picurl: this.imgList.join(','),
+        picurl_tiny: this.imgListTiny.join(','),
+        location: this.address === '抱歉未定位到' ? '定位失败' : this.address,
       };
       if (this.submitBoolean) {
         this.submitBoolean = false;
-        this.$axios.fetchPost("Mobile/Wen/addWenQuestion", obj).then(res => {
+        this.$axios.fetchPost('Mobile/Wen/addWenQuestion', obj).then((res) => {
           this.$toast(res.data.message);
           if (res.data.code == 0) {
             setTimeout(() => {
@@ -208,87 +202,123 @@ export default {
           }
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="stylus" scoped>
-.ask-container
-  height 100%
-  background #fff
-  position relative
-  padding-bottom 0px
-  .title
-    background #fff
-    color #333333
-    font-size 16px
-    line-height 16px
-    padding 15px 12px 10px 12px
-  .from
-    background #fff
-    .text
-      margin-right 12px
-      margin-left 12px
-      width auto
-      height 130px
-      font-size 12px
-      border 1px solid #e5e5e5
-    .uploader
-      padding 10px 12px
-      border-bottom 1px solid #e5e5e5
-      &.van-cell::after
-        display none
-    .choose-crop
-      border-bottom 1px solid #e5e5e5
-      display flex
-      align-items center
-      height 50px
-      padding-left 12px
-      .left
-        width 106px
-        color #333333
-        font-size 16px
-      .right
-        flex 1
-        color #999999
-        text-align right
-        /deep/.van-field__control
-          color #999
-          font-size 16px
-        &.location
-          color #333
-          &.fail
-            color #999
-            /deep/.van-field__control
-              color #999
-          /deep/.van-field__control
-            color #333
-      .arrow
-        font-size 12px
-        color #999999
-        margin 0 12px
-    .list
-      height 50px
-      line-height 50px
-      display flex
-      align-items center
-      justify-content space-between
-      font-size 16px
-      color #333
-      padding 0 35px 0 12px
-      border-bottom 1px solid #e5e5e5
-    .sub
-      background #ebebeb
-      padding 16px
-      padding-bottom 60px
-      .btn
-        margin-right 12px
-        border-radius 4px
-        background $theme-color
-        font-size 15px
-        color #fff
-        width 100%
-        border none
-/deep/.van-field__control
-  font-size 14px
+<style lang="scss" scoped>
+.old {
+  .ask-container {
+    .uploader {
+      height: auto !important;
+    }
+    .from {
+      .choose-crop {
+        height: 56px;
+      }
+      .sub {
+        .btn {
+          height: 48px;
+        }
+      }
+    }
+  }
+}
+.ask-container {
+  height: 100%;
+  background: #fff;
+  position: relative;
+  padding-bottom: 0px;
+  .title {
+    background: #fff;
+    color: #333333;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 15px 12px 10px 12px;
+  }
+  .from {
+    background: #fff;
+    .text {
+      margin-right: 12px;
+      margin-left: 12px;
+      width: auto;
+      height: 130px;
+      font-size: 12px;
+      border: 1px solid #e5e5e5;
+    }
+    .uploader {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e5e5e5;
+      &.van-cell::after {
+        display: none;
+      }
+    }
+    .choose-crop {
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      height: 50px;
+      padding-left: 12px;
+      .left {
+        width: 106px;
+        color: #333333;
+        font-size: 16px;
+      }
+      .right {
+        flex: 1;
+        color: #363a44;
+        text-align: right;
+        :deep().van-field__control {
+          color: #999;
+          font-size: 16px;
+        }
+        &.location {
+          color: #333;
+          &.fail {
+            color: #999;
+            :deep().van-field__control {
+              color: #999;
+            }
+          }
+          :deep().van-field__control {
+            color: #333;
+          }
+        }
+        .arrow {
+          font-size: 12px;
+          color: #363a44;
+          margin: 0 12px;
+        }
+      }
+      .list {
+        height: 50px;
+        line-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 16px;
+        color: #333;
+        padding: 0 35px 0 12px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+    }
+    .sub {
+      background: #ebebeb;
+      padding: 16px;
+      padding-bottom: 60px;
+      .btn {
+        margin-right: 12px;
+        border-radius: 29px;
+        background: $theme-color;
+        font-size: 15px;
+        color: #fff;
+        width: 100%;
+        border: none;
+      }
+    }
+  }
+}
+:deep().van-field__control {
+  font-size: 14px;
+}
 </style>

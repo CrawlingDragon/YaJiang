@@ -9,7 +9,7 @@ export default function lookForStoreFn(href) {
   // const router = useRouter();
   // const route = useRoute();
   function lookForStore() {
-    // const href = process.env.VUE_APP_SHARE_URL;
+    // const href = import.meta.env.VUE_APP_SHARE_URL;
     // const path = route.path;
     if (!uId.value) {
       Dialog.alert({

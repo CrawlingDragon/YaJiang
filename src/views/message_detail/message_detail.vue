@@ -2,10 +2,10 @@
   <div class="message_detail-container">
     <Header :indexHeader="false"></Header>
     <div class="content">
-      <div class="title">{{ detail.title }}</div>
+      <div class="title f22 l-h">{{ detail.title }}</div>
       <div class="small-bar">
-        <div class="left">{{ detail.inputtime }} {{ detail.copyfrom }}</div>
-        <div class="right" @click="GoToHospital(mpublic.mid)">
+        <div class="left f16">{{ detail.inputtime }} {{ detail.copyfrom }}</div>
+        <div class="right f16" @click="GoToHospital(mpublic.mid)">
           {{ mpublic.title }}
         </div>
       </div>
@@ -14,28 +14,26 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapState, mapMutations } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import { mapState, mapMutations } from 'vuex';
+import { useTitles } from '@/common/js/useTitles.ts';
 export default {
   setup() {
-    useMeta({
-      title: "资讯详情"
-    });
+    useTitles('资讯详情');
   },
-  name: "messageDetail",
+  name: 'messageDetail',
   components: { Header },
   props: {},
   created() {},
   data() {
     return {
       // id: this.$route.query.id,
-      detail: "",
-      mpublic: ""
+      detail: '',
+      mpublic: '',
     };
   },
   computed: {
-    ...mapState(["mid"]),
+    ...mapState(['mid']),
     id() {
       return this.$route.query.id;
     },
@@ -44,7 +42,7 @@ export default {
     },
     from() {
       return this.$route.query.from;
-    }
+    },
   },
   watch: {
     // $route() {
@@ -55,15 +53,15 @@ export default {
     this.getMessageDetail();
   },
   methods: {
-    ...mapMutations(["setMid"]),
+    ...mapMutations(['setMid']),
     getMessageDetail() {
       this.$axios
-        .fetchPost("/Mobile/News/detail", {
+        .fetchPost('/Mobile/News/detail', {
           mId: this.mid,
           Id: this.id,
-          catId: this.catid
+          catId: this.catid,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.detail = res.data.data;
             this.mpublic = res.data.data.mpublic;
@@ -74,40 +72,48 @@ export default {
       this.setMid(mid);
       setTimeout(() => {
         this.$router.push({
-          path: "/hospital",
-          query: { mid: mid }
+          path: '/hospital',
+          query: { mid: mid },
         });
       }, 100);
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="stylus" scoped>
-.message_detail-container
-  .content
-    background #fff
-    margin-top 10px
-    padding 0 12px 20px
-    .title
-      color #333333
-      font-size 17px
-      line-height 20px
-      padding-top 20px
-      padding-bottom 14px
-    .small-bar
-      display flex
-      justify-content space-between
-      align-items center
-      margin-bottom 25px
-      .left
-        color #999999
-        font-size 12px
-      .right
-        color $theme-color
-        font-size 12px
-    /deep/.text
-      overflow-x: hidden
-  /deep/img
-    max-width: 100% !important
-    height: auto !important
+<style lang="scss" scoped>
+.message_detail-container {
+  .content {
+    background: #fff;
+    margin-top: 10px;
+    padding: 0 12px 20px;
+    .title {
+      color: #333333;
+      font-size: 17px;
+      line-height: 20px;
+      padding-top: 20px;
+      padding-bottom: 14px;
+    }
+    .small-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      .left {
+        color: #363a44;
+        font-size: 12px;
+      }
+      .right {
+        color: $theme-color;
+        font-size: 12px;
+      }
+    }
+    :deep().text {
+      overflow-x: hidden;
+    }
+  }
+  :deep()img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
 </style>

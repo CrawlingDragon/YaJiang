@@ -20,11 +20,7 @@
         </li>
       </div>
     </div>
-    <van-index-bar
-      class="bar"
-      :index-list="letterList"
-      v-show="!searchResultShow"
-    >
+    <van-index-bar class="bar" :index-list="letterList" v-show="!searchResultShow">
       <div v-for="item in list" :key="item.id">
         <van-index-anchor :index="item.letter" />
         <van-cell
@@ -51,46 +47,44 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "搜索作物"
-    });
+    useTitles('搜索作物');
   },
-  name: "chooseCrop",
+  name: 'chooseCrop',
   components: {},
   props: {},
   data() {
     return {
-      chooseValue: "",
+      chooseValue: '',
       list: [],
       hispitalList: [],
       cropName: this.$route.query.crop,
       searchResult: [],
       searchResultShow: false,
-      noResult: false
+      noResult: false,
     };
   },
   created() {},
   computed: {
-    ...mapState(["uId"]),
+    ...mapState(['uId']),
     letterList() {
       let arr = [];
-      this.list.forEach(el => {
+      this.list.forEach((el) => {
         arr.push(el.letter);
       });
       return arr;
     },
     crops() {
       let arr = [];
-      this.list.forEach(el => {
+      this.list.forEach((el) => {
         arr = arr.concat(el.index);
       });
       return arr;
-    }
+    },
   },
   watch: {
     searchResult(newVal) {
@@ -99,7 +93,7 @@ export default {
       } else {
         this.noResult = false;
       }
-    }
+    },
   },
   mounted() {
     this.getCropList();
@@ -107,35 +101,35 @@ export default {
   methods: {
     onSearch(val) {
       this.searchResult = [];
-      this.crops.forEach(el => {
+      this.crops.forEach((el) => {
         if (el.name.indexOf(val) >= 0) {
           this.searchResult.push(el);
         }
       });
       this.searchResultShow = true;
-      if (val == "") {
+      if (val == '') {
         this.searchResultShow = false;
       }
     },
     choose(item) {
       //搜索历史 选择作物
       this.$router.push({
-        path: "/index_online",
-        query: { fid: item.fid, name: item.name }
+        path: '/index_online',
+        query: { fid: item.fid, name: item.name },
       });
       this.searchResultShow = false;
     },
     onCancel() {
       this.$router.push({
-        path: "/index_online",
-        query: { fid: "", name: "" }
+        path: '/index_online',
+        query: { fid: '', name: '' },
       });
       this.searchResultShow = false;
     },
     getCropList() {
       this.$axios
-        .fetchPost("Mobile/Mpublic/getCropIndexQuery", { uId: this.uId })
-        .then(res => {
+        .fetchPost('Mobile/Mpublic/getCropIndexQuery', { uId: this.uId })
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
             if (res.data.historydata) {
@@ -143,8 +137,8 @@ export default {
             }
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -175,7 +169,7 @@ export default {
       font-size 0
       .small-title
         font-size 12px
-        color #999999
+        color #363A44
         line-height 12px
         padding 15px 0
       li

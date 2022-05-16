@@ -4,7 +4,7 @@ import Router from '@/router';
 import Axios from 'axios';
 // import QS from 'qs';
 import store from '../../store';
-import leansAxios from '@/http.js';
+import leansAxios from '@/http.ts';
 import storage from 'good-storage';
 import { Toast } from 'vant';
 
@@ -18,7 +18,9 @@ export function loginOut() {
   // 清空uId
   store.commit('setUid', '');
   //退出登录的地址
-  window.location.href = `${process.env.VUE_APP_USER_CENTER_CODE_URL}sso_logout?redirect_url=${url}&state=123`;
+  window.location.href = `${
+    import.meta.env.VITE_APP_USER_CENTER_CODE_URL
+  }sso_logout?redirect_url=${url}&state=123`;
 }
 
 //处理链接，删除其中的code参数，然后返回其他部分
@@ -43,14 +45,16 @@ export function deleteUrlCode() {
 // 去登录函数
 export function login(url = deleteUrlCode()) {
   //deleteUrlCode函数
-  window.location.href = `${process.env.VUE_APP_USER_CENTER_CODE_URL}authorize?login_type=password&response_type=code&client_id=yth&redirect_uri=${url}`;
+  window.location.href = `${
+    import.meta.env.VITE_APP_USER_CENTER_CODE_URL
+  }authorize?login_type=password&response_type=code&client_id=thy&redirect_uri=${url}`;
 }
 
 export function fetchGetToken(code) {
   // 获取token
   const url = storage.get('redirect_uri');
-  Axios.post(`${process.env.VUE_APP_USER_CENTER_CODE_URL}token`, {
-    client_id: 'yth',
+  Axios.post(`${import.meta.env.VITE_APP_USER_CENTER_CODE_URL}token`, {
+    client_id: 'thy',
     grant_type: 'authorization_code',
     code: code,
     scope: '',

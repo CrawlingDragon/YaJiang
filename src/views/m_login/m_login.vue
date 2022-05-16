@@ -11,7 +11,7 @@
         placeholder="请输入手机号"
         :rules="[
           { required: true, message: '请填写手机号' },
-          { validator: validatorPhone, message: '手机号码格式不正确' }
+          { validator: validatorPhone, message: '手机号码格式不正确' },
         ]"
       />
       <van-field
@@ -37,10 +37,10 @@
           </div>
         </template>
       </van-field>
-      <div style="margin-top:30px;margin-left:16px">
+      <div style="margin-top: 30px; margin-left: 16px">
         <Deal v-model:checked="checked"></Deal>
       </div>
-      <div style="margin: 16px;">
+      <div style="margin: 16px">
         <van-button
           round
           block
@@ -57,16 +57,14 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapActions } from "vuex";
-import { useMeta } from "vue-meta";
-import Deal from "@/components/base/deal/deal.vue";
+import Header from '@/components/header/header';
+import { mapActions } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
+import Deal from '@/components/base/deal/deal.vue';
 export default {
-  name: "mLogin",
+  name: 'mLogin',
   setup() {
-    useMeta({
-      title: "短信快捷登录"
-    });
+    useTitles('短信快捷登录');
   },
   components: { Header, Deal },
   props: {},
@@ -75,14 +73,14 @@ export default {
       showBtn: true,
       clickTrue: false,
       success: false,
-      mPhone: "",
-      mCode: "",
-      checked: false
+      mPhone: '',
+      mCode: '',
+      checked: false,
     };
   },
 
   methods: {
-    ...mapActions(["saveUserInfo"]),
+    ...mapActions(['saveUserInfo']),
     validatorPhone(val) {
       // 验证手机号码
       if (/^1(3|4|5|6|7|8|9)\d{9}$/.test(val)) {
@@ -99,14 +97,14 @@ export default {
     },
     onSubmit() {
       if (!this.checked) {
-        this.$toast("必须先同意用户协议和隐私政策");
+        this.$toast('必须先同意用户协议和隐私政策');
         return;
       }
       this.lgoinFn(this.mCode, this.mPhone);
     },
     start() {
       if (!this.clickTrue) {
-        this.$toast("请先输入手机号");
+        this.$toast('请先输入手机号');
         return;
       }
       this.sendPhone();
@@ -114,11 +112,11 @@ export default {
     sendPhone() {
       //发送验证码
       this.$axios
-        .fetchPost("Mobile/Member/ServerSmsCode", {
+        .fetchPost('Mobile/Member/ServerSmsCode', {
           mobile: this.mPhone,
-          action: "login"
+          action: 'login',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.$toast(res.data.message);
             this.clickTrue = false;
@@ -130,8 +128,8 @@ export default {
             this.$dialog
               .alert({
                 message: res.data.message,
-                confirmButtonText: "知道了",
-                confirmButtonColor: "#338aff"
+                confirmButtonText: '知道了',
+                confirmButtonColor: '#338aff',
               })
               .then(() => {
                 // on close
@@ -141,32 +139,32 @@ export default {
     },
     lgoinFn(code, username) {
       this.$axios
-        .fetchPost("Mobile/Member/codelogin", {
+        .fetchPost('Mobile/Member/codelogin', {
           code,
-          username
+          username,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.saveUserInfo(res.data.data);
             this.$toast(res.data.message);
             this.$router.push({
-              path: "/"
+              path: '/',
             });
           } else {
             this.$dialog
               .alert({
-                title: "登录失败",
+                title: '登录失败',
                 message: res.data.message,
-                confirmButtonColor: "#338aff",
-                confirmButtonText: "知道了"
+                confirmButtonColor: '#338aff',
+                confirmButtonText: '知道了',
               })
               .then(() => {
                 // on close
               });
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

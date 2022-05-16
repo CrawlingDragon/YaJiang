@@ -11,7 +11,7 @@
         @update:model-value="onSearch"
       />
     </form>
-    <div class="history-box" v-if="hispitalList" ref="historyRef">
+    <div class="history-box" v-if="hispitalList" ref="historyRef" v-show="false">
       <div class="title">当前选择：{{ cropName }}</div>
       <div class="history-ul" v-show="hispitalList.length != 0">
         <div class="small-title">最近选择/全部作物</div>
@@ -62,7 +62,7 @@ export default {
       searchResult: [],
       searchResultShow: false,
       noResult: false,
-      barTop: 64,
+      barTop: 68,
     };
   },
   computed: {
@@ -146,14 +146,23 @@ export default {
       let h = this.$refs.historyRef.getBoundingClientRect().height;
       // console.log("h", h);
       if (h > 0) {
-        this.barTop = h + 64;
+        this.barTop = h + 68;
       } else {
-        this.barTop = 64;
+        this.barTop = 68;
       }
     },
   },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .choose_crop-container {
+  }
+}
+.other {
+  color: $theme-color;
+}
+</style>
 <style lang="stylus" scoped>
 .choose_crop-container
   padding-top 54px
@@ -194,7 +203,7 @@ export default {
 
       .small-title
         font-size 12px
-        color #999999
+        color #363A44
         line-height 12px
         padding 15px 0
       li
@@ -244,6 +253,6 @@ export default {
   width 100%
   height 100%
   overflow auto
-/deep/.van-index-anchor
+:deep().van-index-anchor
   background #EBEBEB
 </style>

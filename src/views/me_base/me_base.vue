@@ -8,16 +8,10 @@
           :class="{
             glod: item.ctype == '8',
             base: item.ctype == '6',
-            none: item.ctype == '0'
+            none: item.ctype == '0',
           }"
         >
-          {{
-            item.ctype == "8"
-              ? "金牌认证"
-              : item.ctype == "6"
-              ? "基地认证"
-              : "未认证"
-          }}
+          {{ item.ctype == '8' ? '金牌认证' : item.ctype == '6' ? '基地认证' : '未认证' }}
         </div>
         <van-image class="img"></van-image>
         <div class="text">
@@ -38,17 +32,15 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "我的基地"
-    });
+    useTitles('我的基地');
   },
-  name: "meBase",
+  name: 'meBase',
 
   components: { Header },
   props: {},
@@ -56,7 +48,7 @@ export default {
     return { list: [], noData: false };
   },
   computed: {
-    ...mapState(["uId"])
+    ...mapState(['uId']),
   },
   created() {},
   watch: {},
@@ -67,12 +59,12 @@ export default {
     getList() {
       this.noData = false;
       this.$axios
-        .fetchPost("Mobile/Mpublic/getFineBaseCom", {
+        .fetchPost('Mobile/Mpublic/getFineBaseCom', {
           uId: this.uId,
           page: 1,
-          pagesize: 20
+          pagesize: 20,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
           } else if (res.data.code == 201) {
@@ -82,14 +74,14 @@ export default {
     },
     goToBaseDetail(id) {
       this.$router.push({
-        path: "/base_detail",
-        query: { id: id }
+        path: '/base_detail',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 .good_base-container
   .base-ul
     margin-top 10px
@@ -136,7 +128,7 @@ export default {
           line-height 20px
         .p2
           font-size 12px
-          color #999999
+          color #363A44
           margin-top 5px
         .join-time
           display flex
@@ -153,7 +145,7 @@ export default {
           display flex
           align-items center
           margin-top 10px
-          color #999999
+          color #363A44
           font-size 12px
           .icon
             width 20px

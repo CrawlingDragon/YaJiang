@@ -510,7 +510,7 @@ export default {
     color #999
   .back-icon
     font-size 20px
-    color: #999999;
+    color: #363A44;
     padding-left 12px
     margin-right 5px
   .edit-container
@@ -527,7 +527,7 @@ export default {
           position absolute
           right 5px
           top 10px
-          color: #999999;
+          color: #363A44;
           font-size 20px
           z-index 9
           padding 5px
@@ -537,23 +537,23 @@ export default {
         font-family: Microsoft YaHei;
         color: #333333;
         margin-bottom 5px
-      /deep/.van-field__body
+      :deep().van-field__body
         border 1px solid #e5e5e5
         padding 5px
       .number
-        /deep/.van-field__body
+        :deep().van-field__body
           width 50%
     .add-btn-title
       height 50px
       line-height 50px
       background #fff
       padding-left 12px
-      color: #999999;
+      color: #363A44;
 
   .submit-wrap
     margin 35px 12px 0
     padding-bottom 35px
     overflow hidden
-  /deep/.van-field__label
+  :deep().van-field__label
     width 50px
 </style>

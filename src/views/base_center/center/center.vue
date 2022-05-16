@@ -11,21 +11,21 @@
   </div>
 </template>
 <script>
-import BaseCenterItem from "../base_center_item/base_center_item.vue";
-import axios from "@/http.js";
-import { mapState } from "vuex";
+import BaseCenterItem from '../base_center_item/base_center_item.vue';
+import axios from '@/http';
+import { mapState } from 'vuex';
 export default {
   metaInfo: {
-    title: "基地中心"
+    title: '基地中心',
   },
-  name: "base_center",
+  name: 'base_center',
   components: { BaseCenterItem },
   props: {},
   data() {
     return { noData: false, baseList: [] };
   },
   computed: {
-    ...mapState(["uId"])
+    ...mapState(['uId']),
   },
   watch: {},
   mounted() {
@@ -34,23 +34,21 @@ export default {
   unmounted() {},
   methods: {
     getBaseCenterList() {
-      axios
-        .fetchGet("/Mobile/Gbase/getgbaselist", { uId: this.uId })
-        .then(res => {
-          if (res.data.code == 0) {
-            this.baseList = res.data.data;
-          } else if (res.data.code === 201) {
-            this.noData = true;
-          }
-        });
+      axios.fetchGet('/Mobile/Gbase/getgbaselist', { uId: this.uId }).then((res) => {
+        if (res.data.code == 0) {
+          this.baseList = res.data.data;
+        } else if (res.data.code === 201) {
+          this.noData = true;
+        }
+      });
     },
     addBase() {
       this.$router.push({
-        path: "/baseInfoEdit",
-        query: { from: "add" }
+        path: '/baseInfoEdit',
+        query: { from: 'add' },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

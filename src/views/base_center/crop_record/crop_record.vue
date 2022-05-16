@@ -1,11 +1,11 @@
 <template>
   <div class="crop_record-container">
-    <div class="nav-bar van-hairline--bottom">
+    <div class="nav-bar van-hairline--bottom" v-if="false">
       <router-link
         class="nav"
         :to="{
           path: '/cropManagement',
-          query: { pId: this.$route.query.pId, gId: this.$route.query.gId }
+          query: { pId: this.$route.query.pId, gId: this.$route.query.gId },
         }"
         replace
       >
@@ -15,7 +15,7 @@
         class="nav"
         :to="{
           path: '/cropRecord',
-          query: { pId: this.$route.query.pId, gId: this.$route.query.gId }
+          query: { pId: this.$route.query.pId, gId: this.$route.query.gId },
         }"
         replace
         >农事记录</router-link
@@ -50,13 +50,13 @@
   </div>
 </template>
 <script>
-import FramItem from "@/components/fram_item/fram_item.vue";
-import { ImagePreview } from "vant";
-import { mapState } from "vuex";
+import FramItem from '@/components/fram_item/fram_item.vue';
+import { ImagePreview } from 'vant';
+import { mapState } from 'vuex';
 export default {
-  name: "crop_record",
+  name: 'crop_record',
   components: {
-    FramItem
+    FramItem,
   },
   props: {},
   data() {
@@ -65,17 +65,17 @@ export default {
       noData: false,
       page: 0,
       loading: false,
-      finished: false
+      finished: false,
     };
   },
   computed: {
-    ...mapState(["uId"]),
+    ...mapState(['uId']),
     gId() {
       return this.$route.query.gId;
     },
     pId() {
       return this.$route.query.pId;
-    }
+    },
   },
   watch: {},
   mounted() {
@@ -88,7 +88,7 @@ export default {
     },
     goLook() {
       this.$router.replace({
-        path: "/into_hospital"
+        path: '/into_hospital',
       });
     },
     getHistoryList() {
@@ -96,12 +96,12 @@ export default {
       this.page++;
       this.loading = true;
       this.$axios
-        .fetchGet("/Mobile/Gbase/getgbaserecordlist", {
+        .fetchGet('/Mobile/Gbase/getgbaserecordlist', {
           uId: this.uId,
           page: this.page,
-          pId: this.pId
+          pId: this.pId,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = this.list.concat(res.data.data);
             this.loading = false;
@@ -119,11 +119,11 @@ export default {
       ImagePreview({
         images: obj.imgList,
         startPosition: obj.index,
-        closeable: true
+        closeable: true,
       });
     },
     updateDeteleHistory(id) {
-      this.list = this.list.filter(item => {
+      this.list = this.list.filter((item) => {
         return item.id != id;
       });
     },
@@ -133,10 +133,10 @@ export default {
     goToIssueFram() {
       // 去发布农事
       this.$router.push({
-        path: "/base_edit"
+        path: '/base_edit',
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -216,7 +216,7 @@ export default {
       font-weight bold
       top 2px
       margin-right 3px
-/deep/.van-list__finished-text,
+:deep().van-list__finished-text,
 .van-list__loading
   line-height 1.2
   padding-bottom 50px

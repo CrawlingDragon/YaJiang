@@ -17,7 +17,7 @@ export function getIsApp() {
 }
 export function exifImg(file) {
   return new Promise((resolve) => {
-    EXIF.getData(file, function() {
+    EXIF.getData(file, function () {
       let Orientation;
       Orientation = EXIF.getTag(this, 'Orientation');
       imgPress({ file: file, Orientation: Orientation }).then((res) => {
@@ -33,10 +33,10 @@ function imgPress({ file, Orientation, rate = 1, maxSize = 20800, fileType = 'fi
     let reader = new FileReader();
     reader.readAsDataURL(file);
     let img = new Image();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       img.src = e.target.result;
     };
-    img.onload = function() {
+    img.onload = function () {
       let canvas = document.createElement('canvas');
       // let context = canvas.getContext('2d')
       // 文件大小KB
@@ -77,7 +77,7 @@ function imgPress({ file, Orientation, rate = 1, maxSize = 20800, fileType = 'fi
 
       if (fileType === 'file' || fileType === 'blob') {
         canvas.toBlob(
-          function(blob) {
+          function (blob) {
             resolve({
               filePress:
                 fileType === 'blob'

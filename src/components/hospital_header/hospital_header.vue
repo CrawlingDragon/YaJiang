@@ -3,12 +3,17 @@
   <div class="header-container">
     <div class="wrap van-hairline--top van-hairline--bottom">
       <div class="left-bar" v-if="header == 'indexHeader'">
-        <p class="p1">{{ navHeader }}</p>
-        <van-icon name="wap-nav" class="hospital-icon" @click="showNavFast" />
+        <p class="p1 f22">{{ navHeader }}</p>
+        <van-icon
+          name="wap-nav"
+          class="hospital-icon"
+          @click="showNavFast"
+          :size="size"
+        />
       </div>
       <div class="left-bar" v-if="header == 'logoHeader'">
-        <van-image class="logo" :src="require('./1.png')"></van-image>
-        <div class="p2">益农宝·为农服务平台首页</div>
+        <van-image class="logo" :src="logoImg"></van-image>
+        <div class="p2 f22">为农服务平台</div>
       </div>
       <div class="left-bar" v-if="header == 'searchHeader'">
         <van-icon name="location-o" class="address-icon" />
@@ -18,9 +23,7 @@
       <div
         class="left-bar"
         v-if="
-          header != 'indexHeader' &&
-            header != 'logoHeader' &&
-            header != 'searchHeader'
+          header != 'indexHeader' && header != 'logoHeader' && header != 'searchHeader'
         "
       >
         <slot></slot>
@@ -30,57 +33,64 @@
         <div class="fast-nav-icon" @click="rightIcon"></div>
       </div>
       <fastNav :showFlag="flag" @changeFlag="closeFast"></fastNav>
-      <hospitalFastNav
-        :showFlag="flagHospital"
-        @changeFlag="close"
-      ></hospitalFastNav>
+      <hospitalFastNav :showFlag="flagHospital" @changeFlag="close"></hospitalFastNav>
     </div>
   </div>
 </template>
 <script>
-import fastNav from "@/components/fast_nav/fast_nav";
-import hospitalFastNav from "@/components/hospital_fast_nav/hospital_fast_nav";
-import { mapState } from "vuex";
-
+import fastNav from '@/components/fast_nav/fast_nav';
+import hospitalFastNav from '@/components/hospital_fast_nav/hospital_fast_nav';
+import logoImgs from './1.png';
+import { mapState } from 'vuex';
+import { inject, ref } from 'vue';
 export default {
-  name: "hospitalHeaders",
+  name: 'hospitalHeaders',
   components: { fastNav, hospitalFastNav },
   props: {
     header: {
       type: String,
-      default: "indexHeader"
+      default: 'indexHeader',
     },
     navHeader: {
       type: String,
-      default: ""
+      default: '',
     },
     address: {
       type: String,
-      default: ""
-    }
+      default: '',
+    },
+  },
+  setup() {
+    const size = inject('size');
+    const logoImg = ref('');
+    logoImg.value = logoImgs;
+    return {
+      size,
+      logoImg,
+    };
   },
   data() {
     return {
       flag: false,
-      flagHospital: false
+      flagHospital: false,
     };
   },
   computed: {
-    ...mapState(["mid", "uId", "initMid"])
+    ...mapState(['mid', 'uId', 'initMid']),
   },
   watch: {
     $route() {
       this.flag = false;
-    }
+    },
   },
   mounted() {},
   methods: {
     rightIcon() {
       this.flag = true;
-      this.$emit("rightIcon");
+      this.$emit('rightIcon');
     },
     closeFast() {
-      this.$emit("clickFastRightIcon");
+      this.$emit('clickFastRightIcon');
       // 主要二级快速导航关闭
       this.flag = false;
     },
@@ -95,21 +105,60 @@ export default {
     goToIndex() {
       this.$router
         .push({
-          path: "/index"
+          path: '/index',
         })
-        .catch(err => err);
+        .catch((err) => err);
     },
     goToSearchHospital() {
       this.$router
         .push({
-          path: "/search_hospital",
-          query: { location: this.address }
+          path: '/search_hospital',
+          query: { location: this.address },
         })
-        .catch(err => err);
-    }
-  }
+        .catch((err) => err);
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .header-container {
+    height: 55px;
+    line-height: 55px;
+    .right-nav {
+      width: 114px;
+      .index-icon {
+        width: 33px;
+        height: 33px;
+        background-size: cover;
+      }
+
+      .fast-nav-icon {
+        width: 33px;
+        height: 33px;
+        background-size: cover;
+      }
+    }
+  }
+}
+</style>
+<style lang="scss" scoped>
+.old {
+  .logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+.header-container {
+  .p2 {
+    font-size: 15px;
+    color: $theme-color;
+  }
+  .no_index_header {
+    color: $theme-color;
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .header-container
   height 40px
@@ -154,7 +203,7 @@ export default {
       margin-right 6px
     .address
       font-size 15px
-      color #999999
+      color #363A44
       margin-right 25px
     .search
       font-size 25px

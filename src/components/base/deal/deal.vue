@@ -11,12 +11,7 @@
       >隐私政策</span
     >
   </div>
-  <van-overlay
-    :show="show"
-    @click="show = false"
-    z-index="20"
-    :lock-scroll="false"
-  >
+  <van-overlay :show="show" @click="show = false" z-index="20" :lock-scroll="false">
     <!-- 用户协议 -->
     <div class="wrapper" @click.stop>
       <div class="close-btn" @click="closeDeal">
@@ -44,15 +39,15 @@
 </template>
 
 <script>
-import { watch, ref } from "vue";
-// import { useMeta } from "vue-meta";
+import { watch, ref } from 'vue';
+// import { useTitles } from '@/common/js/useTitles';;
 
 export default {
   props: {
     checked: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
     // content: {
     //   type: Object,
     //   default: function() {
@@ -71,8 +66,8 @@ export default {
     const checkbox = ref(false);
     const show = ref(false);
     const privacyShow = ref(false);
-    watch(checkbox, newVal => {
-      emit("update:checked", newVal);
+    watch(checkbox, (newVal) => {
+      emit('update:checked', newVal);
     });
 
     function closeDeal() {
@@ -86,7 +81,7 @@ export default {
   data() {
     return {
       dealData: {},
-      privacyData: {}
+      privacyData: {},
     };
   },
   created() {
@@ -95,20 +90,20 @@ export default {
   },
   methods: {
     getUserAgreement() {
-      this.$axios.fetchGet("/Mobile/User/user_agreement").then(res => {
+      this.$axios.fetchGet('/Mobile/User/user_agreement').then((res) => {
         if (res.data.code === 0) {
           this.dealData = res.data.data;
         }
       });
     },
     getUserPrivacy() {
-      this.$axios.fetchGet("/Mobile/User/service_agreement").then(res => {
+      this.$axios.fetchGet('/Mobile/User/service_agreement').then((res) => {
         if (res.data.code === 0) {
           this.privacyData = res.data.data;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -117,7 +112,7 @@ export default {
   position relative
   padding-left 30px
   font-size 13px
-  color #999999
+  color #363A44
   .checkbox
     position absolute
     left 0

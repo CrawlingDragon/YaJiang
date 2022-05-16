@@ -38,7 +38,7 @@
             :min-date="minDate"
             :max-date="maxDate"
           />
-          <div class="record " :class="{ 'record-more': ifHaveMoreText }">
+          <div class="record" :class="{ 'record-more': ifHaveMoreText }">
             <div class="label">记录</div>
             <div
               class="text"
@@ -52,7 +52,7 @@
               v-show="ifHaveMoreText"
               @click="showTextMore = !showTextMore"
             >
-              {{ showTextMore ? "展开更多" : "收缩" }}
+              {{ showTextMore ? '展开更多' : '收缩' }}
               <van-icon name="arrow-down" v-show="showTextMore" />
               <van-icon name="arrow-up" v-show="!showTextMore" />
             </div>
@@ -98,11 +98,7 @@
             v-for="(item, index) in medicine"
             :key="item"
           >
-            <van-icon
-              name="cross"
-              class="cross"
-              @click="closeMedicine(index)"
-            />
+            <van-icon name="cross" class="cross" @click="closeMedicine(index)" />
             <div class="medicine-li">
               <van-field
                 readonly
@@ -184,48 +180,48 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapState } from "vuex";
+import Header from '@/components/header/header';
+import { mapState } from 'vuex';
 // import EXIF from "exif-js";
 // import { imgPress } from "@/common/js/util";
-import Compressor from "compressorjs";
-import { ImagePreview } from "vant";
+import Compressor from 'compressorjs';
+import { ImagePreview } from 'vant';
 export default {
-  name: "base_edit",
+  name: 'base_edit',
   components: { Header },
   props: {},
   data() {
     return {
-      eitdObj: "", //编辑内容对象
-      caseValue: "",
-      caseId: "",
+      eitdObj: '', //编辑内容对象
+      caseValue: '',
+      caseId: '',
       caseColumns: [],
       showPicker: false,
-      date: "",
+      date: '',
       minDate: new Date(2010, 1, 1),
       maxDate: new Date(2030, 1, 1),
       show: false,
-      message: "",
+      message: '',
       uploader: [],
       imgList: [],
       medicine: [1, 2],
       haveMedicine: false,
-      detailObj: "",
-      resultinfo: "",
+      detailObj: '',
+      resultinfo: '',
       ifHaveMoreText: false, //初始状态字数是否过多
       showTextMore: true,
-      druginfo: []
+      druginfo: [],
     };
   },
   computed: {
-    ...mapState(["mid", "uId"]),
+    ...mapState(['mid', 'uId']),
     id() {
       return this.$route.query.id;
-    }
+    },
   },
   watch: {
     message(newVal) {
-      if (newVal != "") {
+      if (newVal != '') {
         setTimeout(() => {
           let h = this.$refs.message.offsetHeight;
           if (h >= 73) {
@@ -233,7 +229,7 @@ export default {
           }
         }, 100);
       }
-    }
+    },
   },
   mounted() {
     this.getCase();
@@ -247,7 +243,7 @@ export default {
       ImagePreview({
         images: list,
         startPosition: index,
-        closeable: true
+        closeable: true,
       });
     },
     // beforeRead(file) {
@@ -268,19 +264,17 @@ export default {
         quality: 0.4,
         success(result) {
           let formData = new FormData();
-          formData.append("urls[]", result, result.name);
-          that.$axios
-            .fetchPost("Mobile/Gbase/OssUploadFile", formData)
-            .then(res => {
-              if (res.data.code == 0) {
-                that.imgList.push(res.data.data);
-              } else {
-                that.$toast(res.data.message);
-                let index = detail.index;
-                that.uploader.splice(index, 1);
-              }
-            });
-        }
+          formData.append('urls[]', result, result.name);
+          that.$axios.fetchPost('Mobile/Gbase/OssUploadFile', formData).then((res) => {
+            if (res.data.code == 0) {
+              that.imgList.push(res.data.data);
+            } else {
+              that.$toast(res.data.message);
+              let index = detail.index;
+              that.uploader.splice(index, 1);
+            }
+          });
+        },
       });
     },
     deleteItem(file, val) {
@@ -290,10 +284,10 @@ export default {
     },
     getEditData() {
       this.$axios
-        .fetchGet("Mobile/Gbase/getfarmerdata", {
-          Id: this.id
+        .fetchGet('Mobile/Gbase/getfarmerdata', {
+          Id: this.id,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             let data = res.data.data;
             this.detailObj = data;
@@ -309,12 +303,12 @@ export default {
     onCaseConfirm(value) {
       // 选择方案
       let r = this.$refs.casePick.getValues();
-      if (r[2].pid == "") {
-        this.caseId = r[0].id + "_" + r[1].id;
+      if (r[2].pid == '') {
+        this.caseId = r[0].id + '_' + r[1].id;
       } else {
-        this.caseId = r[0].id + "_" + r[2].id;
+        this.caseId = r[0].id + '_' + r[2].id;
       }
-      this.caseValue = value.join("-");
+      this.caseValue = value.join('-');
       this.showPicker = false;
     },
     formatDate(date) {
@@ -328,8 +322,8 @@ export default {
     issueFramData() {
       //发布农事
       let options = {};
-      let sucessMessage = "";
-      let url = "";
+      let sucessMessage = '';
+      let url = '';
       if (this.$route.query.id) {
         // 修改农事 接口参数
         options = {
@@ -337,10 +331,10 @@ export default {
           Id: this.$route.query.id,
           starttoendtime: this.date,
           content: this.message,
-          picurl: this.imgList.join(",")
+          picurl: this.imgList.join(','),
         };
-        sucessMessage = "修改成功";
-        url = "/Mobile/Gbase/subfarmerdata";
+        sucessMessage = '修改成功';
+        url = '/Mobile/Gbase/subfarmerdata';
       } else {
         // 发布农事接口参数
         options = {
@@ -348,12 +342,12 @@ export default {
           uId: this.uId,
           starttoendtime: this.date,
           content: this.message,
-          picurl: this.imgList.join(",")
+          picurl: this.imgList.join(','),
         };
-        sucessMessage = "发布成功";
-        url = "/Mobile/Gbase/addfarmerdata";
+        sucessMessage = '发布成功';
+        url = '/Mobile/Gbase/addfarmerdata';
       }
-      this.$axios.fetchPost(url, options).then(res => {
+      this.$axios.fetchPost(url, options).then((res) => {
         if (res.data.code == 0) {
           this.$toast.success(sucessMessage);
           setTimeout(() => {
@@ -367,15 +361,15 @@ export default {
     getCase() {
       // 获取方案的节点数据
       this.$axios
-        .fetchGet("Mobile/Gbase/getProjectlist", { mId: this.mid, pId: 16 })
-        .then(res => {
+        .fetchGet('Mobile/Gbase/getProjectlist', { mId: this.mid, pId: 16 })
+        .then((res) => {
           if (res.data.code == 0) {
             this.caseColumns = res.data.data;
           }
         });
     },
     closeMedicine(index) {
-      console.log("index :>> ", index);
+      console.log('index :>> ', index);
     },
     addMedicine() {
       this.medicine.push(1);
@@ -384,9 +378,9 @@ export default {
       this.$router.go(-1);
     },
     goToBug(url) {
-      window.open(url, "_blank");
-    }
-  }
+      window.open(url, '_blank');
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -398,7 +392,7 @@ export default {
     color #999
   .back-icon
     font-size 20px
-    color: #999999;
+    color: #363A44;
     padding-left 12px
     margin-right 5px
   .edit-container
@@ -415,7 +409,7 @@ export default {
           position absolute
           right 5px
           top 10px
-          color: #999999;
+          color: #363A44;
           font-size 20px
           z-index 99999
           padding 5px
@@ -425,23 +419,23 @@ export default {
         font-family: Microsoft YaHei;
         color: #333333;
         margin-bottom 5px
-      /deep/.van-field__body
+      :deep().van-field__body
         border 1px solid #e5e5e5
         padding 5px
       .number
-        /deep/.van-field__body
+        :deep().van-field__body
           width 50%
     .add-btn-title
       height 50px
       line-height 50px
       background #fff
       padding-left 12px
-      color: #999999;
+      color: #363A44;
   .submit-wrap
     margin 35px 12px 0
     padding-bottom 35px
     overflow hidden
-  /deep/.van-field__label
+  :deep().van-field__label
     width 50px
   .box
     .title
@@ -475,7 +469,7 @@ export default {
             font-size: 14px;
             font-family: Microsoft YaHei;
             font-weight: 400;
-            color: #999999;
+            color: #363A44;
             margin-top 5px
         .right
           width auto
@@ -507,17 +501,17 @@ export default {
         &:last-child
           border none
         .name
-          color #999999
+          color #363A44
           font-size 14px
           margin-bottom 10px
         .text
           color #333333
           font-size 15px
         .time
-          color #999999
+          color #363A44
           font-size 14px
           margin-top 10px
-  /deep/.van-field__control--custom
+  :deep().van-field__control--custom
     display block
     .upload-img
       width 33%
@@ -578,7 +572,7 @@ export default {
 
 // .message
 //   height 150px
-//   /deep/.van-field__control
+//   :deep().van-field__control
 //     height 150px
 //     display: -webkit-box;
 //     overflow hidden

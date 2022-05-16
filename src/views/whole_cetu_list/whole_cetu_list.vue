@@ -17,18 +17,16 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
+import Header from '@/components/header/header';
 // import HeaderHospital from "@/components/hospital_header/hospital_header";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "土壤检测"
-    });
+    useTitles('土壤检测');
   },
-  name: "wholeCeTuList",
+  name: 'wholeCeTuList',
   components: { Header },
   props: {},
 
@@ -36,11 +34,11 @@ export default {
   data() {
     return {
       list: [],
-      noData: false
+      noData: false,
     };
   },
   computed: {
-    ...mapState(["mid", "uId", "initMid"])
+    ...mapState(['mid', 'uId', 'initMid']),
   },
   watch: {},
   mounted() {
@@ -52,11 +50,11 @@ export default {
       // 获取测土配方列表 医院
       this.noData = false;
       this.$axios
-        .fetchPost("Mobile/Treatment/getTestingsoil", {
+        .fetchPost('Mobile/Treatment/getTestingsoil', {
           uId: this.uId,
-          mId: this.initMid
+          mId: this.initMid,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
           } else if (res.data.code == 201) {
@@ -67,8 +65,8 @@ export default {
     getMeList() {
       // 获取测土配方列表  个人
       this.$axios
-        .fetchPost("/Mobile/Treatment/getTestingsoil", { uId: this.uId })
-        .then(res => {
+        .fetchPost('/Mobile/Treatment/getTestingsoil', { uId: this.uId })
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
           }
@@ -76,11 +74,11 @@ export default {
     },
     goToDetail(id) {
       this.$router.push({
-        path: "/soil_detail",
-        query: { id: id }
+        path: '/soil_detail',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -114,7 +112,7 @@ export default {
           color #999
       .hospital
         width 100%
-        color #999999
+        color #363A44
         font-size 12px
         line-height 22px
 </style>

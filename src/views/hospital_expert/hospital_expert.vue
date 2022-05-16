@@ -17,18 +17,16 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import RecommendExpert from "@/components/recommend_expert/recommend_expert";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header.vue';
+import RecommendExpert from '@/components/recommend_expert/recommend_expert.vue';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-    const { meta } = useMeta({
-      title: "专家列表"
-    });
-    return { meta };
+    const title = useTitles('专家列表');
+    return { title };
   },
-  name: "hospitalExpert",
+  name: 'hospitalExpert',
   components: { Header, RecommendExpert },
   props: {},
   data() {
@@ -37,16 +35,16 @@ export default {
       loading: false,
       finished: false,
       page: 0,
-      noData: false
+      noData: false,
     };
   },
   created() {},
   computed: {
-    ...mapState(["mid", "hospitalName"])
+    ...mapState(['mid', 'hospitalName']),
   },
   watch: {},
   mounted() {
-    this.meta.title = this.hospitalName;
+    this.title = this.hospitalName;
   },
   methods: {
     onLoad() {
@@ -55,12 +53,12 @@ export default {
     getList() {
       this.page += 1;
       this.$axios
-        .fetchPost("Mobile/User/expertList", {
+        .fetchPost('Mobile/User/expertList', {
           mId: this.mid,
           page: this.page,
-          isall: "self"
+          isall: 'self',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = this.list.concat(res.data.data);
             this.loading = false;
@@ -71,39 +69,57 @@ export default {
             this.finished = true;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="stylus" scoped>
-.hospital_expert-container
-  .expert-ul
-    margin-top 10px
-    background #fff
-    padding-left 12px
+<style lang="scss" scoped>
+.old {
+  .hospital_expert-container {
+    .expert-ul {
+      li {
+        width: 100%;
+        height: 90px;
+      }
+    }
+  }
+}
+.hospital_expert-container {
+  .expert-ul {
+    margin-top: 10px;
+    background: #fff;
+    padding-left: 12px;
     // column-count 2
     // column-gap 0
-    padding-top 10px
-    padding-bottom 10px
-    li
-      padding-right 12px
+    padding-top: 10px;
+    padding-bottom: 10px;
+    li {
+      padding-right: 12px;
       // break-inside avoid
-      margin-bottom 10px
-      width 50%
-      display inline-block
-      height 170px
-      vertical-align top
-      .recommend_expert-container
-        height 100%
-        position relative
-        /deep/.top
-          height 80px
-          .right
-            .address
-              overflow hidden
-              text-overflow ellipsis
-              white-space nowrap
-        /deep/.join
-          position absolute
-          bottom 5px
+      margin-bottom: 10px;
+      width: 50%;
+      display: inline-block;
+      height: 170px;
+      vertical-align: top;
+      .recommend_expert-container {
+        height: 100%;
+        position: relative;
+        :deep().top {
+          height: 80px;
+        }
+        .right {
+          .address {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+      :deep().join {
+        position: absolute;
+        bottom: 5px;
+      }
+    }
+  }
+}
 </style>

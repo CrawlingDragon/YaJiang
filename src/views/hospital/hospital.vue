@@ -8,13 +8,9 @@
       v-if="mpublic"
     ></HospitalNav>
     <div class="info-list" v-show="messageList.length != 0">
-      <div class="title">资讯</div>
+      <div class="title f22">资讯</div>
       <ul>
-        <li
-          v-for="item in messageList"
-          :key="item.id"
-          @click="goToMessageDetail(item)"
-        >
+        <li v-for="item in messageList" :key="item.id" @click="goToMessageDetail(item)">
           <MessageItem :list="item"></MessageItem>
         </li>
       </ul>
@@ -24,10 +20,10 @@
       @click="goToMmessage"
       v-show="messageList.length != 0 && messageList.length >= 3"
     >
-      查看更多 >
+      <div class="btn f18">查看更多 ></div>
     </div>
     <div class="expert-list" v-show="expertList.length != 0">
-      <div class="title">医院专家</div>
+      <div class="title f22">医院专家</div>
       <ul class="expert-ul clearfix">
         <li v-for="item in expertList" :key="item.expertid">
           <RecommendExpert :list="item" :isSelfExpert="true"></RecommendExpert>
@@ -35,10 +31,10 @@
       </ul>
     </div>
     <div class="look-more" @click="goToExperts" v-show="expertList.length != 0">
-      查看更多 >
+      <div class="btn f18">查看更多 ></div>
     </div>
     <div class="online-list">
-      <div class="title" v-show="wenList.length != 0">网诊</div>
+      <div class="title f22" v-show="wenList.length != 0">网诊</div>
       <ul class="ul-online" v-show="wenList.length != 0">
         <li v-for="item in wenList" :key="item.tid">
           <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
@@ -49,31 +45,26 @@
       description="暂时还没有网诊"
       v-show="wenList.length == 0 && wenListNoData"
     ></van-empty>
-    <div
-      class="look-more"
-      @click="lookMoreHospital"
-      v-show="wenList.length != 0"
-    >
-      查看更多 >
+    <div class="look-more" @click="lookMoreHospital" v-show="wenList.length != 0">
+      <div class="btn f18">查看更多 ></div>
     </div>
   </div>
 </template>
 <script>
-import HospitalHeader from "@/components/hospital_header/hospital_header";
-import HospitalNav from "@/components/hospital_nav/hospital_nav";
-import MessageItem from "@/components/message_item/message_item";
-import RecommendExpert from "@/components/recommend_expert/recommend_expert";
-import OnlineItem from "@/components/online_item/online_item";
-import { useMeta } from "vue-meta";
-import { mapState, mapMutations } from "vuex";
-import { ImagePreview } from "vant";
+import HospitalHeader from '@/components/hospital_header/hospital_header.vue';
+import HospitalNav from '@/components/hospital_nav/hospital_nav.vue';
+import MessageItem from '@/components/message_item/message_item.vue';
+import RecommendExpert from '@/components/recommend_expert/recommend_expert.vue';
+import OnlineItem from '@/components/online_item/online_item.vue';
+
+import { mapState, mapMutations } from 'vuex';
+import { ImagePreview } from 'vant';
+import { useTitle } from '@vueuse/core';
 export default {
-  name: "hospital",
+  name: 'hospital',
   setup() {
-    let { meta } = useMeta({
-      title: " "
-    });
-    return { meta };
+    const title = useTitle();
+    return { title };
   },
   components: {
     HospitalHeader,
@@ -81,23 +72,23 @@ export default {
     MessageItem,
     RecommendExpert,
     OnlineItem,
-    [ImagePreview.Component.name]: ImagePreview.Component
+    [ImagePreview.Component.name]: ImagePreview.Component,
   },
   props: {},
   data() {
     return {
-      title: "",
+      title: '',
       messageList: [],
       expertList: [],
       wenList: [],
       wenListNoData: false,
-      mpublic: "",
-      ucuidHospital: "0"
+      mpublic: '',
+      ucuidHospital: '0',
     };
   },
   created() {},
   computed: {
-    ...mapState(["uId", "mid", "isMember", "ucuid", "hospitalName"])
+    ...mapState(['uId', 'mid', 'isMember', 'ucuid', 'hospitalName']),
   },
   watch: {},
   mounted() {
@@ -106,25 +97,25 @@ export default {
   methods: {
     goToMessageDetail(item) {
       this.$router.push({
-        path: "/message_detail",
-        query: { id: item.id, catid: item.catid }
+        path: '/message_detail',
+        query: { id: item.id, catid: item.catid },
       });
     },
     ...mapMutations([
-      "setJoinTime",
-      "setHospitalIsMember",
-      "setUcUid",
-      "setHospitalIsStore",
-      "setHospitalName",
-      "setHospitalLogo"
+      'setJoinTime',
+      'setHospitalIsMember',
+      'setUcUid',
+      'setHospitalIsStore',
+      'setHospitalName',
+      'setHospitalLogo',
     ]),
     getHospitalData(mid) {
       this.$axios
-        .fetchPost("Mobile/Mpublic/MpublicPage", {
+        .fetchPost('Mobile/Mpublic/MpublicPage', {
           mId: mid,
-          uId: this.uId
+          uId: this.uId,
         })
-        .then(res => {
+        .then((res) => {
           let data = res.data.data;
           if (res.data.code == 0) {
             this.messageList = data.list_news;
@@ -142,7 +133,7 @@ export default {
             if (data.list_wen.length == 0) {
               this.wenListNoData = true;
             }
-            this.meta.title = data.mpublic.name;
+            this.title = data.mpublic.name;
           }
         });
     },
@@ -151,31 +142,67 @@ export default {
       ImagePreview({
         images: item.arr,
         startPosition: item.index,
-        closeable: true
+        closeable: true,
       });
     },
     goToMmessage() {
       //  查看更多资讯
       this.$router.push({
-        path: "/hospital_message",
-        query: { mid: this.mid }
+        path: '/hospital_message',
+        query: { mid: this.mid },
       });
     },
     goToExperts() {
       //  查看更多专家
       this.$router.push({
-        path: "/hospital_expert"
+        path: '/hospital_expert',
       });
     },
     lookMoreHospital() {
       //  查看更多医院网诊
       this.$router.push({
-        path: "/hospital_online"
+        path: '/hospital_online',
       });
-    }
-  }
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .hospital-container {
+    .title {
+      height: 55px !important;
+      line-height: 55px !important;
+    }
+    .look-more {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .btn {
+        width: 116px;
+        height: 36px;
+        background: $theme-color;
+        border-radius: 36px;
+        line-height: 36px;
+        color: #fff;
+      }
+    }
+    .expert-list {
+      .expert-ul {
+        column-count: auto;
+        column-gap: 0;
+        li {
+          -webkit-column-break-inside: auto;
+          page-break-inside: auto;
+          vertical-align: top;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .hospital-container
   padding-bottom 50px

@@ -3,9 +3,9 @@
     <van-image :src="caseImg" class="bj-img"></van-image>
     <div class="bg"></div>
     <div class="titles">
-      <div class="left-title">会员服务</div>
+      <div class="left-title f18">会员服务</div>
       <div class="right-title">
-        {{ hospitalIsStore == 1 ? "专属会员服务，一站式解决作物问题" : "网院" }}
+        {{ hospitalIsStore == 1 ? '专属会员服务，一站式解决作物问题' : '网院' }}
       </div>
     </div>
     <ul class="nav-ul" :class="{ isstore: hospitalIsStore == 0 }">
@@ -29,16 +29,7 @@
         <div class="icon icon05"></div>
         <p>提问</p>
       </li>
-      <!-- <li @click="goToGoodBase" v-if="hospitalIsStore == 1">
-        <div class="icon icon06"></div>
-        <p>优质基地</p>
-      </li> -->
-      <li>
-        <div @click="lookForStore">
-          <div class="icon icon07"></div>
-          <p>农资店铺</p>
-        </div>
-      </li>
+
       <li v-if="hospitalIsStore == 0" @click="goToExpert()">
         <div class="icon icon04"></div>
         <p>专家</p>
@@ -51,10 +42,7 @@
         <div class="icon icon08"></div>
         <p>已是会员</p>
       </li>
-      <li
-        v-if="hospitalIsStore == 1 && hospitalIsMember == 0"
-        @click="goToApplyVip"
-      >
+      <li v-if="hospitalIsStore == 1 && hospitalIsMember == 0" @click="goToApplyVip">
         <div class="icon icon09"></div>
         <p class="p2">申请会员</p>
       </li>
@@ -62,127 +50,116 @@
   </div>
 </template>
 <script>
-import { mapState, useStore } from "vuex";
-import lookForStoreFn from "@/common/js/lookForStore.js";
-import { computed } from "vue";
+import { mapState, useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
-  name: "hospitalNav",
+  name: 'hospitalNav',
   components: {},
-
   props: {
     ucuidHospital: {
       type: String,
-      default: "0"
+      default: '0',
     },
     ismember: {
       type: Number,
-      default: 0
+      default: 0,
     },
     caseImg: {
       type: String,
-      default:
-        "http://www.114nz.com/statics/images/httpsxone.114nz.com_default.png"
-    }
+      default: 'http://www.114nz.com/statics/images/httpsxone.114nz.com_default.png',
+    },
   },
   setup() {
     const store = useStore();
-    const ucuid = computed(() => store.state.ucuid);
-    let href =
-      process.env.VUE_APP_SHARE_URL +
-      "Home/Company/companyDetail/ucuid/" +
-      ucuid.value;
-    const { lookForStore } = lookForStoreFn(href);
-    return {
-      lookForStore
-    };
+    // const ucuid = computed(() => store.state.ucuid);
   },
   data() {
     return {
-      bjSrc: "",
-      shareUrl: process.env.VUE_APP_SHARE_URL
+      bjSrc: '',
+      shareUrl: import.meta.env.VITE_APP_SHARE_URL,
     };
   },
   computed: {
-    ...mapState(["hospitalIsStore", "hospitalIsMember", "uId", "mid", "ucuid"])
+    ...mapState(['hospitalIsStore', 'hospitalIsMember', 'uId', 'mid', 'ucuid']),
   },
   watch: {},
   mounted() {},
   methods: {
     goToOnline() {
       // 路由 去线上网诊
-      this.$router.push({ path: "hospital_online" }).catch(err => err);
+      this.$router.push({ path: 'hospital_online' }).catch((err) => err);
     },
     goToZuo() {
       // 路由 坐诊巡诊
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "/zuozhen_list"
+          path: '/zuozhen_list',
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉坐诊巡诊是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉坐诊巡诊是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {})
           .catch(() => {
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
-        this.$router.push({ path: "zuozhen_list" }).catch(err => err);
+        this.$router.push({ path: 'zuozhen_list' }).catch((err) => err);
       }
     },
     goToCeTu() {
       // 路由 测土配方
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "/cetu_list"
+          path: '/cetu_list',
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉测土配方是会员服务，请先申请再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉测土配方是会员服务，请先申请再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {
             // on confirm
           })
           .catch(() => {
             // on cancel
-            this.$router.push({ path: "/apply_vip" });
+            this.$router.push({ path: '/apply_vip' });
           });
       } else {
-        this.$router.push({ path: "cetu_list" }).catch(err => err);
+        this.$router.push({ path: 'cetu_list' }).catch((err) => err);
       }
     },
     goToRegistration() {
       // 路由 专家挂号
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "/expert_registration"
+          path: '/expert_registration',
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉专家挂号是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉专家挂号是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {
             // on confirm
@@ -190,30 +167,30 @@ export default {
           .catch(() => {
             // on cancel
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
-        this.$router.push({ path: "/expert_registration" }).catch(err => err);
+        this.$router.push({ path: '/expert_registration' }).catch((err) => err);
       }
     },
     goToAsk() {
       // 路由 提问
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "/ask",
-          query: { from: "hospital" }
+          path: '/ask',
+          query: { from: 'hospital' },
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉会员提问是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉会员提问是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {
             // on confirm
@@ -221,51 +198,51 @@ export default {
           .catch(() => {
             // on cancel
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
         this.$router
-          .push({ path: "/ask", query: { from: "hospital" } })
-          .catch(err => err);
+          .push({ path: '/ask', query: { from: 'hospital' } })
+          .catch((err) => err);
       }
     },
     goToExpert() {
       // 路由 医院专家
       this.$router
         .push({
-          path: "/hospital_expert"
+          path: '/hospital_expert',
         })
-        .catch(err => err);
+        .catch((err) => err);
     },
     goToGoodBase() {
       // 路由 优质基地
       this.$router
         .push({
-          path: "/good_base"
+          path: '/good_base',
         })
-        .catch(err => err);
+        .catch((err) => err);
     },
     goToApplyVip() {
       // 路由 申请会员
       this.$router
         .push({
-          path: "/apply_vip"
+          path: '/apply_vip',
         })
-        .catch(err => err);
+        .catch((err) => err);
     },
     goToLive() {
       // 路由 直播
-      this.$router.push({ path: "/live" }).catch(err => err);
+      this.$router.push({ path: '/live' }).catch((err) => err);
     },
     isVip() {
       this.$dialog
         .confirm({
-          message: "您已是新型庄稼医院会员",
-          cancelButtonText: "查看会员权益",
-          confirmButtonText: "好的",
-          cancelButtonColor: "#155BBB",
-          confirmButtonColor: "#999"
+          message: '您已是新型庄稼医院会员',
+          cancelButtonText: '查看会员权益',
+          confirmButtonText: '好的',
+          cancelButtonColor: '#155BBB',
+          confirmButtonColor: '#999',
         })
         .then(() => {
           // on confirm
@@ -273,136 +250,180 @@ export default {
         .catch(() => {
           // on cancel
           this.$router.push({
-            path: "/vip"
+            path: '/vip',
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="stylus" scoped>
-.hospital_nav-container
-  padding 15px 0
-  // background-image url('https://img.yzcdn.cn/vant/apple-2.jpg')
-  background-color rgba(0, 0, 0, 0.5)
-  background-size cover
-  background-position center center
-  position relative
-  height 190px
-  margin-bottom 10px
-  z-index 1
-  .bj-img
-    position absolute
-    width 100%
-    height 100%
-    left 0
-    top 0
-    z-index 0
-  .bg
-    position absolute
-    width 100%
-    height 100%
-    background rgba(0, 0, 0, 0.7)
-    left 0
-    top 0
-    z-index 1
-  .titles
-    z-index 2
-    padding 0 12px
-    position relative
-    color #fff
-    display flex
-    justify-content space-between
-  .nav-ul
-    z-index 2
-    position relative
-    font-size 0
-    margin-top 5px
-    &.isstore
-      margin-top 30px
-    li
-      font-size 12px
-      display inline-block
-      color $theme-color
-      width 25%
-      margin-top 15px
-      text-align center
-      a
-        color $theme-color
-      .icon01
-        width 25px
-        height 25px
-        background url('./37.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon02
-        width 25px
-        height 24px
-        background url('./44.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon03
-        width 20px
-        height 25px
-        background url('./45.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon04
-        width 25px
-        height 25px
-        background url('./38.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon05
-        width 25px
-        height 25px
-        background url('./43.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon06
-        width 25px
-        height 25px
-        background url('./42.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon07
-        width 25px
-        height 25px
-        background url('./39.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon08
-        width 25px
-        height 25px
-        background url('./41.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon09
-        width 25px
-        height 25px
-        background url('./40.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .icon12
-        width 25px
-        height 25px
-        background url('./53.png') no-repeat
-        background-size contain
-        background-position center center
-        margin 0 auto 10px
-      .p2
-        color #ff6600
-/deep/.van-dialog__content
-  font-size 16px
-  /deep/.van-dialog__message
-    font-size 16px
+<style lang="scss" scoped>
+.old {
+  .hospital_nav-container {
+    height: 243px;
+    .titles {
+      .right-title {
+        display: none;
+      }
+    }
+    .nav-ul {
+      li {
+        .icon {
+          width: 44px;
+          height: 44px;
+          background-size: contain;
+          background-position: center;
+        }
+        p {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+.hospital_nav-container {
+  padding: 15px 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  height: 190px;
+  margin-bottom: 10px;
+  z-index: 1;
+  .bj-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 0;
+  }
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+  .titles {
+    z-index: 2;
+    padding: 0 12px;
+    position: relative;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+  }
+  .nav-ul {
+    z-index: 2;
+    position: relative;
+    font-size: 0;
+    margin-top: 5px;
+    &.isstore {
+      margin-top: 30px;
+    }
+    li {
+      font-size: 12px;
+      display: inline-block;
+      color: $theme-secondary-color;
+      width: 25%;
+      margin-top: 15px;
+      text-align: center;
+      a {
+        color: $theme-secondary-color;
+      }
+      .icon01 {
+        width: 25px;
+        height: 25px;
+        background: url('./37.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon02 {
+        width: 25px;
+        height: 24px;
+        background: url('./44.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon03 {
+        width: 20px;
+        height: 25px;
+        background: url('./45.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon04 {
+        width: 25px;
+        height: 25px;
+        background: url('./38.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon05 {
+        width: 25px;
+        height: 25px;
+        background: url('./43.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon06 {
+        width: 25px;
+        height: 25px;
+        background: url('./42.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon07 {
+        width: 25px;
+        height: 25px;
+        background: url('./39.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon08 {
+        width: 25px;
+        height: 25px;
+        background: url('./42.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon09 {
+        width: 25px;
+        height: 25px;
+        background: url('./40.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .icon12 {
+        width: 25px;
+        height: 25px;
+        background: url('./53.png') no-repeat;
+        background-size: contain;
+        background-position: center center;
+        margin: 0 auto 10px;
+      }
+      .p2 {
+        color: $theme-three-color;
+      }
+    }
+  }
+}
+
+:deep().van-dialog__content {
+  font-size: 16px;
+  :deep().van-dialog__message {
+    font-size: 16px;
+  }
+}
 </style>

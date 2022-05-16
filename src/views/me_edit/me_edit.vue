@@ -4,41 +4,30 @@
     <ul>
       <van-uploader class="upload" accept="image/*" :after-read="afterRead">
         <li>
-          <div class="left">头像</div>
+          <div class="left f20">头像</div>
           <div class="mid">
-            <van-image
-              class="avator"
-              fit="cover"
-              round
-              :src="avatar"
-            ></van-image>
+            <van-image class="avator" fit="cover" round :src="avatar"></van-image>
           </div>
           <van-icon name="arrow" class="arrow" />
         </li>
       </van-uploader>
       <li>
-        <div class="left">用户名</div>
-        <div class="mid">{{ userName }}</div>
+        <div class="left f20">用户名</div>
+        <div class="mid f20">{{ userName }}</div>
       </li>
       <li @click="clickName">
-        <div class="left">名字</div>
-        <div class="mid">{{ name }}</div>
-        <van-icon
-          name="arrow"
-          class="arrow"
-          v-if="identity == 0 && ismember == 0"
-        />
+        <div class="left f20">名字</div>
+        <div class="mid f20">{{ name }}</div>
+        <van-icon name="arrow" class="arrow" v-if="identity == 0 && ismember == 0" />
       </li>
       <li @click="sexShow = true">
-        <div class="left">性别</div>
-        <div class="mid">{{ sex == "1" ? "男" : "女" }}</div>
+        <div class="left f20">性别</div>
+        <div class="mid f20">{{ sex == '1' ? '男' : '女' }}</div>
         <van-icon name="arrow" class="arrow" />
       </li>
       <li @click="areaShow = true">
-        <div class="left">所在地</div>
-        <div class="mid">
-          {{ resideprovince }}{{ residecity }}{{ residedist }}
-        </div>
+        <div class="left f20">所在地</div>
+        <div class="mid f20">{{ resideprovince }}{{ residecity }}{{ residedist }}</div>
         <van-icon name="arrow" class="arrow" />
       </li>
     </ul>
@@ -49,24 +38,11 @@
       @confirm="confirmName"
     >
       <!-- 修改用户名 -->
-      <van-field
-        v-model="names"
-        placeholder="请输入用户名"
-        class="name"
-        maxlength="10"
-      />
+      <van-field v-model="names" placeholder="请输入用户名" class="name" maxlength="10" />
     </van-dialog>
-    <van-action-sheet
-      v-model:show="sexShow"
-      :actions="actions"
-      @select="onSelect"
-    />
+    <van-action-sheet v-model:show="sexShow" :actions="actions" @select="onSelect" />
     <!-- 选择性别 -->
-    <van-popup
-      v-model:show="areaShow"
-      close-icon-position="top-left"
-      position="bottom"
-    >
+    <van-popup v-model:show="areaShow" close-icon-position="top-left" position="bottom">
       <van-area
         title="选择所在地"
         :area-list="areaList"
@@ -77,76 +53,74 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapMutations, mapState } from "vuex";
-import areaList from "@/common/js/area.js";
-import { useMeta } from "vue-meta";
-import Compressor from "compressorjs";
+import Header from '@/components/header/header';
+import { mapMutations, mapState } from 'vuex';
+import areaList from '@/common/js/area.js';
+import { useTitles } from '@/common/js/useTitles';
+import Compressor from 'compressorjs';
 export default {
   setup() {
-    useMeta({
-      title: "编辑资料"
-    });
+    useTitles('编辑资料');
   },
-  name: "meEdit",
+  name: 'meEdit',
   components: { Header },
   props: {},
   data() {
     return {
       updated: false,
-      info: "",
-      avatar: "",
-      userName: "",
-      name: "", // 名字
-      sex: "请选择", // 性别
+      info: '',
+      avatar: '',
+      userName: '',
+      name: '', // 名字
+      sex: '请选择', // 性别
       nameShow: false,
       sexShow: false,
       areaShow: false,
-      names: "",
+      names: '',
       actions: [
-        { name: "男", id: 1 },
-        { name: "女", id: 0 }
+        { name: '男', id: 1 },
+        { name: '女', id: 0 },
       ],
       areaList: areaList,
-      resideprovince: "", // 省
-      residecity: "", // 市
-      residedist: "", // 区
+      resideprovince: '', // 省
+      residecity: '', // 市
+      residedist: '', // 区
       identity: 0, // 1是专家，不允许改名字，0是普通人
-      ismember: 0 // 1是会员，不允许改名字，0可以修改
+      ismember: 0, // 1是会员，不允许改名字，0可以修改
     };
   },
-  computed: { ...mapState(["uId", "mid", "initMid"]) },
+  computed: { ...mapState(['uId', 'mid', 'initMid']) },
   watch: {
     name(newVal, oldVal) {
-      if (oldVal == "") {
+      if (oldVal == '') {
         return false;
       }
       this.upDate();
     },
     sex(newVal, oldVal) {
-      if (oldVal == "请选择") {
+      if (oldVal == '请选择') {
         return;
       }
       this.upDate();
     },
     residedist(newVal, oldVal) {
-      if (oldVal == "") {
+      if (oldVal == '') {
         return;
       }
       this.upDate();
     },
     residecity(newVal, oldVal) {
-      if (oldVal == "") {
+      if (oldVal == '') {
         return;
       }
       this.upDate();
     },
     resideprovince(newVal, oldVal) {
-      if (oldVal == "") {
+      if (oldVal == '') {
         return;
       }
       this.upDate();
-    }
+    },
   },
   mounted() {
     this.getInfo();
@@ -157,15 +131,15 @@ export default {
     // this.getUserInfo();
   },
   methods: {
-    ...mapMutations(["setUserInfo"]),
+    ...mapMutations(['setUserInfo']),
     getUserInfo() {
       if (this.updated) {
         this.$axios
-          .fetchPost("Mobile/User/userCenter", {
+          .fetchPost('Mobile/User/userCenter', {
             uId: this.uId,
-            mId: this.initMid
+            mId: this.initMid,
           })
-          .then(res => {
+          .then((res) => {
             if (res.data.code == 0) {
               // this.setIsMember(res.data.data.ismember);
               this.setUserInfo(res.data.data);
@@ -179,36 +153,34 @@ export default {
         quality: 0.1,
         success(result) {
           let formData = new FormData();
-          formData.append("urls[]", result, result.name);
-          formData.append("uId", that.uId);
-          that.$axios
-            .fetchPost("/Mobile/Wen/OssUploadFile", formData)
-            .then(res => {
-              // console.log("res :>> ", res);
-              if (res.data.code == 0) {
-                that.avatar = res.data.data;
-                that.updated = true;
-                that.getUserInfo();
-              }
-              that.$toast(res.data.message);
-            });
-        }
+          formData.append('urls[]', result, result.name);
+          formData.append('uId', that.uId);
+          that.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
+            // console.log("res :>> ", res);
+            if (res.data.code == 0) {
+              that.avatar = res.data.data;
+              that.updated = true;
+              that.getUserInfo();
+            }
+            that.$toast(res.data.message);
+          });
+        },
       });
     },
     getInfo() {
       this.$axios
-        .fetchPost("/Mobile/User/userCenter", {
+        .fetchPost('/Mobile/User/userCenter', {
           uId: this.uId,
-          mId: this.initMid
+          mId: this.initMid,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             let data = res.data.data;
             this.avatar = data.avatar;
             this.userName = data.username;
             this.name = data.realname;
             this.sex = data.gender;
-            this.resideprovince = data.resideprovince || "请选择";
+            this.resideprovince = data.resideprovince || '请选择';
             this.residecity = data.residecity;
             this.residedist = data.residedist;
             this.identity = data.identity;
@@ -219,15 +191,15 @@ export default {
     upDate() {
       //分开上传
       this.$axios
-        .fetchPost("Mobile/User/updateInfo", {
+        .fetchPost('Mobile/User/updateInfo', {
           uId: this.uId,
           gender: this.sex,
           realname: this.name,
           resideprovince: this.resideprovince,
           residecity: this.residecity,
-          residedist: this.residedist
+          residedist: this.residedist,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             //
             this.updated = true;
@@ -257,10 +229,21 @@ export default {
     },
     cancelArea() {
       this.areaShow = false;
-    }
-  }
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .me_edit-container {
+    ul {
+      li {
+        height: 55px;
+      }
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .me_edit-container
   ul
@@ -269,7 +252,7 @@ export default {
     background #fff
     .upload
       width 100%
-      /deep/.van-uploader__input-wrapper
+      :deep().van-uploader__input-wrapper
         width 100%
     li
       display flex

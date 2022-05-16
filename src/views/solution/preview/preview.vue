@@ -1,8 +1,8 @@
 <template>
   <div class="preview">
     <Header :indexHeader="false" :goBackHeader="true"></Header>
-    <van-sticky :offset-top="40">
-      <div class="step-title-bar">
+    <van-sticky :offset-top="top">
+      <div class="step-title-bar" :style="{ borderWidth: old ? '15px' : '10px' }">
         <div class="title-content" ref="title">
           <div
             v-for="(item, index) in navBar"
@@ -12,7 +12,7 @@
             :class="{ active: active1 === index }"
             @click="clickHandle(item, index)"
           >
-            <div class="item">
+            <div class="item f20">
               {{ item.classname }}
             </div>
             <van-icon name="arrow" class="arrow" />
@@ -20,34 +20,25 @@
         </div>
       </div>
     </van-sticky>
-    <div
-      class="steps"
-      v-for="item in caseArr"
-      :key="item.id"
-      :ref="setItemRefIt"
-    >
+    <div class="steps" v-for="item in caseArr" :key="item.id" :ref="setItemRefIt">
       <div class="step-box">
-        <div class="title">{{ item.classname }}</div>
+        <div class="title f22">{{ item.classname }}</div>
         <div class="step" v-for="it in item.lists" :key="it.id">
-          <div class="small-title">{{ it.classname }}</div>
+          <div class="small-title f15">{{ it.classname }}</div>
           <div class="right">
-            <div class="time">{{ it.timepoint }}</div>
-            <div class="text">
+            <div class="time f20">{{ it.timepoint }}</div>
+            <div class="text f20">
               {{ it.content }}
             </div>
             <div class="pharmacy" v-if="it.druginfo.length !== 0">
               <div class="pharmacy-title">用肥用药：</div>
-              <div
-                class="pharmacy-item"
-                v-for="drug in it.druginfo"
-                :key="drug.specid"
-              >
+              <div class="pharmacy-item" v-for="drug in it.druginfo" :key="drug.specid">
                 <van-image class="img" :src="drug.thumb" fit="fill"></van-image>
                 <div class="pharmacy-text">
-                  <div class="p1">{{ drug.name }}</div>
-                  <div class="p2">用法用量说明：{{ drug.quantity }}</div>
+                  <div class="p1 f20">{{ drug.name }}</div>
+                  <div class="p2 f17">用法用量说明：{{ drug.quantity }}</div>
                 </div>
-                <a :href="drug.url" class="bug">购买</a>
+                <a :href="drug.url" class="bug f20">购买</a>
               </div>
             </div>
           </div>
@@ -57,16 +48,19 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header.vue";
-import axios from "@/http";
-import { mapState } from "vuex";
+import Header from '@/components/header/header.vue';
+import axios from '@/http';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 export default {
-  name: "preview",
+  name: 'preview',
   metaInfo: {
-    title: "预览"
+    title: '预览',
   },
   components: { Header },
-  props: {},
+  setup() {
+    useTitles('作物解决方案');
+  },
   data() {
     return {
       w: 0,
@@ -77,11 +71,19 @@ export default {
       active: 0,
       offTop: [],
       item: [],
-      it: []
+      it: [],
     };
   },
   computed: {
-    ...mapState(["uId"]),
+    ...mapState(['uId', 'old']),
+    top() {
+      //van-sticky的top值
+      if (this.old) {
+        return 55;
+      } else {
+        return 40;
+      }
+    },
     pId() {
       return this.$route.query.pId;
     },
@@ -92,29 +94,29 @@ export default {
           arr.push({
             classname: item.classname,
             index: index,
-            option: this.offTop[index]
+            option: this.offTop[index],
           });
         });
       }
       return arr;
-    }
+    },
   },
   watch: {
     caseArr() {
       this.$nextTick(() => {
         this.re = this.it;
-        this.re.forEach(item => {
+        this.re.forEach((item) => {
           this.offTop.push(item.offsetTop - 100);
         });
       });
-    }
+    },
   },
   mounted() {
     this.getPreviewData();
-    window.addEventListener("scroll", this.handleScroll, false);
+    window.addEventListener('scroll', this.handleScroll, false);
   },
   unmounted() {
-    window.removeEventListener("scroll", this.handleScroll, false);
+    window.removeEventListener('scroll', this.handleScroll, false);
   },
   methods: {
     setItemRefItem(el) {
@@ -129,7 +131,7 @@ export default {
         this.top = this.it[index].offsetTop - 100;
         window.scrollTo({
           top: this.top,
-          behavior: "smooth"
+          behavior: 'smooth',
         });
       });
     },
@@ -150,12 +152,12 @@ export default {
     },
     getPreviewData() {
       axios
-        .fetchGet("/Mobile/Gbase/getUserproject", {
+        .fetchPost('/Mobile/Gbase/getUserproject', {
           uId: this.uId,
-          action: "template_preview",
-          pId: this.pId
+          action: 'template_preview',
+          pId: this.pId,
         })
-        .then(res => {
+        .then((res) => {
           let data = res.data;
           if (data.code === 0) {
             this.caseArr = data.data.list;
@@ -168,14 +170,14 @@ export default {
     },
     getNavWidth() {
       this.$nextTick(() => {
-        this.item.forEach(it => {
+        this.item.forEach((it) => {
           let w1 = it.offsetWidth;
           this.w += w1;
         });
-        this.$refs.title.style.width = this.w + 20 + "px";
+        this.$refs.title.style.width = this.w + 20 + 'px';
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -185,6 +187,7 @@ export default {
     overflow auto
     padding 10px 12px
     background #fff
+    border-top:8px solid #e5e5e5
     .title-content
       .item-wrap
         display inline-block
@@ -294,7 +297,7 @@ export default {
                   margin-bottom 10px
                   line-height 1.2
                 .p2
-                  color #999999
+                  color #363A44
                   font-size 14px
               .bug
                 position absolute

@@ -12,7 +12,7 @@
     </div>
     <!-- <div class="subsidy" v-if="list.isbenefit == 1"></div> -->
     <div class="subsidy" v-if="false"></div>
-    <div class=" text" @click="goToDetail">{{ list.title }}</div>
+    <div class="text f20" @click="goToDetail">{{ list.title }}</div>
     <div class="img-list">
       <div
         class="item"
@@ -36,51 +36,75 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: "OnlineItem",
-  components: {},
-  props: {
-    list: {
-      type: Object,
-      default: function() {
-        return {};
-      }
+<script setup lang="ts">
+import { defineEmits } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+//props
+interface Props {
+  authorid: string;
+  avatar: string;
+  author: string;
+  addtime: string;
+  area: string;
+  title: string;
+  pic_urls_tiny: string[];
+  name: string;
+  replies: string;
+  pic_urls: string[];
+  tid: string;
+}
+const props = defineProps<{ list: Props }>();
+
+//emits
+// 获取点中图片所在的数组，和点中的索引
+interface ImgObj {
+  arr: string[];
+  index: number;
+}
+const emits = defineEmits<{
+  (e: 'preImage', obj: ImgObj): void;
+}>();
+function preview(arr: string[], index: number) {
+  // 图片依赖,emit点击的图片数组，
+  let obj = {
+    arr: arr,
+    index: index,
+  };
+  emits('preImage', obj);
+}
+function goToDetail() {
+  // 路由：去网诊详情页
+  router.push({
+    path: '/ask_detail',
+    query: { tid: props.list.tid },
+  });
+}
+
+//路由：去专家的主页
+function goToExpert(authorid: string) {
+  router.push({
+    path: '/expert',
+    query: {
+      id: authorid,
+    },
+  });
+}
+</script>
+<style lang="scss" scoped>
+.old {
+  .recommend_online-container {
+    padding: 25px 0;
+    .top {
+      display: none;
     }
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
-  methods: {
-    preview(arr, index) {
-      // 图片依赖
-      let obj = {
-        arr: arr,
-        index: index
-      };
-      this.$emit("preImage", obj);
-    },
-    goToDetail() {
-      // 去网诊详情页
-      this.$router.push({
-        path: "/ask_detail",
-        query: { tid: this.list.tid }
-      });
-    },
-    goToExpert(authorid) {
-      this.$router.push({
-        path: "/expert",
-        query: {
-          id: authorid
-        }
-      });
+    .bottom {
+      display: none;
     }
   }
-};
-</script>
+}
+</style>
 <style lang="stylus" scoped>
 .recommend_online-container
   position relative
@@ -112,7 +136,7 @@ export default {
     background-size cover
     background-position center center
   .text
-    color #666666
+    color $f-color
     font-size 14px
     line-height 22px
     margin 10px 0

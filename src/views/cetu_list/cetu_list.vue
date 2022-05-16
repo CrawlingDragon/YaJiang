@@ -11,10 +11,10 @@
       >
         <li v-for="item in list" :key="item.ids" @click="goToDetail(item.id)">
           <div class="top">
-            <div class="title">
+            <div class="title f22">
               {{ item.title }}
             </div>
-            <div class="time">{{ item.showtime }}</div>
+            <div class="time f18">{{ item.showtime }}</div>
           </div>
           <div class="hospital" v-if="from == 'me'">{{ item.mpublic }}</div>
         </li>
@@ -24,19 +24,16 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import HeaderHospital from "@/components/hospital_header/hospital_header";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import HeaderHospital from '@/components/hospital_header/hospital_header';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 export default {
-  name: "cetuList",
+  name: 'cetuList',
   components: { Header, HeaderHospital },
   props: {},
   setup() {
-    const { meta } = useMeta({
-      title: "土壤检测"
-    });
-    return { meta };
+    useTitles('土壤检测');
   },
   created() {},
   data() {
@@ -47,16 +44,15 @@ export default {
       loading: false,
       finished: false,
       page: 0,
-      meUid: ""
+      meUid: '',
     };
   },
   computed: {
-    ...mapState(["mid", "uId", "hospitalName"])
+    ...mapState(['mid', 'uId', 'hospitalName']),
   },
   mounted() {
-    if (this.from != "me") {
-      this.meUid = "";
-      this.meta.title = this.hospitalName;
+    if (this.from != 'me') {
+      this.meUid = '';
     } else {
       this.meUid = this.uId;
     }
@@ -82,12 +78,12 @@ export default {
       // 获取测土配方列表  个人
       this.page += 1;
       this.$axios
-        .fetchPost("/Mobile/Treatment/getTestingsoil", {
+        .fetchPost('/Mobile/Treatment/getTestingsoil', {
           uId: this.meUid,
           mId: this.mid,
-          page: this.page
+          page: this.page,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.loading = false;
             this.list = this.list.concat(res.data.data);
@@ -101,11 +97,11 @@ export default {
     },
     goToDetail(id) {
       this.$router.push({
-        path: "/soil_detail",
-        query: { id: id }
+        path: '/soil_detail',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -116,7 +112,7 @@ export default {
     margin-top 10px
     li
       border-bottom 1px solid #e5e5e5
-      padding 14px 0 12px
+      padding 14px 12px 12px 0
       min-height 50px
       &:last-child
         border none
@@ -139,7 +135,7 @@ export default {
           color #999
       .hospital
         width 100%
-        color #999999
+        color #363A44
         font-size 12px
         line-height 22px
 </style>

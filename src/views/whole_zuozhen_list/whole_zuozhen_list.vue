@@ -13,27 +13,25 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapState } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import { mapState } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-    useMeta({
-      title: "我的坐诊巡诊"
-    });
+    useTitles('我的坐诊巡诊');
   },
-  name: "wholeZuoZhenList",
+  name: 'wholeZuoZhenList',
 
   components: { Header },
   props: {},
   data() {
     return {
       list: [],
-      noData: false
+      noData: false,
     };
   },
   computed: {
-    ...mapState(["uId", "initMid"])
+    ...mapState(['uId', 'initMid']),
   },
   watch: {},
   created() {},
@@ -44,11 +42,11 @@ export default {
     getOnlineList() {
       this.noData = false;
       this.$axios
-        .fetchPost("/Mobile/Treatment/getWenzhen", {
+        .fetchPost('/Mobile/Treatment/getWenzhen', {
           uId: this.uId,
-          mId: this.initMid
+          mId: this.initMid,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.list = res.data.data;
           } else if (res.data.code == 201) {
@@ -58,11 +56,11 @@ export default {
     },
     goToDetail(id) {
       this.$router.push({
-        path: "/zuozhen_detail",
-        query: { id: id }
+        path: '/zuozhen_detail',
+        query: { id: id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -87,7 +85,7 @@ export default {
         text-overflow ellipsis
         white-space nowrap
       .p2
-        color #999999
+        color #363A44
         font-size 12px
         span
           float right

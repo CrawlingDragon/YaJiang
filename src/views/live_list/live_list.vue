@@ -7,22 +7,20 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import { mapMutations } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header';
+import { mapMutations } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-    useMeta({
-      title: "直播节目单"
-    });
+    useTitles('直播节目单');
   },
-  name: "liveList",
+  name: 'liveList',
   components: { Header },
   props: {},
   data() {
     return {
-      detail: "",
-      mid: this.$route.query.mid
+      detail: '',
+      mid: this.$route.query.mid,
     };
   },
   computed: {},
@@ -31,23 +29,21 @@ export default {
     this.getDetail();
   },
   methods: {
-    ...mapMutations(["setMid"]),
+    ...mapMutations(['setMid']),
     getDetail() {
-      this.$axios
-        .fetchPost("/Mobile/Live/getLiveMenu", { mId: this.mid })
-        .then(res => {
-          if (res.data.code == 0) {
-            this.detail = res.data.data;
-          }
-        });
+      this.$axios.fetchPost('/Mobile/Live/getLiveMenu', { mId: this.mid }).then((res) => {
+        if (res.data.code == 0) {
+          this.detail = res.data.data;
+        }
+      });
     },
     goToHospital() {
       this.setMid(this.detail.mid);
       this.$router.push({
-        path: "/hospital"
+        path: '/hospital',
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -66,6 +62,6 @@ export default {
     padding-right 12px
     margin-bottom 20px
     font-size 14px
-  /deep/img
+  :deep()img
     max-width 100%
 </style>

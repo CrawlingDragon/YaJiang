@@ -1,9 +1,7 @@
 <template>
   <div class="period-content van-hairline--bottom">
     <div class="progress">
-      <ProgressItem
-        :item="{ classname: period.classname, percent: period.percent }"
-      >
+      <ProgressItem :item="{ classname: period.classname, percent: period.percent }">
         <!-- <span class="p1">{{ period.classname }}</span> -->
       </ProgressItem>
     </div>
@@ -19,9 +17,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="btn btn2" v-if="item.isdeal === 1" @click="detail(item)">
-          详情
-        </div>
+        <div class="btn btn2" v-if="item.isdeal === 1" @click="detail(item)">详情</div>
         <div class="btn btn1" @click="issue(item)" v-else>发布</div>
       </div>
     </div>
@@ -35,9 +31,7 @@
       @confirm="confirmDialog"
       @cancel="cancelDialog"
     >
-      <div class="van-dialog__message">
-        该农事管理内容为选填，可点击确认直接完成
-      </div>
+      <div class="van-dialog__message">该农事管理内容为选填，可点击确认直接完成</div>
       <div class="close" @click.stop @click="show = false">
         <van-icon name="close" size="25" />
       </div>
@@ -45,25 +39,25 @@
   </div>
 </template>
 <script>
-import ProgressItem from "./progress_item.vue";
-import axios from "@/http";
-import { mapState } from "vuex";
+import ProgressItem from './progress_item.vue';
+import axios from '@/http';
+import { mapState } from 'vuex';
 export default {
-  name: "period",
+  name: 'period',
   components: { ProgressItem },
   props: {
     period: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
-    }
+      },
+    },
   },
   data() {
-    return { show: false, activeItem: "" };
+    return { show: false, activeItem: '' };
   },
   computed: {
-    ...mapState(["uId"])
+    ...mapState(['uId']),
   },
   watch: {},
   mounted() {},
@@ -74,8 +68,8 @@ export default {
     },
     cancelDialog() {
       this.$router.push({
-        path: "/base_edit",
-        query: { classId: this.activeItem.id, editCase: "no" }
+        path: '/base_edit',
+        query: { classId: this.activeItem.id, editCase: 'no' },
       });
     },
     issue(item) {
@@ -104,29 +98,29 @@ export default {
       } else {
         // 编辑农事发布
         this.$router.push({
-          path: "/base_edit",
-          query: { classId: item.id, editCase: "no" }
+          path: '/base_edit',
+          query: { classId: item.id, editCase: 'no' },
         });
       }
     },
     detail(item) {
       this.$router.push({
-        path: "/base_fram_detail",
-        query: { id: item.rid }
+        path: '/base_fram_detail',
+        query: { id: item.rid },
       });
     },
     confirmIssue(classid, uId) {
       axios
-        .fetchPost("/Mobile/Gbase/subFarmerDatacommit", { classid, uId })
-        .then(res => {
+        .fetchPost('/Mobile/Gbase/subFarmerDatacommit', { classid, uId })
+        .then((res) => {
           let data = res.data;
           if (data.code === 0) {
             window.location.reload();
           }
           this.$toast(data.message);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -152,7 +146,7 @@ export default {
       flex 1
       .finished
         font-size 14px
-        color #999999
+        color #363A44
         .clock
           margin-right 6px
           font-size 18px
@@ -191,7 +185,7 @@ export default {
   top 2px
   right 2px
   color #999
-  /deep/.progress-item
-    /deep/.right
+  :deep().progress-item
+    :deep().right
       width auto !important
 </style>

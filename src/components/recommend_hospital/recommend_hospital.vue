@@ -2,23 +2,17 @@
   <!-- 首页推荐医院列表 -->
   <div class="recommend-hospital-wrap" @click="goToIndexHospital">
     <van-image :src="list.logo" fit="cover" class="image" lazy-load />
-    <p class="p1">{{ list.title }}</p>
+    <p class="p1 f22">{{ list.title }}</p>
     <p class="p2">{{ list.level }}·{{ list.issort }}</p>
     <p class="p3" v-show="list.zuowu != '暂未设置'">科室：{{ list.zuowu }}</p>
     <div class="number">
-      <div class="expert" v-if="list.num_expert != 0">
-        专家 {{ list.num_expert }}
-      </div>
-      <div class="line" v-show="list.num_expert != 0 && list.num_chufang != 0">
-        |
-      </div>
-      <div class="online" v-if="list.num_chufang != 0">
-        处方 {{ list.num_chufang }}
-      </div>
+      <div class="expert" v-if="list.num_expert != 0">专家 {{ list.num_expert }}</div>
+      <div class="line" v-show="list.num_expert != 0 && list.num_chufang != 0">|</div>
+      <div class="online" v-if="list.num_chufang != 0">处方 {{ list.num_chufang }}</div>
       <div
         class="line"
         v-show="list.num_wen != 0 && list.isstore == 0"
-        style="margin-left:10px"
+        style="margin-left: 10px"
       >
         |
       </div>
@@ -28,39 +22,67 @@
     </div>
   </div>
 </template>
-<script>
-import { mapMutations } from "vuex";
-export default {
-  name: "Recommend_hospital",
-  components: {},
-  props: {
-    list: {
-      type: Object,
-      default: function() {
-        return {};
-      }
+<script setup lang="ts">
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+const store = useStore();
+const router = useRouter();
+interface HospitalList {
+  id: string;
+  logo?: string;
+  title?: string;
+  level?: string;
+  zuowu?: string;
+  num_expert?: number;
+  num_chufang?: number;
+  num_wen?: number;
+  isstore?: number;
+  mid?: string;
+  issort?: number;
+}
+const props = defineProps<{
+  list: HospitalList;
+}>();
+
+function goToIndexHospital() {
+  // 去医院首页
+  store.commit('setMid', props.list.mid);
+  store.commit('setHospitalName', props.list.title);
+  store.commit('setHospitalIsStore', props.list.isstore);
+  router.push({
+    path: '/hospital',
+  });
+}
+</script>
+<style lang="scss" scoped>
+.old {
+  .recommend-hospital-wrap {
+    width: 100%;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    .image {
+      width: 50%;
+      height: 100%;
+      margin: 0;
     }
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
-  methods: {
-    ...mapMutations(["setMid", "setHospitalName", "setHospitalIsStore"]),
-    goToIndexHospital() {
-      // 去医院首页
-      this.setMid(this.list.mid);
-      this.setHospitalName(this.list.title);
-      this.setHospitalIsStore(this.list.isstore);
-      this.$router.push({
-        path: "/hospital"
-      });
+    .p1 {
+      width: 50%;
+      padding: 0 15px;
+      display: flex;
+      align-items: center;
+      line-height: 1.2;
+      white-space: normal;
+      margin-bottom: 0;
+    }
+    .p2,
+    .p3,
+    .number {
+      display: none !important;
     }
   }
-};
-</script>
+}
+</style>
 <style lang="stylus" scoped>
 .recommend-hospital-wrap
   position relative

@@ -4,34 +4,34 @@
     <div class="person-box">
       <div class="name-bar">
         <van-image class="avator" :src="expertData.avatar"></van-image>
-        <div class="name">
-          {{ expertData.name
-          }}<span v-if="identity == 1 && id != aiExpertId">{{
-            expertData.groupname
-          }}</span>
+        <div class="name f30">
+          {{ expertData.name }}
+          <span v-if="identity == 1 && id != aiExpertId" class="f16">
+            {{ expertData.groupname }}
+          </span>
         </div>
-        <div v-if="identity == 0" @click="goToCrop" class="name-bar-crop">
+        <div v-if="identity == 0" @click="goToCrop" class="name-bar-crop f16">
           {{ expertData.forum }}
         </div>
         <van-overlay :show="skillShow" @click="skillShow = false">
           <div class="wrapper" @click.stop @click="skillShow = false">
             <div class="avatar-box">
               <van-image :src="expertData.avatar" fit="cover" radius="5px"></van-image>
-              <p class="avatar-p1">{{ expertData.name }}</p>
+              <p class="avatar-p1 f16">{{ expertData.name }}</p>
             </div>
             <div class="crop-lis">
-              <div class="left">种植作物</div>
-              <div class="crop">
+              <div class="left f16">种植作物</div>
+              <div class="crop f16">
                 {{ identity == 1 ? expertData.skill : expertData.forum }}
               </div>
             </div>
           </div>
         </van-overlay>
-        <div class="p1">{{ expertData.company }} {{ expertData.position }}</div>
+        <div class="p1 f16">{{ expertData.company }} {{ expertData.position }}</div>
       </div>
       <div class="btns">
         <div
-          class="btn-look"
+          class="btn-look f17"
           v-if="$route.query.from != 'my' && expertData.isme == 0"
           @click="attention"
         >
@@ -40,28 +40,29 @@
           }}
         </div>
         <div
-          class="btn-ask"
+          class="btn-ask f17"
           v-if="
             expertData.identity == 1 &&
-              $route.query.from != 'my' &&
-              id != aiExpertId &&
-              expertData.isme != 1
+            $route.query.from != 'my' &&
+            id != aiExpertId &&
+            expertData.isme != 1
           "
           @click="goToAsk"
         >
           <van-icon name="records" class="records" />提问
         </div>
         <div
-          class="edit"
-          v-if="$route.query.from == 'my' || expertData.isme == 1"
+          class="edit f17"
           @click="goToMeEdit"
+          v-if="$route.query.from == 'my' || expertData.isme == 1"
         >
           编辑资料
         </div>
       </div>
       <div class="fans">
-        <div class="item">关注 {{ expertData.tofollower }}</div>
-        <div class="item">粉丝 {{ expertData.follower }}</div>
+        <div class="item f17">赞 {{ expertData.tofollower }}</div>
+        <div class="item f17">关注 {{ expertData.tofollower }}</div>
+        <div class="item f17">粉丝 {{ expertData.follower }}</div>
       </div>
     </div>
     <div
@@ -70,12 +71,12 @@
         expertData.identity == 1 && (expertData.skill != '' || expertData.introduce != '')
       "
     >
-      <div class="title-bar" @click="goToPersondetail">
+      <div class="title-bar f17" @click="goToPersondetail">
         个人简介
         <div class="look-more">详细资料 ></div>
       </div>
-      <p class="goodat" v-if="expertData.skill">擅长：{{ expertData.skill }}</p>
-      <p class="explan" v-if="expertData.introduce">
+      <p class="goodat f20" v-if="expertData.skill">擅长：{{ expertData.skill }}</p>
+      <p class="explan f16" v-if="expertData.introduce">
         {{ expertData.introduce }}
       </p>
     </div>
@@ -83,7 +84,7 @@
       v-model="active"
       sticky
       class="tabs"
-      color="#599524"
+      color="#0D90FF"
       :offset-top="num"
       :class="{ aiTab: id == aiExpertId }"
       @scroll="scroll"
@@ -148,13 +149,11 @@ import OnlineItem from '@/components/online_item/online_item';
 import RecommendHospital from '@/components/recommend_hospital/recommend_hospital';
 import { ImagePreview } from 'vant';
 import { mapState } from 'vuex';
-import { useMeta } from 'vue-meta';
+import { useTitles } from '@/common/js/useTitles';
 import { login } from '@/common/js/getToken';
 export default {
   setup() {
-    useMeta({
-      title: '专家',
-    });
+    useTitles('专家');
   },
   name: 'expert',
   components: {
@@ -423,12 +422,51 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .expert-container {
+    .btns {
+      .btn-look,
+      .btn-ask,
+      .edit {
+        width: 95px;
+        i {
+          font-size: 22px;
+        }
+      }
+    }
+  }
+}
+.expert-container {
+  .look-more {
+    color: $theme-color;
+  }
+  .edit {
+    color: #fff;
+    border: 2px solid #fff;
+  }
+  .tabs {
+    :deep().van-tab--active {
+      color: $theme-color;
+    }
+    :deep().van-tab {
+      flex: 1 auto;
+    }
+    .hospital-ul {
+      li {
+        width: 100% !important;
+        height: 105px !important;
+      }
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .expert-container
   .person-box
     margin-top 10px
     min-height 232px
-    // background url('./bj.png') no-repeat
+    background url('./bj.png') no-repeat
     background-position center center
     background-size cover
     padding 40px 12px 20px
@@ -446,22 +484,21 @@ export default {
         border-radius 5px
         overflow hidden
       .name
-        color #333
+        color #fff
         font-size 20px
         margin-bottom 10px
         span
           font-size 12px
-
           margin-left 10px
       .p1
+        color #fff
         font-size 12px
-
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
       .name-bar-crop
         font-size 12px
-        color #333
+        color #fff
   .btns
     padding-left 80px
     font-size 0
@@ -478,8 +515,8 @@ export default {
       justify-content center
       margin-right 22px
     .btn-look
-      border 2px solid $theme-color
-      color $theme-color
+      border 2px solid #fff
+      color #fff
       .plus
         margin-right 4px
         font-size 15px
@@ -489,9 +526,7 @@ export default {
       .records
         margin-right 4px
         font-size 15px
-    .edit
-      color $theme-color
-      border 2px solid $theme-color
+
   .fans
     margin-top 34px
     display flex
@@ -501,9 +536,9 @@ export default {
       flex 1
       height 27px
       line-height 27px
-      border-right 1px solid  #333
+      border-right 1px solid  #fff
       font-size 14px
-      color #333
+      color #fff
       &:last-child
         border none
   .person-info
@@ -542,9 +577,9 @@ export default {
   .tabs
     margin-top 10px
     background #fff
-    /deep/.van-tabs__wrap
+    :deep().van-tabs__wrap
       border-bottom 1px solid #e5e5e5
-    /deep/.van-tab--active
+    :deep().van-tab--active
       color $theme-color
     .answer-ul
       padding 0 12px
@@ -564,14 +599,14 @@ export default {
         height: 285px;
         vertical-align: top;
         position: relative;
-      /deep/.van-list__finished-text
+      :deep().van-list__finished-text
         position absolute
         bottom 0
         line-height 40px
         left 0
         right 0
         text-align center
-      /deep/.van-list__placeholder
+      :deep().van-list__placeholder
         position absolute
         bottom 0
         line-height 40px
@@ -609,12 +644,12 @@ export default {
     display flex
     .left
       width 103px
-      color #999999
+      color #363A44
       margin-right 15px
 .aiTab
   .van-tabs__nav
     flex 0
-  /deep/.van-tab--active
+  :deep().van-tab--active
     width 100px
     display block
     flex 0
@@ -623,8 +658,8 @@ export default {
     padding-left 12px
     .van-tab__text--ellipsis
       width 70px
-  /deep/.van-tabs__line
+  :deep().van-tabs__line
     display none
-/deep/.van-empty__image
+:deep().van-empty__image
   display none
 </style>

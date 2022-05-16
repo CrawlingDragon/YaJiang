@@ -2,9 +2,9 @@ import axios from 'axios';
 import QS from 'qs';
 import axiosRetry from 'axios-retry';
 import { Toast } from 'vant';
-import store from './store';
-import { login } from '@/common/js/getToken';
-import router from './router';
+import store from './store/index.js';
+import { login } from './common/js/getToken.js';
+import router from './router/index.js';
 
 const ERR_OK = 0;
 
@@ -13,7 +13,7 @@ axios.defaults.timeout = 8000;
 axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded;charset=utf-8';
 //配置接口地址
-axios.defaults.baseURL = process.env.VUE_APP_API;
+axios.defaults.baseURL = import.meta.env.VITE_APP_API;
 
 //post 传参序列化，（添加请求拦截器）
 axios.interceptors.request.use(
@@ -56,8 +56,13 @@ axios.interceptors.response.use(
   }
 );
 
+export interface ResponseType<P = {}> {
+  code: number;
+  msg: string;
+  data: P;
+}
 //返回一个Promise（发送post请求）
-export function fetchPost(url, params) {
+export function fetchPost(url: string, params: any) {
   return new Promise((resolve, reject) => {
     axios
       .post(url, params)
@@ -76,7 +81,7 @@ export function fetchPost(url, params) {
 }
 
 //返回一个Promise(发送get请求)
-export function fetchGet(url, params) {
+export function fetchGet(url: string, params: any) {
   return new Promise((resolve, reject) => {
     axios
       .get(url, { params })
@@ -94,7 +99,7 @@ export function fetchGet(url, params) {
   });
 }
 
-export function get(url, params) {
+export function get(url: string, params?: any) {
   return axios
     .get(url, { params })
     .then((res) => {
@@ -113,9 +118,9 @@ export function get(url, params) {
     });
 }
 
-export function post(url, params) {
+export function post(url: string, params?: any) {
   return axios
-    .get(url, params)
+    .post(url, params)
     .then((res) => {
       let serverData = res.data;
       if (serverData.code === ERR_OK) {

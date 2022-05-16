@@ -1,85 +1,56 @@
 <template>
-  <metainfo>
-    <template v-slot:title="{ content }">{{ content ? `${content}` : `首页` }}</template>
-  </metainfo>
-
-  <router-view v-slot="{ Component }">
-    <keep-alive
-      exclude="Login,mLogin,findPassword,sign,lookExpert,live,messageDetail"
-      include="searchOnline,applyVip,index,area,intoHospital,indexOnline"
-    >
-      <component :is="Component" />
-    </keep-alive>
-  </router-view>
+  <div :class="{ old: old }" class="app-box">
+    <router-view v-slot="{ Component }">
+      <keep-alive
+        exclude="Login,mLogin,findPassword,sign,lookExpert,live,messageDetail"
+        include="searchOnline,applyVip,index,area,intoHospital,indexOnline"
+      >
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
+    <SwitchOld></SwitchOld>
+    <GoTop />
+  </div>
 </template>
+<script setup lang="ts">
+import { computed, provide, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import GoTop from '@/components/goTop/goTop.vue';
+import SwitchOld from '@/components/switchOld/switchOld.vue';
+import { getAi } from '@/service/getAi';
+import { getInitMid } from '@/service/getInitMid';
+const store = useStore();
+const old = computed(() => store.state.old);
 
-<script>
-import { mapState, mapMutations } from 'vuex';
-// import { useMeta } from "vue-meta";
+// 适老板的图标的size
+provide('size', old.value ? 33 : '');
 
-export default {
-  setup() {
-    // useMeta({
-    //   title: "",
-    //   htmlAttrs: { lang: "en", amp: true }
-    // });
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapState(['uId']),
-  },
-  watch: {
-    // uId(newVal) {
-    //   // console.log('newVal', newVal);
-    //   if (newVal != '') {
-    //     this.getUserInfo();
-    //     // console.log('Uid changed');
-    //   }
-    // },
-  },
-  mounted() {
-    // this.getUserInfo();
-    this.getAiId();
-  },
-  methods: {
-    ...mapMutations(['setUserInfo', 'setAiExpertId']),
-    // getUserInfo() {
-    //   if (!this.uId) {
-    //     return;
-    //   }
-    //   this.$axios
-    //     .fetchPost('Mobile/User/userCenter', {
-    //       uId: this.uId,
-    //     })
-    //     .then((res) => {
-    //       if (res.data.code == 0) {
-    //         this.setUserInfo(res.data.data);
-    //       }
-    //     });
-    // },
-    getAiId() {
-      this.$axios.fetchPost('Mobile/Sysconfig/getAiExpert').then((res) => {
-        if (res.data.code == 0) {
-          this.setAiExpertId(res.data.data);
-        }
-      });
-    },
-  },
-};
+onMounted(async () => {
+  // 获取ai的id
+  const data = await getAi();
+  store.commit('setAiExpertId', data);
+  const { mid: initMid } = await getInitMid();
+  store.commit('setInitMid', initMid);
+});
 </script>
-<style lang="stylus">
-#app
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align left
-  background #EBEBEB
-  min-height 100%
-  position relative
-  padding-top 40px
-  max-width 640px
-  margin 0 auto
-body
-  background #EBEBEB
+
+<style lang="scss">
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+  background: #ebebeb;
+  min-height: 100%;
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  .app-box {
+    padding-top: 40px;
+  }
+  .old {
+    &.app-box {
+      padding-top: 55px;
+    }
+  }
+}
 </style>

@@ -10,7 +10,7 @@
         placeholder="请输入手机号"
         :rules="[
           { required: true, message: '请输入手机号' },
-          { validator: validatorPhone, message: '请输入正确的手机号' }
+          { validator: validatorPhone, message: '请输入正确的手机号' },
         ]"
       />
       <van-field
@@ -23,7 +23,7 @@
         :rules="[{ required: true, message: '请输入4位验证码' }]"
       >
         <template #button>
-          <div class=" btn" v-if="showBtn" @click="start">发送验证码</div>
+          <div class="btn" v-if="showBtn" @click="start">发送验证码</div>
           <div v-show="!showBtn">
             <van-count-down
               ref="countDown"
@@ -45,14 +45,14 @@
         :rules="[
           {
             required: true,
-            message: '请输入密码（6-20位）'
+            message: '请输入密码（6-20位）',
           },
           {
             validator: passwordLengValidator,
-            message: passwordLengthMessage
-          }
+            message: passwordLengthMessage,
+          },
         ]"
-        :formatter="value => value.replace(/\s/g, '')"
+        :formatter="(value) => value.replace(/\s/g, '')"
       />
       <van-field
         v-model="findPassword2"
@@ -60,13 +60,13 @@
         name="findPassword2"
         placeholder="请确认密码"
         maxlength="20"
-        :formatter="value => value.replace(/\s/g, '')"
+        :formatter="(value) => value.replace(/\s/g, '')"
         :rules="[
           { required: true, message: '新输入密码不一致' },
-          { validator: validatorPw2, message: '新输入密码不一致' }
+          { validator: validatorPw2, message: '新输入密码不一致' },
         ]"
       />
-      <div style="margin: 16px;margin-top:45px">
+      <div style="margin: 16px; margin-top: 45px">
         <van-button
           round
           block
@@ -74,7 +74,7 @@
           native-type="submit"
           class="sub"
           :class="{
-            success: findPhone && findCode && findPassword && findPassword2
+            success: findPhone && findCode && findPassword && findPassword2,
           }"
         >
           保存
@@ -84,32 +84,30 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import { mapActions } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import { mapActions } from 'vuex';
+import { useTitles } from '@/common/js/useTitles';
 
 export default {
   setup() {
-    useMeta({
-      title: "找回密码"
-    });
+    useTitles('找回密码');
     // const formatterPwd = () => {
     //   return;
     // };
   },
 
-  name: "findPassword",
+  name: 'findPassword',
   components: { Header },
   props: {},
   data() {
     return {
       showBtn: true,
       clickTrue: false,
-      findPhone: "",
-      findCode: "",
-      findPassword: "",
-      findPassword2: "",
-      passwordLengthMessage: "密码长度不能少于6位"
+      findPhone: '',
+      findCode: '',
+      findPassword: '',
+      findPassword2: '',
+      passwordLengthMessage: '密码长度不能少于6位',
     };
   },
   created() {},
@@ -117,7 +115,7 @@ export default {
   watch: {},
   mounted() {},
   methods: {
-    ...mapActions(["saveUserInfo"]),
+    ...mapActions(['saveUserInfo']),
     validatorPhone(val) {
       // 验证手机号码
       if (/^1(3|4|5|6|7|8|9)\d{9}$/.test(val)) {
@@ -131,18 +129,18 @@ export default {
       // 密码长度6-20
       // console.log("this.findPassword.length", this.findPassword.length);
       if (this.findPassword.length <= 5) {
-        this.passwordLengthMessage = "密码长度不能少于6位";
+        this.passwordLengthMessage = '密码长度不能少于6位';
         // console.log("this.passwordLengthMessage", this.passwordLengthMessage);
         return false;
       }
       if (this.findPassword.length >= 21) {
-        this.passwordLengthMessage = "密码长度不能多于20位";
+        this.passwordLengthMessage = '密码长度不能多于20位';
         return false;
       }
       // return true;
     },
     validatorPw2() {
-      if (this.findPassword2 != "" && this.findPassword2 == this.findPassword) {
+      if (this.findPassword2 != '' && this.findPassword2 == this.findPassword) {
         return true;
       } else {
         return false;
@@ -165,10 +163,10 @@ export default {
     sendPhone() {
       //发送验证码
       this.$axios
-        .fetchPost("Mobile/Member/ServerSmsCode", {
-          mobile: this.findPhone
+        .fetchPost('Mobile/Member/ServerSmsCode', {
+          mobile: this.findPhone,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.$toast(res.data.message);
             this.clickTrue = false;
@@ -180,8 +178,8 @@ export default {
             this.$dialog
               .alert({
                 message: res.data.message,
-                confirmButtonText: "知道了",
-                confirmButtonColor: "#338aff"
+                confirmButtonText: '知道了',
+                confirmButtonColor: '#338aff',
               })
               .then(() => {
                 // on close
@@ -191,31 +189,31 @@ export default {
     },
     lookForPwd(mobile, code, password) {
       this.$axios
-        .fetchPost("/Mobile/Member/BackupPasswd", { mobile, code, password })
-        .then(res => {
+        .fetchPost('/Mobile/Member/BackupPasswd', { mobile, code, password })
+        .then((res) => {
           if (res.data.code == 0) {
             this.saveUserInfo(res.data.data);
 
             this.$toast(res.data.message);
             setTimeout(() => {
               this.$router.push({
-                path: "/"
+                path: '/',
               });
             }, 200);
           } else {
             this.$dialog
               .alert({
                 message: res.data.message,
-                confirmButtonText: "知道了",
-                confirmButtonColor: "#338aff"
+                confirmButtonText: '知道了',
+                confirmButtonColor: '#338aff',
               })
               .then(() => {
                 // on close
               });
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>

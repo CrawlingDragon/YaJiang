@@ -9,9 +9,9 @@
           :src="detail.avatar"
           @click="goToExpert(0, detail.authorid)"
         ></van-image>
-        <div class="name">
+        <div class="name f20 l-h">
           {{ detail.author }}
-          <div class="time">
+          <div class="time f18 l-h">
             {{ detail.addtime }} <span v-if="detail.area">·</span>
             {{ detail.area }}
           </div>
@@ -23,7 +23,7 @@
         @click="benefit"
         v-show="false"
       ></div>
-      <div class="text">{{ detail.content }}</div>
+      <div class="text f20">{{ detail.content }}</div>
       <div class="img-list">
         <div
           class="item"
@@ -51,7 +51,7 @@
       </div>
     </div>
     <div class="answer-box" v-if="detail.replies != 0">
-      <div class="title">解答 {{ detail.replies }}</div>
+      <div class="title f22">解答 {{ detail.replies }}</div>
       <ul class="answer-ul">
         <li v-for="item in detail.answers" :key="item.pid">
           <div class="top">
@@ -62,13 +62,13 @@
               class="avator"
               @click="goToExpert(item.isexpert, item.authorid)"
             ></van-image>
-            <div class="name">
-              {{ item.name
-              }}<span v-show="item.groupname != ''">({{ item.groupname }})</span>
+            <div class="name f20">
+              {{ item.name }}
+              <span v-show="item.groupname != ''">({{ item.groupname }})</span>
             </div>
-            <div class="time">{{ item.addtime }}</div>
+            <div class="time f18">{{ item.addtime }}</div>
           </div>
-          <div class="text">{{ item.content }}</div>
+          <div class="text f20 l-h">{{ item.content }}</div>
           <div class="image-ul">
             <div
               class="item"
@@ -81,47 +81,47 @@
           </div>
           <div class="lookat-yinongbao">{{ item.add_wenlist_tips }}</div>
           <div
-            class="rote"
+            class="rote f18"
             @click="showPopupRote(item)"
             v-if="
               detail.isself == 1 &&
-                item.isself == 0 &&
-                item.score == '' &&
-                item.isexpert != 0
+              item.isself == 0 &&
+              item.score == '' &&
+              item.isexpert != 0
             "
           >
             <div class="icon"></div>
             评分
           </div>
           <div class="roted-box" v-if="item.score != '' && item.score.viewstatus == 1">
-            <div class=" top">
+            <div class="top">
               <van-image
                 round
                 :src="item.score.avatar"
                 fit="cover"
-                class="img"
+                class="img rote-img"
                 @click="goToExpert(item.score.utype, item.score.authorid)"
               ></van-image>
               <div class="rig">
-                <p class="p1">{{ item.score.name }}</p>
-                <p class="p2">{{ item.score.addtime }}</p>
+                <p class="p1 f20 l-h">{{ item.score.name }}</p>
+                <p class="p2 f18 l-h">{{ item.score.addtime }}</p>
               </div>
             </div>
             <div class="star">
               <van-rate v-model="item.score.score" color="#ff6600" readonly size="27px" />
-              <span v-if="item.score.score == 1">解答非常差</span>
-              <span v-if="item.score.score == 2">解答差</span>
-              <span v-if="item.score.score == 3">解答一般</span>
-              <span v-if="item.score.score == 4">解答好</span>
-              <span v-if="item.score.score == 5">解答很好</span>
+              <span v-if="item.score.score == 1" class="f18">解答非常差</span>
+              <span v-if="item.score.score == 2" class="f18">解答差</span>
+              <span v-if="item.score.score == 3" class="f18">解答一般</span>
+              <span v-if="item.score.score == 4" class="f18">解答好</span>
+              <span v-if="item.score.score == 5" class="f18">解答很好</span>
             </div>
-            <div class="txt">{{ item.score.content }}</div>
+            <div class="txt f20 l-h">{{ item.score.content }}</div>
           </div>
         </li>
       </ul>
     </div>
     <div class="answer-bar" @click="showPopup">
-      <div class="border">我来回答</div>
+      <div class="border f20">我来回答...</div>
     </div>
     <van-popup
       v-model:show="show"
@@ -131,9 +131,7 @@
       :style="{ height: '220px' }"
       class="van-popup-box"
     >
-      <div class="sub subText" @click="sub" :class="{ content: message }">
-        提交
-      </div>
+      <div class="sub subText f18" @click="sub" :class="{ content: message }">提交</div>
       <div class="message-box">
         <van-field
           v-model="message"
@@ -143,7 +141,7 @@
           maxlength="600"
           placeholder="我来回答"
           show-word-limit
-          class="message"
+          class="message f18"
         />
       </div>
     </van-popup>
@@ -153,16 +151,16 @@
       :style="{ height: '234px' }"
       class="rotes"
     >
-      <div class="sub subText" :class="{ content: true }" @click="subRemark">
+      <div class="sub subText f18" :class="{ content: true }" @click="subRemark">
         发表
       </div>
-      <div class="title">评价 {{ author }}</div>
+      <div class="title f18">评价 {{ author }}</div>
       <van-rate v-model="roteValue" color="#ff6600" size="27px" />
-      <span v-if="roteValue == 1" class="rote-text">解答非常差</span>
-      <span v-if="roteValue == 2" class="rote-text">解答差</span>
-      <span v-if="roteValue == 3" class="rote-text">解答一般</span>
-      <span v-if="roteValue == 4" class="rote-text">解答好</span>
-      <span v-if="roteValue == 5" class="rote-text">解答很好</span>
+      <span v-if="roteValue == 1" class="rote-text f18">解答非常差</span>
+      <span v-if="roteValue == 2" class="rote-text f18">解答差</span>
+      <span v-if="roteValue == 3" class="rote-text f18">解答一般</span>
+      <span v-if="roteValue == 4" class="rote-text f18">解答好</span>
+      <span v-if="roteValue == 5" class="rote-text f18">解答很好</span>
       <van-field
         v-model="messageRote"
         rows="3"
@@ -170,7 +168,7 @@
         maxlength="200"
         :placeholder="'请评价' + author"
         show-word-limit
-        class="message"
+        class="message f18"
       />
     </van-popup>
   </div>
@@ -179,13 +177,11 @@
 import Header from '@/components/header/header';
 import { mapState, mapMutations } from 'vuex';
 import { ImagePreview } from 'vant';
-import { useMeta } from 'vue-meta';
 import { login } from '@/common/js/getToken';
+import { useTitles } from '@/common/js/useTitles.ts';
 export default {
   setup() {
-    useMeta({
-      title: '问答详情',
-    });
+    useTitles('问答详情');
   },
   name: 'askDetail',
   components: { Header },
@@ -323,6 +319,52 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .ask_detail-container {
+    .online-box,
+    .answer-box {
+      .top {
+        .avator {
+          width: 60px !important;
+          height: 60px !important;
+        }
+      }
+      .bottom {
+        display: none;
+      }
+    }
+    .answer-box {
+      .answer-ul {
+        padding-bottom: 70px;
+      }
+      .title {
+        height: 55px;
+        line-height: 55px;
+      }
+      .rote-img {
+        width: 60px !important;
+        height: 60px !important;
+      }
+    }
+    .answer-bar {
+      height: 65px;
+      .border {
+        height: 49px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+.border {
+  border: 1px solid $theme-color;
+  color: $theme-color;
+}
+.rote {
+  color: $theme-color;
+}
+</style>
 <style lang="stylus" scoped>
 .ask_detail-container
   padding-bottom 50px
@@ -371,7 +413,7 @@ export default {
             font-size 15px
             flex 1
           .time
-            color #999999
+            color #363A44
             font-size 12px
         .text
           color #666666
@@ -423,7 +465,7 @@ export default {
                 color #333333
                 font-size 15px
               .p2
-                color #999999
+                color #363A44
                 font-size 12px
         .star
           color #666
@@ -450,18 +492,17 @@ export default {
     display flex
     align-items center
     .border
-      border 1px solid #e5e5e5
       border-radius 5px
       margin 0 12px
       flex 1
-      color #989898
       font-size 14px
-      height 29px
-      line-height 29px
+      height 30px
+      line-height 30px
       padding-left 10px
+      border-radius: 49px;
   .van-popup-box
     .sub
-      color #999999
+      color #363A44
       font-size 15px
       text-align right
       height 50px
@@ -499,7 +540,7 @@ export default {
       height 100px
       border 1px solid #e5e5e5
       margin-top 10px
-      /deep/.van-field__word-limit
+      :deep().van-field__word-limit
         margin-top 0
 .online-box
   position relative
@@ -585,7 +626,7 @@ export default {
       background  #0c3387
       max-width 1200px
       margin 0 auto
-      /deep/.no_index_header
+      :deep().no_index_header
         color $theme-color
     .answer-bar
       background  #0c3387
@@ -628,7 +669,7 @@ export default {
       background  #0c3387
       .sub
        color #81b4f3 !important
-    /deep/.van-field__control
+    :deep().van-field__control
       color #fff
     .answer-ul li
       border-bottom 1px solid #9d9d9d !important

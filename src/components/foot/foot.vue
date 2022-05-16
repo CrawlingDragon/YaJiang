@@ -1,49 +1,34 @@
 <template>
   <div class="foot-container">
     <van-tabbar v-model="myActive" route>
-      <van-tabbar-item :to="indexRoute">
+      <van-tabbar-item :to="indexRoute" class="f20">
         <!-- @click="goToIndex"  -->
         <template #icon="props">
-          <div
-            class="icon"
-            :class="props.active ? icon01.active : icon01.inactive"
-          ></div>
+          <div class="icon" :class="props.active ? icon01.active : icon01.inactive"></div>
         </template>
         首页
       </van-tabbar-item>
-      <van-tabbar-item :to="hospital">
+      <van-tabbar-item :to="hospital" class="f20">
         <template #icon="props">
-          <div
-            class="icon"
-            :class="props.active ? icon02.active : icon02.inactive"
-          ></div>
+          <div class="icon" :class="props.active ? icon02.active : icon02.inactive"></div>
         </template>
-        医院
+        进院
       </van-tabbar-item>
-      <van-tabbar-item to="/ask">
+      <van-tabbar-item to="/ask" class="f20">
         <template #icon="props">
-          <div
-            class="icon"
-            :class="props.active ? icon03.active : icon03.inactive"
-          ></div>
+          <div class="icon" :class="props.active ? icon03.active : icon03.inactive"></div>
         </template>
         提问
       </van-tabbar-item>
-      <van-tabbar-item to="/message">
+      <van-tabbar-item to="/message" class="f20">
         <template #icon="props">
-          <div
-            class="icon"
-            :class="props.active ? icon04.active : icon04.inactive"
-          ></div>
+          <div class="icon" :class="props.active ? icon04.active : icon04.inactive"></div>
         </template>
         资讯
       </van-tabbar-item>
-      <van-tabbar-item replace to="/me">
+      <van-tabbar-item replace to="/me" class="f20">
         <template #icon="props">
-          <div
-            class="icon"
-            :class="props.active ? icon05.active : icon05.inactive"
-          ></div>
+          <div class="icon" :class="props.active ? icon05.active : icon05.inactive"></div>
         </template>
         我的
       </van-tabbar-item>
@@ -51,103 +36,122 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState } from 'vuex';
 export default {
-  name: "foot",
+  name: 'foot',
   components: {},
   props: {},
   data() {
     return {
-      hospital: "/into_hospital",
-      indexRoute: "/",
-      myActive: "",
+      hospital: '/into_hospital',
+      indexRoute: '/',
+      myActive: '',
       icon01: {
-        active: "icon01_active",
-        inactive: "icon01_inactive"
+        active: 'icon01_active',
+        inactive: 'icon01_inactive',
       },
       icon02: {
-        active: "icon02_active",
-        inactive: "icon02_inactive"
+        active: 'icon02_active',
+        inactive: 'icon02_inactive',
       },
       icon03: {
-        active: "icon03_active",
-        inactive: "icon03_inactive"
+        active: 'icon03_active',
+        inactive: 'icon03_inactive',
       },
       icon04: {
-        active: "icon04_active",
-        inactive: "icon04_inactive"
+        active: 'icon04_active',
+        inactive: 'icon04_inactive',
       },
       icon05: {
-        active: "icon05_active",
-        inactive: "icon05_inactive"
-      }
+        active: 'icon05_active',
+        inactive: 'icon05_inactive',
+      },
     };
   },
   computed: {
-    ...mapState(["initMid"])
+    ...mapState(['initMid']),
   },
   watch: {
     $route(newVal) {
       // console.log("newVal.name :>> ", newVal.name);
       this.getRouterName(newVal.name);
-    }
+    },
   },
   mounted() {
     let name = this.$route.name;
     this.getRouterName(name);
   },
   methods: {
-    ...mapMutations(["setMid"]),
+    ...mapMutations(['setMid']),
     getRouterName(name) {
       switch (name) {
-        case "hospital":
-          this.hospital = "/into_hospital";
-          this.indexRoute = "/index";
+        case 'hospital':
+          this.hospital = '/into_hospital';
+          this.indexRoute = '/index';
           break;
-        case "intoHospital":
-          this.hospital = "/into_hospital";
-          this.indexRoute = "/index";
+        case 'intoHospital':
+          this.hospital = '/into_hospital';
+          this.indexRoute = '/index';
           break;
-        case "index":
-          this.indexRoute = "/index";
-          this.hospital = "/into_hospital";
+        case 'index':
+          this.indexRoute = '/index';
+          this.hospital = '/into_hospital';
           break;
-        case "/":
-          this.indexRoute = "/index";
-          this.hospital = "/into_hospital";
+        case '/':
+          this.indexRoute = '/index';
+          this.hospital = '/into_hospital';
           break;
-        case "indexOnline":
-          this.indexRoute = "/index_online";
-          this.hospital = "/into_hospital";
+        case 'indexOnline':
+          this.indexRoute = '/index_online';
+          this.hospital = '/into_hospital';
           break;
-        case "me":
-          this.indexRoute = "/";
-          this.hospital = "/into_hospital";
+        case 'me':
+          this.indexRoute = '/';
+          this.hospital = '/into_hospital';
       }
     },
     goToIndex() {
       // 路由 首页
-      this.$router.push({ path: "/index" }).catch(err => err);
+      this.$router.push({ path: '/index' }).catch((err) => err);
     },
     goToHospital() {
       // 路由 医院
-      this.$router.push({ path: "/hospital" }).catch(err => err);
+      this.$router.push({ path: '/hospital' }).catch((err) => err);
     },
     goToAsk() {
       // 路由 提问
-      this.$router.push({ path: "/ask" }).catch(err => err);
+      this.$router.push({ path: '/ask' }).catch((err) => err);
     },
     goToMessage() {
       // 路由 资讯
-      this.$router.push({ path: "/message" }).catch(err => err);
+      this.$router.push({ path: '/message' }).catch((err) => err);
     },
     goToMe() {
       // 路由 我的
-      this.$router.push({ path: "/me" }).catch(err => err);
-    }
-  }
+      this.$router.push({ path: '/me' }).catch((err) => err);
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .foot-container {
+    .van-tabbar {
+      height: 96px;
+    }
+    .icon {
+      width: 36px;
+      height: 36px;
+    }
+    :deep().van-tabbar-item__icon {
+      margin-bottom: 8px;
+    }
+    :deep().van-tabbar-item--active {
+      color: $theme-color;
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .foot-container
   .van-tabbar
@@ -198,6 +202,4 @@ export default {
     background url('./19.png') no-repeat
     background-size contain
     background-position center center
-/deep/.van-tabbar-item--active
-  color $theme-color
 </style>

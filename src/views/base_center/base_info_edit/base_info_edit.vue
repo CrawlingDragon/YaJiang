@@ -16,7 +16,7 @@
         </template>
       </van-field>
       <van-field v-model="name" name="名称" label="名称" placeholder="请输入名称">
-        <template #button><van-icon name="arrow" class="arrow"/></template>
+        <template #button><van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <van-field
         v-model="zuowu"
@@ -26,7 +26,7 @@
         readonly
         @click="clickZuowu"
       >
-        <template #button> <van-icon name="arrow" class="arrow"/></template>
+        <template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <Checkbox
         :chooseData="ChooseData.zwtype"
@@ -41,7 +41,7 @@
         readonly
         @click="clickTime"
       >
-        <template #button> <van-icon name="arrow" class="arrow"/></template>
+        <template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <Checkbox
         :chooseData="ChooseData.supplytime"
@@ -55,7 +55,7 @@
         readonly
         placeholder="请输入规模"
         @click="guimoPicker = true"
-        ><template #button> <van-icon name="arrow" class="arrow"/></template>
+        ><template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <van-popup v-model:show="guimoPicker" position="bottom">
         <van-picker
@@ -73,7 +73,7 @@
         placeholder="请输入经营模式"
         readonly
         @click="clickModule"
-        ><template #button> <van-icon name="arrow" class="arrow"/></template>
+        ><template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <Checkbox
         :chooseData="ChooseData.pattern"
@@ -87,7 +87,7 @@
         placeholder="请选择所在地"
         readonly
         @click="addressPicker = true"
-        ><template #button> <van-icon name="arrow" class="arrow"/></template>
+        ><template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <van-popup v-model:show="addressPicker" position="bottom">
         <van-picker
@@ -104,7 +104,7 @@
         placeholder="请选择主营商品"
         readonly
         @click="openSeller"
-        ><template #button> <van-icon name="arrow" class="arrow"/></template>
+        ><template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <!-- <AskChooseCrop
         v-show="sellShow"
@@ -112,10 +112,10 @@
         @getCrop="chooseSell"
       ></AskChooseCrop> -->
       <van-field v-model="linkman" name="联系人" label="联系人" placeholder="请选择联系人"
-        ><template #button> <van-icon name="arrow" class="arrow"/></template>
+        ><template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <van-field v-model="phone" name="号码" label="号码" placeholder="请输入号码"
-        ><template #button> <van-icon name="arrow" class="arrow"/></template>
+        ><template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <van-field
         v-model="address"
@@ -123,7 +123,7 @@
         label="经营地址"
         placeholder="请输入经营地址"
       >
-        <template #button> <van-icon name="arrow" class="arrow"/></template>
+        <template #button> <van-icon name="arrow" class="arrow" /></template>
       </van-field>
       <div class="company-box" style="margin-top: 10px">
         <van-field
@@ -134,7 +134,7 @@
           readonly
           @click="clickCompanyTypes"
         >
-          <template #button> <van-icon name="arrow" class="arrow"/></template>
+          <template #button> <van-icon name="arrow" class="arrow" /></template>
         </van-field>
         <van-popup v-model:show="typesnamePicker" position="bottom">
           <van-picker
@@ -152,7 +152,7 @@
           @click="clickGenre"
           readonly
         >
-          <template #button> <van-icon name="arrow" class="arrow"/></template>
+          <template #button> <van-icon name="arrow" class="arrow" /></template>
         </van-field>
         <van-popup v-model:show="genrePicker" position="bottom">
           <van-picker
@@ -422,10 +422,9 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-@import '../../../common/css/base.styl'
 .edit-container
   padding-bottom 20px
-  /deep/.van-field__control
+  :deep().van-field__control
     text-align right
     font-size 14px
   .upload-box
@@ -436,7 +435,7 @@ export default {
       width 80px
       height 80px
       overflow hidden
-    /deep/.van-uploader__input-wrapper
+    :deep().van-uploader__input-wrapper
       position absolute
       width 80px
       height 80px
@@ -452,7 +451,7 @@ export default {
 .arrow
   margin-top -2px
   vertical-align middle
-  color #999999
+  color #363A44
 .submit
   background: #155BBB;
   border-radius: 8px;
@@ -473,14 +472,14 @@ export default {
       height 100%
       font-size 16px
       background #FAFAFA
-      /deep/.van-checkbox
+      :deep().van-checkbox
         width 100%
         height 100%
         display block
         position absolute
         left 0
         right 0
-      /deep/.van-checkbox__icon
+      :deep().van-checkbox__icon
         position absolute
         width 100%
         height 100%

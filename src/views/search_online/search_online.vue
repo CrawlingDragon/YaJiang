@@ -6,7 +6,7 @@
         v-model="value"
         show-action
         clearable
-        placeholder="搜索问答/搜索作物"
+        placeholder="搜索问答"
         @search="onSearch"
         @cancel="onCancel"
       />
@@ -45,52 +45,47 @@
   </div>
 </template>
 <script>
-import Header from "@/components/header/header";
-import OnlineItem from "@/components/online_item/online_item";
-import { useMeta } from "vue-meta";
+import Header from '@/components/header/header';
+import OnlineItem from '@/components/online_item/online_item';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-    useMeta({
-      title: "搜索网诊"
-    });
+    useTitles('搜索网诊');
   },
-  name: "searchOnline",
+  name: 'searchOnline',
   components: { Header, OnlineItem },
   props: {},
   data() {
     return {
-      value: "",
+      value: '',
       zuowu: [],
       online: [],
       noData: false,
       loading: true,
       finished: false,
-      page: 0
+      page: 0,
     };
   },
   beforeRouteEnter(to, from, next) {
     // ...
-    if (from.name != "askDetail") {
+    if (from.name != 'askDetail') {
       // this.value = ''
-      next(vm => {
-        vm.value = "";
+      next((vm) => {
+        vm.value = '';
         vm.zuowu = [];
         vm.online = [];
       });
     }
     next();
   },
-  created() {},
-  computed: {},
-  watch: {},
-  mounted() {},
+
   methods: {
     onLoad() {
       this.getSearchResult();
     },
     onSearch(val) {
       // console.log("val :>> ", val);
-      if (val != "") {
+      if (val != '') {
         this.page = 0;
         this.online = [];
         this.zuowu = [];
@@ -102,12 +97,12 @@ export default {
       this.noData = false;
       this.page += 1;
       this.$axios
-        .fetchPost("Mobile/Wen/index", {
+        .fetchPost('Mobile/Wen/index', {
           keyword: this.value,
           page: this.page,
-          isall: "all"
+          isall: 'all',
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.loading = false;
             this.zuowu = res.data.zwdata;
@@ -124,24 +119,25 @@ export default {
     },
     onCancel() {
       this.$router.push({
-        path: "/index"
+        path: '/index',
       });
     },
     goToCrop(name, time, fid) {
       this.$router.push({
-        path: "/searchOnlineCrop",
-        query: { crop: name, time: time, fid: fid }
+        path: '/searchOnlineCrop',
+        query: { crop: name, time: time, fid: fid },
       });
-    }
-  }
+    },
+  },
 };
 </script>
+
 <style lang="stylus" scoped>
 .search-online
   .content01
     .title
       padding 15px 0
-      color #999999
+      color #363A44
       font-size 12px
       padding-left 12px
     .text-box
@@ -162,12 +158,12 @@ export default {
           line-height 15px
           margin-bottom 7px
         .p2
-          color #999999
+          color #363A44
           font-size 12px
   .content02
     .title
       padding 15px 0
-      color #999999
+      color #363A44
       font-size 12px
       padding-left 12px
     .online-ul

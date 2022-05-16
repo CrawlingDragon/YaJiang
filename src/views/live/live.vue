@@ -42,12 +42,10 @@
 import Header from '@/components/header/header';
 import HospitalHeader from '@/components/hospital_header/hospital_header';
 import { mapState, mapMutations } from 'vuex';
-import { useMeta } from 'vue-meta';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-    useMeta({
-      title: '直播',
-    });
+    useTitles('直播');
   },
   name: 'live',
   components: { Header, HospitalHeader },
@@ -157,7 +155,7 @@ export default {
           color #333333
           font-size 16px
         .right
-          color #999999
+          color #363A44
           font-size 12px
       .status
         position absolute
@@ -173,7 +171,7 @@ export default {
         &.living
           background #ff6600
         &.lived
-          background #999999
+          background #363A44
         &.before_live
           background #155BBB
       .hospital

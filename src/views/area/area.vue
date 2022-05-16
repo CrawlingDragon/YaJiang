@@ -20,7 +20,7 @@
           :class="{ searchBox: searchBox }"
         />
       </form>
-      <div style="background:#ebebeb">
+      <div style="background: #ebebeb">
         <div class="now-choose-title">当前选择:{{ viewAddress }}</div>
         <div class="tip-title">定位/最近访问</div>
         <div class="choose-wrap">
@@ -30,12 +30,12 @@
               fail:
                 geoViewAddress == '定位失败' ||
                 geoViewAddress == '定位中...' ||
-                geoViewAddress == ''
+                geoViewAddress == '',
             }"
             @click="clickGeoAddress"
           >
             <div class="icon"></div>
-            <div>{{ geoViewAddress || "定位失败" }}</div>
+            <div>{{ geoViewAddress || '定位失败' }}</div>
           </div>
           <div
             class="choosed-area"
@@ -80,17 +80,17 @@
   </div>
 </template>
 <script>
-import Headers from "@/components/header/header.vue";
-import { geo } from "@/common/js/baidu_locationAddress.js";
-import { mapGetters, mapMutations, mapState, useStore } from "vuex";
-import { computed, onUnmounted } from "vue";
-import { useRouter } from "vue-router";
-import { Toast } from "vant";
+import Headers from '@/components/header/header.vue';
+import { geo } from '@/common/js/baidu_locationAddress.js';
+import { mapGetters, mapMutations, mapState, useStore } from 'vuex';
+import { computed, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { Toast } from 'vant';
 export default {
-  name: "areas",
+  name: 'areas',
   metaInfo() {
     return {
-      title: "切换地区"
+      title: '切换地区',
     };
   },
   components: { Headers },
@@ -101,71 +101,71 @@ export default {
     const geoAddress = computed(() => store.state.geoAddress);
     const { geolocationAgain } = geo();
     onUnmounted(() => {
-      if (geoViewAddress.value == "定位中...") {
-        store.commit("setGeoAddress", "定位失败");
+      if (geoViewAddress.value == '定位中...') {
+        store.commit('setGeoAddress', '定位失败');
         return;
       }
     });
     async function clickGeoAddress() {
       //点击定位地址
       // 如果是定位失败。重新定位
-      if (geoViewAddress.value == "定位中...") {
-        Toast("定位中");
+      if (geoViewAddress.value == '定位中...') {
+        Toast('定位中');
         return;
       }
-      if (geoViewAddress.value === "定位失败") {
-        store.commit("setGeoAddress", "定位中...");
+      if (geoViewAddress.value === '定位失败') {
+        store.commit('setGeoAddress', '定位中...');
         await geolocationAgain();
         return;
         // to do
       }
-      store.commit("setAxiosAddress", geoAddress.value);
+      store.commit('setAxiosAddress', geoAddress.value);
       setTimeout(() => {
         router.push({
-          path: "/index"
+          path: '/index',
         });
       }, 300);
     }
     return {
       clickGeoAddress,
-      geoViewAddress
+      geoViewAddress,
     };
   },
   data() {
     return {
-      value: "",
+      value: '',
       hotCity: [],
       list: [],
       searchAddress: [],
       searchBox: false,
       noData: false,
-      show: true
+      show: true,
     };
   },
   activated() {
-    this.value = "";
+    this.value = '';
     this.searchBox = false;
   },
   computed: {
-    ...mapState(["initMid", "geoAddress", "latelyAddressArray"]),
-    ...mapGetters(["viewAddress"]),
+    ...mapState(['initMid', 'geoAddress', 'latelyAddressArray']),
+    ...mapGetters(['viewAddress']),
     initSearchListAll() {
       let arr = [];
-      this.list.forEach(item => {
+      this.list.forEach((item) => {
         arr = arr.concat(item.items);
       });
       return arr;
     },
     computedList() {
       let arr = [];
-      arr = this.list.filter(item => {
+      arr = this.list.filter((item) => {
         return item.items.length != 0;
       });
       return arr;
     },
     indexList() {
       let arr = [];
-      this.list.forEach(item => {
+      this.list.forEach((item) => {
         if (item.items.length != 0) {
           arr.push(item.index);
         }
@@ -174,22 +174,22 @@ export default {
     },
     latelyAddressArrayComputed() {
       let arr = [];
-      this.latelyAddressArray.forEach(item => {
-        let x = item.split(",");
+      this.latelyAddressArray.forEach((item) => {
+        let x = item.split(',');
         let y = x[x.length - 1];
         arr.push(y);
       });
       return arr;
-    }
+    },
   },
   watch: {},
   mounted() {
     this.getAreaList();
   },
   methods: {
-    ...mapMutations(["setAxiosAddress"]),
+    ...mapMutations(['setAxiosAddress']),
     onSearch(val) {
-      if (val != "") {
+      if (val != '') {
         this.page = 0;
         this.searchAddress = [];
         this.searchBox = true;
@@ -200,13 +200,13 @@ export default {
           this.noData = false;
         }
       }
-      if (val == "") {
+      if (val == '') {
         this.searchAddress = [];
         this.searchBox = false;
       }
     },
     filtrate(val) {
-      this.initSearchListAll.forEach(item => {
+      this.initSearchListAll.forEach((item) => {
         let name = item.name;
         if (name.includes(val)) {
           this.searchAddress.push(item);
@@ -221,7 +221,7 @@ export default {
       // console.log("it", it);
       this.setAxiosAddress(it.data);
       setTimeout(() => {
-        this.$router.push({ path: "/index" });
+        this.$router.push({ path: '/index' });
         this.searchBox = false;
       }, 100);
     },
@@ -231,22 +231,22 @@ export default {
       this.setAxiosAddress(this.latelyAddressArray[index]);
 
       setTimeout(() => {
-        this.$router.push({ path: "/index" });
+        this.$router.push({ path: '/index' });
         this.searchBox = false;
       }, 100);
     },
     getAreaList() {
       this.$axios
-        .fetchGet("Mobile/Position/getAreaPostion", { mId: this.initMid })
-        .then(res => {
+        .fetchGet('Mobile/Position/getAreaPostion', { mId: this.initMid })
+        .then((res) => {
           if (res.data.code == 0) {
             this.hotCity = res.data.data.hotcity.letterlist;
             this.list = res.data.data.lists;
             this.show = false;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -285,7 +285,7 @@ export default {
         right 0
     .tip-title
       font-size 14px
-      color: #999999;
+      color: #363A44;
       margin 15px 0
       padding-left 12px
     .choose-wrap
@@ -352,7 +352,7 @@ export default {
       line-height 40px
       border-bottom 1px solid #e5e5e5
       text-indent 20px
-/deep/.van-index-bar__sidebar
+:deep().van-index-bar__sidebar
   z-index 1
 .now-choose-title
   line-height: 40px

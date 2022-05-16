@@ -2,25 +2,15 @@
   <div class="hospital_fast_nav-container" v-show="showFlag">
     <div class="wrap">
       <div class="top">
-        <div class="kind">医院导航</div>
+        <div class="kind f22">医院导航</div>
         <van-icon name="cross" class="cross" @click="closeNav" />
       </div>
       <div class="nav-box">
-        <div class="title">
-          会员服务<span>专属会员服务，一站式解决作物问题</span>
-        </div>
-        <van-grid class="nav-ul" :border="false" :gutter="15">
+        <div class="title f18">会员服务<span>专属会员服务，一站式解决作物问题</span></div>
+        <van-grid class="nav-ul" :border="false" :gutter="10" :column-num="old ? 3 : 4">
           <van-grid-item text="线上网诊" @click="goToOnline" />
-          <van-grid-item
-            text="坐诊巡诊"
-            @click="goToZuo"
-            v-if="hospitalIsStore == 1"
-          />
-          <van-grid-item
-            text="测土配方"
-            @click="goToCeTu"
-            v-if="hospitalIsStore == 1"
-          />
+          <van-grid-item text="坐诊巡诊" @click="goToZuo" v-if="hospitalIsStore == 1" />
+          <van-grid-item text="测土配方" @click="goToCeTu" v-if="hospitalIsStore == 1" />
           <van-grid-item
             text="专家挂号"
             @click="goToRegistration"
@@ -34,31 +24,25 @@
             v-if="hospitalIsStore == 1"
             v-show="false"
           />
-          <van-grid-item text="店铺" @click="lookForStore" />
-          <van-grid-item
-            text="会员提问"
-            @click="goToAsk"
-            v-if="hospitalIsStore == 1"
-          />
-
+          <van-grid-item text="会员提问" @click="goToAsk" v-if="hospitalIsStore == 1" />
           <van-grid-item text="直播" @click="goToLive" v-if="false" />
           <van-grid-item text="简介" @click="goToIntro" />
         </van-grid>
       </div>
       <div
-        class="join-btn"
+        class="join-btn f20"
         v-if="hospitalIsStore == 1 && hospitalIsMember == 0"
         @click="goToApply"
       >
         申请加入医院
-        <span class="free">免费</span>
+        <span class="free f14">免费</span>
       </div>
       <div class="joined" v-if="joinTime">{{ joinTime }} 加入医院成为会员</div>
-      <div class="know-vip" @click="goToVip" v-show="hospitalIsStore == 1">
+      <div class="know-vip f18" @click="goToVip" v-show="hospitalIsStore == 1">
         了解更多会员权益 >
       </div>
       <div class="go-index" @click="gotoHospitalIndex">
-        <div class="box">
+        <div class="box f18">
           <van-image class="logo" :src="hospitalLogo"></van-image>
           <div class="name">{{ hospitalName }}</div>
         </div>
@@ -67,109 +51,100 @@
   </div>
 </template>
 <script>
-import { mapState, useStore } from "vuex";
-import lookForStoreFn from "@/common/js/lookForStore.js";
-import { computed } from "vue";
+import { mapState, useStore } from 'vuex';
+
+import { computed } from 'vue';
 export default {
-  name: "hospitalFastNav",
+  name: 'hospitalFastNav',
   components: {},
   setup() {
     const store = useStore();
-    const ucuid = computed(() => store.state.ucuid);
-    const href =
-      process.env.VUE_APP_SHARE_URL +
-      "Home/Company/companyDetail/ucuid/" +
-      ucuid.value;
-    const { lookForStore } = lookForStoreFn(href);
-    return {
-      lookForStore
-    };
+    const old = computed(() => store.state.old);
+    return { old };
   },
   props: {
     showFlag: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
-    return {
-      shareUrl: process.env.VUE_APP_SHARE_URL
-    };
+    return {};
   },
   computed: {
     ...mapState([
-      "mid",
-      "uId",
-      "joinTime",
-      "hospitalName",
-      "hospitalIsStore",
-      "hospitalIsMember",
-      "hospitalLogo"
-    ])
+      'mid',
+      'uId',
+      'joinTime',
+      'hospitalName',
+      'hospitalIsStore',
+      'hospitalIsMember',
+      'hospitalLogo',
+    ]),
   },
   watch: {},
   mounted() {},
   methods: {
     closeNav() {
-      this.$emit("changeFlag", false);
+      this.$emit('changeFlag', false);
     },
     goToOnline() {
       // 路由  网上巡诊
       this.$router
         .push({
-          path: "hospital_online"
+          path: 'hospital_online',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToZuo() {
       // 路由 坐诊巡诊
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "zuozhen_list"
+          path: 'zuozhen_list',
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉坐诊巡诊是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉坐诊巡诊是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {})
           .catch(() => {
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
         this.$router
           .push({
-            path: "zuozhen_list"
+            path: 'zuozhen_list',
           })
-          .catch(err => err);
+          .catch((err) => err);
       }
-      this.$emit("changeFlag", false);
+      this.$emit('changeFlag', false);
     },
     goToCeTu() {
       // 路由 测土配方
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "cetu_list"
+          path: 'cetu_list',
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉测土配方是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉测土配方是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {
             // on confirm
@@ -177,35 +152,35 @@ export default {
           .catch(() => {
             // on cancel
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
         this.$router
           .push({
-            path: "cetu_list"
+            path: 'cetu_list',
           })
-          .catch(err => err);
+          .catch((err) => err);
       }
 
-      this.$emit("changeFlag", false);
+      this.$emit('changeFlag', false);
     },
     goToRegistration() {
       // 路由 专家挂号
-      if (this.uId == "" || this.uId == undefined) {
+      if (this.uId == '' || this.uId == undefined) {
         this.$router.push({
-          path: "/expert_registration"
+          path: '/expert_registration',
         });
         return;
       }
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉专家挂号是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉专家挂号是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {
             // on confirm
@@ -213,33 +188,33 @@ export default {
           .catch(() => {
             // on cancel
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
         this.$router
           .push({
-            path: "/expert_registration"
+            path: '/expert_registration',
           })
-          .catch(err => err);
+          .catch((err) => err);
       }
-      this.$emit("changeFlag", false);
+      this.$emit('changeFlag', false);
     },
     goToMessage() {
       // 路由 资讯
-      this.$router.push({ path: "/hospital_message" }).catch(err => err);
-      this.$emit("changeFlag", false);
+      this.$router.push({ path: '/hospital_message' }).catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToAsk() {
       // 路由 提问
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: "抱歉会员提问是会员服务，请先申请加入医院再访问",
-            cancelButtonText: "申请加入会员",
-            confirmButtonText: "好的",
-            cancelButtonColor: "#155BBB",
-            confirmButtonColor: "#999"
+            message: '抱歉会员提问是会员服务，请先申请加入医院再访问',
+            cancelButtonText: '申请加入会员',
+            confirmButtonText: '好的',
+            cancelButtonColor: '#155BBB',
+            confirmButtonColor: '#999',
           })
           .then(() => {
             // on confirm
@@ -247,79 +222,151 @@ export default {
           .catch(() => {
             // on cancel
             this.$router.push({
-              path: "/apply_vip"
+              path: '/apply_vip',
             });
           });
       } else {
         this.$router
-          .push({ path: "/ask", query: { from: "hospital" } })
-          .catch(err => err);
+          .push({ path: '/ask', query: { from: 'hospital' } })
+          .catch((err) => err);
       }
-      this.$emit("changeFlag", false);
+      this.$emit('changeFlag', false);
     },
     goToExpert() {
       // 路由 医院专家
       this.$router
         .push({
-          path: "/hospital_expert"
+          path: '/hospital_expert',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToGoodBase() {
       // 路由 优质基地
       this.$router
         .push({
-          path: "/good_base"
+          path: '/good_base',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToLive() {
       // 路由 直播
       this.$router
         .push({
-          path: "/live"
+          path: '/live',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToIntro() {
       // 路由 简介
       this.$router.replace({
-        path: "/hospital_intro"
+        path: '/hospital_intro',
       });
       // .catch((err) => err);
-      this.$emit("changeFlag", false);
+      this.$emit('changeFlag', false);
     },
     gotoHospitalIndex() {
       // 路由 去医院首页
       this.$router
         .push({
-          path: "/hospital"
+          path: '/hospital',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToVip() {
       this.$router
         .push({
-          path: "/vip"
+          path: '/vip',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
     },
     goToApply() {
       this.$router
         .push({
-          path: "/apply_vip"
+          path: '/apply_vip',
         })
-        .catch(err => err);
-      this.$emit("changeFlag", false);
-    }
-  }
+        .catch((err) => err);
+      this.$emit('changeFlag', false);
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .hospital_fast_nav-container {
+    .top {
+      height: 55px;
+      line-height: 55px;
+
+      .cross {
+        width: 71px;
+        font-size: 40px;
+        line-height: 55px;
+      }
+    }
+    .nav-box {
+      .title {
+        span {
+          display: none;
+        }
+      }
+    }
+    .nav-ul {
+      :deep().van-grid-item__text {
+        font-size: 20px;
+      }
+    }
+  }
+}
+.join-btn {
+  background: $theme-three-color;
+}
+.box {
+  border: 1px solid $theme-color;
+  color: $theme-color;
+}
+.nav-ul {
+  font-size: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+  :deep().van-grid-item__content {
+    background: #f6f6f6;
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 8px;
+  }
+  :deep().van-grid-item__text {
+    color: $f-color;
+    font-size: 16px;
+    padding: 0;
+  }
+}
+
+.nav-box {
+  background: #fff;
+  .title {
+    font-size: 12px;
+    padding-left: 12px;
+    line-height: 41px;
+    color: $f-color;
+  }
+  span {
+    margin-left: 9px;
+    color: $f-color-second;
+    font-size: 12px;
+  }
+}
+.know-vip {
+  color: $theme-color;
+  font-size: 12px;
+  padding: 20px 0;
+  text-align: center;
+}
+</style>
 <style lang="stylus" scoped>
 .hospital_fast_nav-container
   position fixed
@@ -339,7 +386,7 @@ export default {
     border-bottom 1px solid #e5e5e5
     .kind
       font-size 14px
-      color #999999
+      color #363A44
       margin-left 12px
       flex 1
     .cross
@@ -350,28 +397,10 @@ export default {
       font-size 15px
       line-height 40px
       color #9D9D9D
-  .nav-box
-    background #fff
-    .title
-      font-size 12px
-      padding-left 12px
-      line-height 41px
-      color #333333
-      span
-        margin-left 9px
-        color #999999
-    .nav-ul
-      font-size 0
-      padding-bottom 20px
-      border-bottom 1px solid #e5e5e5
-      /deep/.van-grid-item__content
-        background #F6F6F6
-        padding 5px 8px
-        border-radius 8px
+
   .join-btn
     width 80%
-    margin 20px auto
-    background #ff6600
+    margin 20px auto 0
     color #fff
     text-align center
     height 50px
@@ -385,11 +414,7 @@ export default {
       top 6px
       font-size 12px
       line-height 12px
-  .know-vip
-    color $theme-color
-    font-size 12px
-    margin 20px 0
-    text-align center
+
   .go-index
     position absolute
     bottom 40px
@@ -399,7 +424,6 @@ export default {
     font-size 14px
     text-align center
     .box
-      border 1px solid $theme-color
       border-radius 4px
       display inline-block
       padding 0 10px
@@ -414,7 +438,7 @@ export default {
         display inline-block
         vertical-align middle
   .joined
-    color #999999
+    color #363A44
     font-size 12px
     text-align center
     margin 20px auto

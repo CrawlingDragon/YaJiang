@@ -2,7 +2,7 @@
   <div class="hospital_intro-container">
     <Header header="indexHeader" navHeader="简介" :mid="mid"></Header>
     <div class="basic-info-box">
-      <div class="title">基本信息</div>
+      <div class="title f22">基本信息</div>
       <div class="item">
         <div class="left">医院名称：</div>
         <div class="text">
@@ -23,26 +23,26 @@
       </div>
       <div class="item num-item">
         <span class="number num1"> 专家 {{ intro.enum }} </span
-        ><span v-if="intro.isstore == 1" class="number num2"
-          >会员 {{ intro.mnum }}</span
+        ><span v-if="intro.isstore == 1" class="number num2">会员 {{ intro.mnum }}</span
         ><span class="number num3">
-          {{ intro.isstore == 1 ? "处方" : "网诊" }} {{ intro.rnum }}</span
+          {{ intro.isstore == 1 ? '处方' : '网诊' }} {{ intro.rnum }}</span
         >
       </div>
-      <div class="title2" v-if="mpublic.length != 0">直属下级医院</div>
+      <div class="title2 f20" v-if="mpublic.length != 0">直属下级医院</div>
       <ul class="lower-level-ul" v-if="mpublic.length != 0">
         <li
           v-for="item in intro.mpublic"
           :key="item.mid"
           @click="goToHospital(item.mid)"
+          class="f18"
         >
           {{ item.name }}
         </li>
       </ul>
     </div>
     <div class="introduce-info">
-      <div class="title">医院介绍</div>
-      <div class="text">{{ intro.introduce }}</div>
+      <div class="title f22">医院介绍</div>
+      <div class="text f18">{{ intro.introduce }}</div>
       <!-- <van-image class="img"></van-image>
       <div class="p1">医院门头</div>
       <van-image class="img"></van-image>
@@ -50,40 +50,38 @@
       <div class="text" v-html="intro.case_info"></div>
     </div>
     <div
-      class="join-btn"
+      class="join-btn f22"
       v-if="intro.ismember == 0 && intro.ismember == 1"
       @click="goToApplyVip"
     >
       申请加入医院
-      <div class="free">免费</div>
+      <div class="free f14">免费</div>
     </div>
-    <div class="joined" v-if="intro.ismember == 1">
+    <div class="joined f22" v-if="intro.ismember == 1">
       {{ intro.addtime }} 加入医院成为会员
     </div>
-    <div class="look-more" @click="goToVip" v-show="intro.isstore == 1">
+    <div class="look-more f18" @click="goToVip" v-show="intro.isstore == 1">
       了解更多会员权益 >
     </div>
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import { mapState, mapMutations } from "vuex";
-import { useMeta } from "vue-meta";
+import Header from '@/components/hospital_header/hospital_header';
+import { mapState, mapMutations } from 'vuex';
+import { useTitles } from '../../common/js/useTitles';
 export default {
   setup() {
-    const { meta } = useMeta({
-      title: "简介"
-    });
-    return { meta };
+    const title = useTitles('简介');
+    return { title };
   },
-  name: "hospitalIntro",
+  name: 'hospitalIntro',
   components: { Header },
   props: {},
   data() {
     return {
-      intro: "",
+      intro: '',
       mpublic: [],
-      HistoryLength: 0
+      HistoryLength: 0,
     };
   },
   // beforeRouteEnter (to, from, next) {
@@ -93,22 +91,22 @@ export default {
   //   // next()
   // },
   computed: {
-    ...mapState(["uId", "mid", "hospitalName"])
+    ...mapState(['uId', 'mid', 'hospitalName']),
   },
   watch: {},
   mounted() {
     this.getDetail();
-    this.meta.title = this.hospitalName;
+    this.title = this.hospitalName;
   },
   methods: {
-    ...mapMutations(["setMid"]),
+    ...mapMutations(['setMid']),
     getDetail() {
       this.$axios
-        .fetchPost("/Mobile/Mpublic/getMpublicShow", {
+        .fetchPost('/Mobile/Mpublic/getMpublicShow', {
           mId: this.mid,
-          uId: this.uId
+          uId: this.uId,
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 0) {
             this.intro = res.data.data;
             this.mpublic = res.data.data.mpublic;
@@ -117,24 +115,42 @@ export default {
     },
     goToApplyVip() {
       this.$router.push({
-        path: "/apply_vip"
+        path: '/apply_vip',
       });
     },
     goToVip() {
       //会员权益
       this.$router.push({
-        path: "/vip"
+        path: '/vip',
       });
     },
     goToHospital(mid) {
       this.setMid(mid);
       this.$router.replace({
-        path: "/hospital"
+        path: '/hospital',
       });
-    }
-  }
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .hospital_intro-container {
+    .basic-info-box {
+      margin-top: 17px;
+      margin-bottom: 16px;
+      .item {
+        font-size: 18px;
+      }
+    }
+  }
+}
+.hospital_intro-container {
+  .look-more {
+    color: $theme-color;
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .hospital_intro-container
   .basic-info-box
@@ -153,6 +169,7 @@ export default {
       color #656565
       font-size 14px
       line-height 26px
+      padding-right: 5px;
       .number
         padding 0 10px
         border-right 1px solid #999
@@ -199,7 +216,7 @@ export default {
     background #fff
     padding 15px
     padding-bottom 0
-    /deep/img
+    :deep()img
       max-width 100%
       width 100%
       display block
@@ -244,7 +261,7 @@ export default {
     text-align center
     height 50px
     line-height 50px
-    color #999999
+    color #363A44
     font-size 15px
   .look-more
     text-align center

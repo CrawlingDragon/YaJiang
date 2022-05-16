@@ -50,10 +50,10 @@
           { validator: passwordLengValidator, message: passwordLengthMessage },
         ]"
       />
-      <div style="margin-top:30px;margin-left:16px">
+      <div style="margin-top: 30px; margin-left: 16px">
         <Deal v-model:checked="checked"></Deal>
       </div>
-      <div style="margin: 16px;">
+      <div style="margin: 16px">
         <van-button
           round
           block
@@ -72,16 +72,14 @@
 <script>
 import Header from '@/components/header/header';
 import { mapActions } from 'vuex';
-import { useMeta } from 'vue-meta';
+import { useTitles } from '@/common/js/useTitles';
 import { login } from '@/common/js/getToken';
 import Deal from '@/components/base/deal/deal.vue';
 export default {
   name: 'sign',
   components: { Header, Deal },
   setup() {
-    useMeta({
-      title: '注册',
-    });
+    useTitles('注册');
   },
   props: {},
   data() {

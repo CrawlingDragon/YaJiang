@@ -2,7 +2,7 @@
   <div class="zuozhen_detail-container">
     <Header header="logoHeader"></Header>
     <ul class="top-ul">
-      <li class="title1">{{ zuozhen.title }}</li>
+      <li class="title1 f22">{{ zuozhen.title }}</li>
       <li>
         <div class="left">送样人</div>
         <div class="right">{{ zuozhen.username }}</div>
@@ -36,7 +36,7 @@
       </div>
     </ul>
     <div class="bottom">
-      <div class="title">处方信息</div>
+      <div class="title f22">处方信息</div>
       <div class="list">
         <div class="left">处方专家</div>
         <div class="right">{{ zuozhen.chufang_expert }}</div>
@@ -47,20 +47,16 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="title">用药信息</div>
+      <div class="title f22">用药信息</div>
       <div class="list">
         <div class="left">看诊结果</div>
         <div class="right">{{ zuozhen.result }}</div>
       </div>
     </div>
     <ul class="bottom" v-show="products.length != 0">
-      <li class="title">处方药({{ products.length }})</li>
+      <li class="title f22">处方药({{ products.length }})</li>
       <li class="chufang-li" v-for="item in zuozhen.products" :key="item.id">
-        <van-image
-          fit="cover"
-          :src="item.thumb_pic"
-          class="chufang-img"
-        ></van-image>
+        <van-image fit="cover" :src="item.thumb_pic" class="chufang-img"></van-image>
         <div class="mid">
           <p class="p1">{{ item.name }}</p>
           <p class="p2">规格:{{ item.spec }} 单价:¥{{ item.price }}</p>
@@ -71,131 +67,159 @@
   </div>
 </template>
 <script>
-import Header from "@/components/hospital_header/hospital_header";
-import { ImagePreview } from "vant";
+import Header from '@/components/hospital_header/hospital_header';
+import { ImagePreview } from 'vant';
+import { useTitles } from '../../common/js/useTitles';
+
 export default {
-  metaInfo() {
-    return {
-      title: "巡诊详情"
-    };
-  },
-  name: "zuozhenDetail",
+  name: 'zuozhenDetail',
   components: { Header, [ImagePreview.Component.name]: ImagePreview.Component },
-  props: {},
+  setup() {
+    useTitles('坐诊巡诊详情');
+  },
   data() {
     return {
-      zuozhen: "我的-巡诊详情",
-      products: []
+      zuozhen: '我的-坐诊巡诊详情',
+      products: [],
     };
   },
   computed: {
     id() {
       return this.$route.query.id;
-    }
+    },
   },
   watch: {
     $route() {
       this.getZuoDetail(this.id);
-    }
+    },
   },
   mounted() {
     this.getZuoDetail(this.id);
   },
   methods: {
     getZuoDetail(id) {
-      this.$axios
-        .fetchPost("/Mobile/Treatment/wenzhenDetail", { id: id })
-        .then(res => {
-          if (res.data.code == 0) {
-            this.zuozhen = res.data.data;
-            this.products = res.data.data.products;
-          }
-        });
+      this.$axios.fetchPost('/Mobile/Treatment/wenzhenDetail', { id: id }).then((res) => {
+        if (res.data.code == 0) {
+          this.zuozhen = res.data.data;
+          this.products = res.data.data.products;
+        }
+      });
     },
     preverImg(index) {
       //网诊的图片预览
       ImagePreview({
         images: this.zuozhen.pic_urls,
         startPosition: index,
-        closeable: true
+        closeable: true,
       });
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="stylus" scoped>
-.zuozhen_detail-container
-  .top-ul
-    margin-top 10px
-    background #fff
-    padding-left 12px
-    .title1
-      color $theme-color
-      font-size 17px
-    li
-      min-height 50px
-      padding 15px 12px
-      padding-left 0
-      display flex
-      border-bottom 1px solid #e5e5e5
-      &:last-child
-        border none
-      .left
-        width 100px
-        color #999999
-        font-size 15px
-      .right
-        flex 1
-        color #333
-    .img-ul
-      padding 15px 12px
-      padding-right 5px
-      .t1
-        color #999999
-        font-size 15px
-        margin-bottom 10px
-      .img
-        display inline-block
-        width 70px
-        height 70px
-        margin-right 10px
-  .bottom
-    margin-top 10px
-    background #fff
-    .title
-      font-size 17px
-      color $theme-color
-      padding 15px 12px
-      border-bottom 1px solid #e5e5e5
-    & > div
-      padding 15px 12px
-      border-bottom 1px solid #e5e5e5
-      &:last-child
-        border none
-    .list
-      display flex
-      .left
-        width 100px
-        color #999999
-        font-size 15px
-      .right
-        flex 1
-        color #333
-        font-size 15px
-  .chufang-li
-    display flex
-    padding 15px 12px
-    .chufang-img
-      width 100px
-      height 100px
-      margin-right 10px
-    .mid
-      flex 1
-      display flex
-      flex-direction column
-      justify-content space-between
-      margin 0
-      .p2
-        color #999
-        font-size 14px
+<style lang="scss" scoped>
+.old {
+  .zuozhen_detail-container {
+    .left,
+    .right {
+      font-size: 17px !important;
+    }
+  }
+}
+.zuozhen_detail-container {
+  .top-ul {
+    margin-top: 10px;
+    background: #fff;
+    padding-left: 12px;
+    .title1 {
+      color: $theme-color;
+      font-size: 17px;
+    }
+    li {
+      min-height: 50px;
+      padding: 20px 15px;
+      padding-left: 0;
+      display: flex;
+      border-bottom: 1px solid #e5e5e5;
+      &:last-child {
+        border: none;
+      }
+      .left {
+        width: 100px;
+        color: #363a44;
+        font-size: 15px;
+      }
+      .right {
+        flex: 1;
+        color: #333;
+      }
+    }
+    .img-ul {
+      padding: 15px 12px;
+      padding-right: 5px;
+      .t1 {
+        color: #363a44;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      .img {
+        display: inline-block;
+        width: 70px;
+        height: 70px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .bottom {
+    margin-top: 10px;
+    background: #fff;
+    padding-left: 12px;
+    .title {
+      font-size: 17px;
+      color: $theme-color;
+      padding: 15px 12px 15px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .list {
+      display: flex;
+      min-height: 50px;
+      padding: 20px 15px;
+      padding-left: 0;
+      display: flex;
+      border-bottom: 1px solid #e5e5e5;
+      &:last-child {
+        border: none;
+      }
+      .left {
+        width: 100px;
+        color: #363a44;
+        font-size: 15px;
+      }
+      .right {
+        flex: 1;
+        color: #333;
+        font-size: 15px;
+      }
+    }
+  }
+  .chufang-li {
+    display: flex;
+    padding: 15px 12px;
+    .chufang-img {
+      width: 100px;
+      height: 100px;
+      margin-right: 10px;
+    }
+    .mid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 0;
+      .p2 {
+        color: #999;
+        font-size: 14px;
+      }
+    }
+  }
+}
 </style>

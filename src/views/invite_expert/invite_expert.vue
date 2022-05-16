@@ -22,20 +22,12 @@
         </div>
       </div>
       <div class="btns van-hairline--top" v-if="item.passed == 0">
-        <div class="btn agree" @click="agree(item.id, 1, item.name)">
-          同意
-        </div>
-        <div class="btn refuse" @click="agree(item.id, 2, item.name)">
-          拒绝
-        </div>
+        <div class="btn agree" @click="agree(item.id, 1, item.name)">同意</div>
+        <div class="btn refuse" @click="agree(item.id, 2, item.name)">拒绝</div>
       </div>
       <div class="btns van-hairline--top" v-else>
-        <div class="btn agree" v-if="item.passed == 1">
-          已同意
-        </div>
-        <div class="btn refuse disbaled" v-if="item.passed == 2">
-          已拒绝
-        </div>
+        <div class="btn agree" v-if="item.passed == 1">已同意</div>
+        <div class="btn refuse disbaled" v-if="item.passed == 2">已拒绝</div>
       </div>
     </li>
   </ul>
@@ -43,12 +35,12 @@
 </template>
 
 <script setup>
-import Header from "@/components/header/header";
-import { ref, computed, onMounted, getCurrentInstance } from "vue";
-import { Toast, Dialog } from "vant";
-import { useMeta } from "vue-meta";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import Header from '@/components/header/header';
+import { ref, computed, onMounted, getCurrentInstance } from 'vue';
+import { Toast, Dialog } from 'vant';
+import { useTitles } from '@/common/js/useTitles';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 const list = ref([]);
 const noData = ref(false);
@@ -56,30 +48,27 @@ const store = useStore();
 const router = useRouter();
 const currentInstance = getCurrentInstance();
 const global = currentInstance.appContext.config.globalProperties;
-useMeta({
-  title: "邀请专家"
-});
+
+useTitles('邀请专家');
 const uId = computed(() => store.state.uId);
 
 function getDataList() {
-  global.$axios
-    .fetchPost("Mobile/User/getMyInvite", { uId: uId.value })
-    .then(res => {
-      if (res.data.code === 0) {
-        list.value = res.data.data;
-      } else {
-        noData.value = true;
-      }
-    });
+  global.$axios.fetchPost('Mobile/User/getMyInvite', { uId: uId.value }).then((res) => {
+    if (res.data.code === 0) {
+      list.value = res.data.data;
+    } else {
+      noData.value = true;
+    }
+  });
 }
 onMounted(() => {
   getDataList();
 });
 function agree(id, passed, name) {
   Dialog.confirm({
-    message: `确定${passed == 1 ? "同意" : "拒绝"}${name}的专家邀请吗`,
-    confirmButtonText: "取消",
-    cancelButtonText: "确定"
+    message: `确定${passed == 1 ? '同意' : '拒绝'}${name}的专家邀请吗`,
+    confirmButtonText: '取消',
+    cancelButtonText: '确定',
   })
     .then(() => {
       // on confirm
@@ -106,11 +95,11 @@ function agree(id, passed, name) {
 // }
 function passedAxiosFn(id, passed) {
   global.$axios
-    .fetchPost("Mobile/User/doMyInvite", { uId: uId.value, id, passed })
-    .then(res => {
+    .fetchPost('Mobile/User/doMyInvite', { uId: uId.value, id, passed })
+    .then((res) => {
       if (res.data.code === 0) {
         getDataList();
-        let msg = passed == 1 ? "已同意" : "已拒绝";
+        let msg = passed == 1 ? '已同意' : '已拒绝';
         Toast(msg);
       } else {
         Toast(res.data.message);
@@ -120,12 +109,12 @@ function passedAxiosFn(id, passed) {
 function goToCenter(item) {
   //去到对应的医院
 
-  store.commit("setMid", item.mid);
-  store.commit("setHospitalName", item.name);
-  store.commit("setHospitalIsStore", item.isstore);
+  store.commit('setMid', item.mid);
+  store.commit('setHospitalName', item.name);
+  store.commit('setHospitalIsStore', item.isstore);
   setTimeout(() => {
     router.push({
-      path: "/hospital"
+      path: '/hospital',
     });
   }, 100);
 }
@@ -140,7 +129,7 @@ function goToCenter(item) {
     margin-bottom 10px
     &.agree-li,&.refuse-li
       .name
-        color #999999 !important
+        color #363A44 !important
       .agree
         background $theme-secondary-color !important
       .refuse
@@ -155,7 +144,7 @@ function goToCenter(item) {
       font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
-      color: #999999;
+      color: #363A44;
     .mid
       display flex
       padding-bottom 15px
