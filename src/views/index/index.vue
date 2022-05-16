@@ -1,38 +1,17 @@
 <template>
   <div class="index-container" ref="index">
     <Header></Header>
-    <div class="swiper-box" ref="swiper">
-      <van-swipe :autoplay="3000" :style="{ height: h }" ref="swiperRef">
-        <van-swipe-item
-          v-for="image in swiperArr"
-          :key="image.id"
-          fit="cover"
-          @click="goToMessageDetail(image)"
-        >
-          <van-image fit="cover" :src="image.logo" lazy-load />
-        </van-swipe-item>
-      </van-swipe>
+    <div class="swiper-box">
+      <Swiper />
     </div>
     <div class="nav-box">
-      <router-link to="/index_online" class="item">
-        <div class="icon i1"></div>
-        <p class="f20">找答案</p>
-      </router-link>
-
-      <router-link to="/look_expert" class="item">
-        <div class="icon i3"></div>
-        <p class="f20">找专家</p>
-      </router-link>
-      <router-link to="/video_list" class="item">
-        <div class="icon i5"></div>
-        <p class="f20">看视频</p>
-      </router-link>
+      <IndexNav />
     </div>
     <div class="hospital-box">
       <div class="title">
         <div class="h1-title f22">推荐医院</div>
         <div class="small-title">加入新型庄稼医院，免费享受会员服务</div>
-        <div class="look-bar f18" @click="lookMoreHospital">找医院 ></div>
+        <div class="look-bar f18" @click="goRouterSwitch('into_hospital')">找医院 ></div>
         <!-- <div class="nowAddress" @click="goToArea">
           <div>{{ viewAddress }}</div>
           <div class="icon"></div>
@@ -48,14 +27,14 @@
         >
       </ul>
     </div>
-    <div class="vip-box" @click="goToVip">
+    <div class="vip-box" @click="goRouterSwitch('vip')">
       <img src="./49.png" alt="" />
     </div>
     <div class="hospital-box">
       <div class="title">
         <div class="h1-title f22">推荐专家</div>
         <div class="small-title">{{ viewSecondAddress }}优秀专家，精准答疑解惑</div>
-        <div class="look-bar f18" @click="goToExpert">找专家 ></div>
+        <div class="look-bar f18" @click="goRouterSwitch('look_expert')">找专家 ></div>
       </div>
       <van-loading size="24px" class="loading" v-if="!expertArr">加载中...</van-loading>
       <ul class="e-ul">
@@ -67,7 +46,7 @@
     <div class="online-box">
       <div class="title f22">
         网诊
-        <div class="look-bar f18" @click="goToAnswer">找答案 ></div>
+        <div class="look-bar f18" @click="goRouterSwitch('index_online')">找答案 ></div>
       </div>
       <ul class="o-ul">
         <li v-for="item in onlineArr" :key="item.id" ref="li">
@@ -75,7 +54,11 @@
         </li>
         <van-loading size="24px" v-if="!onlineArr" class="loading">加载中...</van-loading>
       </ul>
-      <div class="look-bar2" @click="goToAnswer">
+      <div
+        class="look-bar2"
+        @click="goRouterSwitch('index_online')"
+        style="border-top: none"
+      >
         <div class="btn f18">更多网诊 ></div>
       </div>
     </div>
@@ -93,49 +76,17 @@ import RecommendHospital from '@/components/recommend_hospital/recommend_hospita
 import OnlineItem from '@/components/online_item/online_item.vue';
 import RecommendExpert from '@/components/recommend_expert/recommend_expert.vue';
 import Foot from '@/components/foot/foot.vue';
-import { getIndexAdList } from '@/service/banner.js';
+import Swiper from '@/components/swiper/swiper.vue';
+import IndexNav from '@/components/index_nav/index_nav.vue';
 import { ImagePreview } from 'vant';
 import { mapState, mapGetters, mapMutations } from 'vuex';
-import { onMounted, ref, watch } from 'vue';
-import lookForStoreFn from '@/common/js/lookForStore.js';
-import { inToHospitalLocal } from '@/common/js/into_hospital_local';
+import { onMounted, ref, watch, onActivated } from 'vue';
+// import { inToHospitalLocal } from '@/common/js/into_hospital_local';
 import { useTitles } from '@/common/js/useTitles';
-import { useWindowSize } from '@vant/use';
+
 export default {
   setup() {
     useTitles('首页');
-    const { lookForStore } = lookForStoreFn(import.meta.env.VUE_APP_SHARE_URL);
-    // 轮播图数据
-    const swiperArr = ref([]);
-    const h = ref('0px');
-    onMounted(async () => {
-      const result = await getIndexAdList();
-      swiperArr.value = result;
-      // 轮播初始化
-      initSwiperHeight();
-    });
-
-    // 监控窗口变化，改变swiper 的高度变化
-    const { width, height } = useWindowSize();
-    watch(width, (newVal) => {
-      initSwiperHeight(newVal);
-    });
-
-    function initSwiperHeight(width = 0) {
-      if (width >= 640) {
-        width = 640;
-      }
-      h.value = width / (750 / 188) + 'px';
-      if (h.value === '0px') {
-        let w = document.body.clientWidth;
-        h.value = w / (750 / 188) + 'px';
-      }
-    }
-    return {
-      lookForStore,
-      swiperArr,
-      h,
-    };
   },
   name: 'index',
   components: {
@@ -144,6 +95,8 @@ export default {
     OnlineItem,
     Foot,
     RecommendExpert,
+    Swiper,
+    IndexNav,
   },
   props: {},
   data() {
@@ -152,8 +105,6 @@ export default {
       expertArr: '',
       onlineArr: '',
       scrollInit: false,
-      // shareStoreUrl: import.meta.env.VUE_APP_SHARE_URL,
-      life: true,
     };
   },
 
@@ -173,23 +124,17 @@ export default {
     // 获取首页数据
     this.getIndexData();
   },
-  activated() {
-    this.life = true;
-  },
-  deactivated() {
-    this.life = false;
-  },
   methods: {
     ...mapMutations(['setMid', 'setLatelyAddressArray']),
     async getIndexData() {
-      await inToHospitalLocal();
+      // await inToHospitalLocal();
       this.indexDataAxios();
     },
     indexDataAxios() {
       // 获取首页数据
       this.$axios
         .fetchPost('/Mobile/Index/index', {
-          location: this.axiosAddress,
+          location: '杭州',
           uId: this.uId,
         })
         .then((res) => {
@@ -214,34 +159,22 @@ export default {
         closeable: true,
       });
     },
-    goToAnswer() {
-      //  去首页的的网诊
-      this.$router.push({ path: '/index_online' }).catch((err) => err);
-    },
-    goToExpert() {
-      // 找专家
-      this.$router.push({ path: '/look_expert' }).catch((err) => err);
-    },
-    goToVip() {
-      this.$router.push({ path: '/vip' }).catch((err) => err);
-    },
-    goToMessageDetail(item) {
-      //轮播图去资讯详情页
-      switch (item.module) {
-        case 'mp':
-          this.setMid(item.mid);
-          setTimeout(() => {
-            this.$router.push({ path: '/hospital' });
-          });
+    goRouterSwitch(name) {
+      switch (name) {
+        case 'index_online':
+          //  去首页的的网诊
+          this.$router.push({ path: '/index_online' });
           break;
-        case 'webview':
-          window.open(item.mid, '_blank');
+        case 'look_expert':
+          // 找专家
+          this.$router.push({ path: '/look_expert' });
           break;
-        case 'news':
-          this.$router.push({
-            path: '/message_detail',
-            query: { id: item.mid, catid: item.catid },
-          });
+        case 'vip':
+          this.$router.push({ path: '/vip' });
+          break;
+        case 'into_hospital':
+          // 找医院
+          this.$router.push({ path: '/into_hospital' });
           break;
       }
     },
@@ -256,7 +189,6 @@ export default {
       text-align: left;
       display: flex;
       align-items: center;
-
       .h1-title {
         margin-top: 0;
       }
@@ -337,13 +269,6 @@ export default {
       }
     }
   }
-  .nav-box {
-    height: 120px;
-  }
-  .nav-box .item .icon {
-    width: 54px;
-    height: 54px;
-  }
 }
 .help-bar {
   display: flex;
@@ -374,33 +299,7 @@ export default {
     align-items center
     background #FFFFFF
     margin-bottom 10px
-    .item
-      flex 1
-      text-align center
-      .icon
-        width 40px
-        height 40px
-        color #343434
-        font-size 14px
-        margin 0 auto
-        margin-bottom 10px
-        &.i1
-          background url('./1.png') no-repeat center
-          background-size cover
-        &.i2
-          background url('./2.png') no-repeat center
-          background-size cover
-        &.i3
-          background url('./3.png') no-repeat center
-          background-size cover
-        &.i4
-          background url('./4.png') no-repeat center
-          background-size cover
-        &.i5
-          background url('./5.png') no-repeat center
-          background-size cover
-      p
-        color #333333
+
   .hospital-box
     background #fff
     .title

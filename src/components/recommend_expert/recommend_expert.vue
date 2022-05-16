@@ -36,7 +36,6 @@
   </div>
 </template>
 <script>
-import { useTitles } from '../../common/js/useTitles';
 export default {
   name: 'Recommend_expert',
   components: {},
@@ -51,9 +50,6 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  setup() {
-    useTitles('医院专家');
   },
   data() {
     return {

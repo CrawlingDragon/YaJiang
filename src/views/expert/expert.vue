@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="fans">
-        <div class="item f17">赞 {{ expertData.tofollower }}</div>
+        <div class="item f17">赞 {{ expertData.digzan }}</div>
         <div class="item f17">关注 {{ expertData.tofollower }}</div>
         <div class="item f17">粉丝 {{ expertData.follower }}</div>
       </div>

@@ -98,21 +98,19 @@
     </router-view>
   </div>
 </template>
+
 <script>
 import Header from '@/components/hospital_header/hospital_header';
 import areaList from '@/common/js/area';
 import { mapState } from 'vuex';
-import { useTitle } from '@vueuse/core';
-import { onActivated } from 'vue';
+import { useTitles } from '@/common/js/useTitles';
+
 export default {
   name: 'applyVip',
   components: { Header },
   props: {},
   setup() {
-    const title = useTitle();
-    onActivated(() => {
-      title.value = '申请会员';
-    });
+    useTitles('申请会员');
   },
   data() {
     return {

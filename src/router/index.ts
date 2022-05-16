@@ -227,10 +227,7 @@ const routes: RouteRecordRaw[] = [
     meta: { needLogin: true },
     component: () => import('../views/expert/expert.vue'),
   },
-  {
-    path: '/expert_crop',
-    component: () => import('../views/expert_crop/expert_crop.vue'),
-  },
+
   {
     path: '/look_expert',
     name: 'lookExpert',
@@ -444,10 +441,10 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
+  if (to.name === from.name) return; //如果路由跳转是相同的，就取消
   //http://sso.nzsoso.com/sso_logout?redirect_url=http://localhost:8082/index&state=123
   // 接口返回500的时候，就是token/uId 过期的操作
-
   const urlParamsCode = getUrlQuery('code');
   let uId = store.state.uId;
   //登录成功返回时，有code参数，用code请求token
@@ -455,9 +452,10 @@ router.beforeEach(async (to) => {
     // 去请求token
     await fetchGetToken(urlParamsCode);
   } else if (to.meta.needLogin && uId == '') {
-    // meta.needLogin 判断页面是否需要登录，true则跳转到用户中心登录
+    // meta.needLogin 判断页面是否需要登录，true则跳转到用户中心登录。且uId为空时
     const url = window.location.origin + to.path;
     storage.set('redirect_uri', url);
+    // 跳转到用户中心
     login(url);
   }
 });

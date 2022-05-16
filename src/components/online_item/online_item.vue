@@ -37,25 +37,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineEmits } from 'vue';
 import { useRouter } from 'vue-router';
+import { OnlineItemTs } from '@/views/index_online/onlineItem';
 const router = useRouter();
 
 //props
-interface Props {
-  authorid: string;
-  avatar: string;
-  author: string;
-  addtime: string;
-  area: string;
-  title: string;
-  pic_urls_tiny: string[];
-  name: string;
-  replies: string;
-  pic_urls: string[];
-  tid: string;
-}
-const props = defineProps<{ list: Props }>();
+// interface Props {
+//   authorid: string;
+//   avatar: string;
+//   author: string;
+//   addtime: string;
+//   area: string;
+//   title: string;
+//   pic_urls_tiny: string[];
+//   name: string;
+//   replies: string;
+//   pic_urls: string[];
+//   tid: string;
+// }
+const props = defineProps<{ list: OnlineItemTs }>();
 
 //emits
 // 获取点中图片所在的数组，和点中的索引

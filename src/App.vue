@@ -29,6 +29,8 @@ onMounted(async () => {
   // 获取ai的id
   const data = await getAi();
   store.commit('setAiExpertId', data);
+
+  // 获取初始的总院mid
   const { mid: initMid } = await getInitMid();
   store.commit('setInitMid', initMid);
 });

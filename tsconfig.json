@@ -21,6 +21,6 @@
     "src/**/*.vue",
     "src/*.ts",
     "**/*.ts",
-    "src/common/js/util.js"
+    "src/common/js/util.ts"
   ]
 }

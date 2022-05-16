@@ -1,9 +1,9 @@
 import storage from 'good-storage';
 import { useStorage } from '@vueuse/core';
 import { createStore } from 'vuex';
-import { saveUserInfo as saveUserInfoFn, saveUid } from '../common/js/saveUserInfo.js';
+import { saveUserInfo as saveUserInfoFn, saveUid } from '../common/js/saveUserInfo';
 import Cookies from 'js-cookie';
-import saveLatelyAddress from '@/common/js/latelyAddress.js';
+import saveLatelyAddress from '@/common/js/latelyAddress';
 
 interface GlobalState {
   uId: string; // 从缓存中获取uId
@@ -32,7 +32,6 @@ const app = createStore<GlobalState>({
   state: {
     uId: storage.get('uId', ''), // 从缓存中获取uId
     userInfo: storage.get('userInfo', {}),
-    // uid: window.localStorage.getItem("uid") || undefined, //登录用户uid
     initMid: storage.get('initMid', 0), //顶级医院mid 63580    56915
     mid: window.localStorage.getItem('mid'), //医院mid
     joinTime: window.localStorage.getItem('joinTime'), //用户加入医院的时间

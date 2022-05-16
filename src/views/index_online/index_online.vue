@@ -22,19 +22,15 @@
 import Header from '@/components/header/header.vue';
 import OnlineItem from '@/components/online_item/online_item.vue';
 import Foot from '@/components/foot/foot.vue';
-import { useTitle } from '@vueuse/core';
+import { useTitles } from '@/common/js/useTitles';
 import { fetchPost } from '@/http';
 import { ImagePreview } from 'vant';
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
-//ts
-interface OnlineItem {
-  tid: string;
-}
+import { OnlineItemTs } from './onlineItem';
 
 // title
-const title = useTitle();
-title.value = '网诊';
+useTitles('网诊');
 
 // vuex
 const store = useStore();
@@ -42,7 +38,7 @@ const uId = computed(() => store.state.uId);
 const initMid = computed(() => store.state.initMid);
 
 // ref
-const onlineArr = ref<OnlineItem[]>([]);
+const onlineArr = ref<OnlineItemTs[]>([]);
 const page = ref<number>(0);
 const loading = ref<boolean>(false);
 const finished = ref<boolean>(false);

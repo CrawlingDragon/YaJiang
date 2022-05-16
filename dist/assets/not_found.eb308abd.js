@@ -1,0 +1,1 @@
+import{c as t,e as n,f as o}from"./index.a3582b47.js";import{_}from"./plugin-vue_export-helper.21dcd24c.js";const a={};function c(p,r,s,m,i,f){const e=t("van-empty");return n(),o(e,{description:"404\u9519\u8BEF\uFF0C\u8BF7\u8FD4\u56DE",image:"https://img.yzcdn.cn/vant/custom-empty-image.png"})}var v=_(a,[["render",c]]);export{v as default};

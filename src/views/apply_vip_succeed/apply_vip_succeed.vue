@@ -7,37 +7,29 @@
     <div class="index-btn f16" @click="goToHospitalIndex">返回医院首页</div>
   </div>
 </template>
-<script>
-import Header from '@/components/hospital_header/hospital_header';
-
-import { mapState } from 'vuex';
-import { onActivated } from 'vue';
+<script setup lang="ts">
+import Header from '@/components/hospital_header/hospital_header.vue';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import { useTitles } from '../../common/js/useTitles';
-export default {
-  setup() {
-    useTitles('会员申请');
-  },
-  name: 'applyVipSucceed',
-  components: { Header },
-  computed: {
-    ...mapState(['hospitalName', 'old']),
-    size() {
-      return this.old ? 80 : '';
-    },
-  },
+import { useRouter } from 'vue-router';
+useTitles('会员申请');
+const store = useStore();
+const router = useRouter();
+// name: 'applyVipSucceed',
+const hospitalName = computed(() => store.state.hospitalName);
+const old = computed(() => store.state.old);
+const size = computed(() => (old.value ? 80 : ''));
 
-  methods: {
-    goToHospitalIndex() {
-      this.$router.replace({ path: '/hospital' });
-    },
-  },
-};
+function goToHospitalIndex() {
+  router.replace({ path: '/hospital' });
+}
 </script>
 <style lang="scss" scoped>
-.old {
-  .apply_vip_succeed-container {
-  }
-}
+// .old {
+//   .apply_vip_succeed-container {
+//   }
+// }
 .apply_vip_succeed-container {
   text-align: center;
   .icon {

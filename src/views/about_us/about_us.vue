@@ -19,7 +19,6 @@ useTitles('关于我们');
 <style lang="scss" scoped>
 .about-us {
   background: #fff;
-
   margin-top: 15px;
   overflow-y: auto;
   .content {

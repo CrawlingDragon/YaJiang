@@ -81,7 +81,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
 .good_base-container
   .base-ul
     margin-top 10px

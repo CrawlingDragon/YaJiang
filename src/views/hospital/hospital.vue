@@ -56,14 +56,13 @@ import HospitalNav from '@/components/hospital_nav/hospital_nav.vue';
 import MessageItem from '@/components/message_item/message_item.vue';
 import RecommendExpert from '@/components/recommend_expert/recommend_expert.vue';
 import OnlineItem from '@/components/online_item/online_item.vue';
-
 import { mapState, mapMutations } from 'vuex';
 import { ImagePreview } from 'vant';
-import { useTitle } from '@vueuse/core';
+import { useTitles } from '@/common/js/useTitles';
 export default {
   name: 'hospital',
   setup() {
-    const title = useTitle();
+    const title = useTitles('医院首页');
     return { title };
   },
   components: {

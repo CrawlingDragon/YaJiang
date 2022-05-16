@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["not-found"],{"1a44":function(n,t,c){"use strict";c.r(t);var e=c("7a23");function i(n,t,c,i,o,a){var r=Object(e["P"])("van-empty");return Object(e["H"])(),Object(e["h"])(r,{description:"404错误，请返回",image:"https://img.yzcdn.cn/vant/custom-empty-image.png"})}var o={},a=(c("9160"),c("d959")),r=c.n(a);const s=r()(o,[["render",i]]);t["default"]=s},9160:function(n,t,c){"use strict";c("9f77")},"9f77":function(n,t,c){}}]);
-//# sourceMappingURL=not-found.0edc075c.js.map

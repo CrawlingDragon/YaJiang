@@ -150,6 +150,7 @@
       position="bottom"
       :style="{ height: '234px' }"
       class="rotes"
+      v-if="false"
     >
       <div class="sub subText f18" :class="{ content: true }" @click="subRemark">
         发表
@@ -171,6 +172,7 @@
         class="message f18"
       />
     </van-popup>
+    <RatePopup :author="author" />
   </div>
 </template>
 <script>
@@ -179,12 +181,13 @@ import { mapState, mapMutations } from 'vuex';
 import { ImagePreview } from 'vant';
 import { login } from '@/common/js/getToken';
 import { useTitles } from '@/common/js/useTitles.ts';
+import RatePopup from '@/components/rate_popup/rate_popup.vue';
 export default {
   setup() {
     useTitles('问答详情');
   },
   name: 'askDetail',
-  components: { Header },
+  components: { Header, RatePopup },
   props: {},
   data() {
     return {
