@@ -244,48 +244,59 @@ export default {
   }
 }
 </style>
-<style lang="stylus" scoped>
-.me_edit-container
-  ul
-    margin-top 10px
-    padding-left 12px
-    background #fff
-    .upload
-      width 100%
-      :deep().van-uploader__input-wrapper
-        width 100%
-    li
-      display flex
-      align-items center
-      height 50px
-      border-bottom 1px solid #e5e5e5
-      &:last-child
-        border none
-      .left
-        width 90px
-        color #333333
-        font-size 16px
-      .mid
-        flex 1
-        color #333333
-        font-size 16px
-        .avator
-          width 40px
-          height 40px
-          margin-top 5px
-      .arrow
-        margin-right 12px
-        margin-left 4px
-        color #969799
-        min-width 1em
-        height 24px
-        font-size 16px
-        line-height 24px
-  .name
-    width 90%
-    margin 10px auto
-    border 1px solid #e5e5e5
-    height 35px
-    line-height 35px
-    padding 0 12px
+<style lang="scss" scoped>
+.me_edit-container {
+  ul {
+    margin-top: 10px;
+    padding-left: 12px;
+    background: #fff;
+    .upload {
+      width: 100%;
+      :deep().van-uploader__input-wrapper {
+        width: 100%;
+      }
+    }
+    li {
+      display: flex;
+      align-items: center;
+      height: 50px;
+      border-bottom: 1px solid $border-color;
+      &:last-child {
+        border: none;
+      }
+      .left {
+        width: 90px;
+        color: #333333;
+        font-size: 16px;
+      }
+      .mid {
+        flex: 1;
+        color: #333333;
+        font-size: 16px;
+        .avator {
+          width: 40px;
+          height: 40px;
+          margin-top: 5px;
+        }
+      }
+      .arrow {
+        margin-right: 12px;
+        margin-left: 4px;
+        color: #969799;
+        min-width: 1em;
+        height: 24px;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+  }
+  .name {
+    width: 90%;
+    margin: 10px auto;
+    border: 1px solid #e5e5e5;
+    height: 35px;
+    line-height: 35px;
+    padding: 0 12px;
+  }
+}
 </style>

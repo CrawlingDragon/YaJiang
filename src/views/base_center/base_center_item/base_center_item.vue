@@ -110,7 +110,7 @@ export default {
       font-size 14px
       &.btn1
         background: #F1FAFE;
-        border: 1px solid #155BBB;
+        border: 1px solid $border-color;
         color: #155BBB;
       &.btn2
         color #FF6600

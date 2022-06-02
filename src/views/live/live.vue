@@ -122,6 +122,15 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.live-container {
+  .live-ul {
+    li {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .live-container
   .program
@@ -139,7 +148,7 @@ export default {
     background #fff
     li
       padding 15px 12px 0
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       position relative
       &:last-child
         border-bottom none

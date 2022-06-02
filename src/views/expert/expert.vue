@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="fans">
-        <div class="item f17">赞 {{ expertData.digzan }}</div>
+        <!-- <div class="item f17">赞 {{ expertData.digzan }}</div> -->
         <div class="item f17">关注 {{ expertData.tofollower }}</div>
         <div class="item f17">粉丝 {{ expertData.follower }}</div>
       </div>
@@ -435,6 +435,12 @@ export default {
         }
       }
     }
+    .hospital-ul {
+      li {
+        width: 100% !important;
+        height: 105px !important;
+      }
+    }
   }
 }
 .expert-container {
@@ -451,12 +457,6 @@ export default {
     }
     :deep().van-tab {
       flex: 1 auto;
-    }
-    .hospital-ul {
-      li {
-        width: 100% !important;
-        height: 105px !important;
-      }
     }
   }
 }
@@ -551,7 +551,7 @@ export default {
       padding-left 12px
       color #666666
       font-size 12px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       position relative
       .look-more
         color $theme-color
@@ -578,13 +578,13 @@ export default {
     margin-top 10px
     background #fff
     :deep().van-tabs__wrap
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
     :deep().van-tab--active
       color $theme-color
     .answer-ul
       padding 0 12px
       li
-        border-bottom 1px solid #e5e5e5
+        border-bottom 1px solid $border-color
         &:last-child
           border none
     .hospital-ul
@@ -617,7 +617,7 @@ export default {
   z-index 2
   top 40px
 .wrapper
-  background #EBEBEB
+  background #f6f7f8
   position fixed
   left 0
   top 40px

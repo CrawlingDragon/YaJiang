@@ -244,7 +244,7 @@ export default {
   width 100%
   height auto
   margin-top 40px
-  background #ebebeb
+  background #f6f7f8
   .list
     padding 15px
     background #fff

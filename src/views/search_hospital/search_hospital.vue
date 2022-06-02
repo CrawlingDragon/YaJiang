@@ -61,8 +61,7 @@ import { mapState, mapMutations } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
-   
-    useTitles('搜索医院')
+    useTitles('搜索医院');
   },
   name: 'searchHospital',
   components: { Header },
@@ -165,6 +164,13 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.search_hospital-container {
+  li {
+    border-bottom: 1px solid $border-color;
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .search_hospital-container
   color #333
@@ -216,7 +222,7 @@ export default {
     ul
       li
         background #fff
-        border-bottom 1px solid #e5e5e5
+        border-bottom 1px solid $border-color
         padding 15px 12px
         display flex
         align-items center

@@ -53,23 +53,29 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.me_registration-container
-  ul
-    li
-      margin-top 10px
-      background #fff
-      overflow hidden
-      padding 0 12px
-  .noData
-    height 200px
-    padding-top 150px
-    text-align center
-    .p1
-      color #333333
-      font-size 15px
-    .p2
-      font-size 12px
-      color #999
-      margin-top 10px
+<style lang="scss" scoped>
+.me_registration-container {
+  ul {
+    li {
+      margin-top: 10px;
+      background: #fff;
+      overflow: hidden;
+      padding: 0 12px;
+    }
+  }
+  .noData {
+    height: 200px;
+    padding-top: 150px;
+    text-align: center;
+    .p1 {
+      color: #333333;
+      font-size: 15px;
+    }
+    .p2 {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+    }
+  }
+}
 </style>

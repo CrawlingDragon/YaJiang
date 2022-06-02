@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, provide, onMounted } from 'vue';
+import { computed, provide, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import GoTop from '@/components/goTop/goTop.vue';
 import SwitchOld from '@/components/switchOld/switchOld.vue';
@@ -23,7 +23,10 @@ const store = useStore();
 const old = computed(() => store.state.old);
 
 // 适老板的图标的size
-provide('size', old.value ? 33 : '');
+const sizeComputed = computed(() => {
+  return old.value ? 33 : '';
+});
+provide('size', sizeComputed);
 
 onMounted(async () => {
   // 获取ai的id
@@ -41,7 +44,7 @@ onMounted(async () => {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  background: #ebebeb;
+  background: #f6f7f8;
   min-height: 100%;
   position: relative;
   max-width: 640px;

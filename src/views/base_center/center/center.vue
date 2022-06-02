@@ -60,7 +60,7 @@ export default {
     width: 112px;
     height: 40px;
     background: #155BBB;
-    border: 1px solid #155BBB;
+    border: 1px solid $border-color;
     border-radius: 40px;
     font-size: 15px;
     color: #FFFFFF;

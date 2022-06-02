@@ -27,7 +27,7 @@
       height: 55px;
       align-items: center;
       .van-field__control {
-        font-size: $f22;
+        font-size: $f22 !important;
       }
     }
   }
@@ -58,5 +58,17 @@
   .van-tab--active {
     font-size: 20px;
     color: $theme-color;
+  }
+}
+.van-field__word-limit {
+  color: #b3b5b9;
+}
+.van-search {
+  .van-search__action {
+    color: $theme-color !important;
+  }
+  .van-search__content {
+    border-radius: 36px !important;
+    background: #f2f3f3 !important;
   }
 }

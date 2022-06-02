@@ -139,7 +139,7 @@ export default {
       padding: 20px 15px;
       padding-left: 0;
       display: flex;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid $border-color;
       &:last-child {
         border: none;
       }
@@ -177,7 +177,7 @@ export default {
       font-size: 17px;
       color: $theme-color;
       padding: 15px 12px 15px 0;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid $border-color;
     }
     .list {
       display: flex;
@@ -185,7 +185,7 @@ export default {
       padding: 20px 15px;
       padding-left: 0;
       display: flex;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid $border-color;
       &:last-child {
         border: none;
       }

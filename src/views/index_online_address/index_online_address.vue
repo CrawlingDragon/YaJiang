@@ -20,7 +20,7 @@
           :class="{ searchBox: searchBox }"
         />
       </form>
-      <div style="background: #ebebeb">
+      <div style="background: #f6f7f8">
         <div class="now-choose-title">当前选择:{{ currentSelectAddress }}</div>
         <div class="tip-title">定位/最近访问</div>
         <div class="choose-wrap">
@@ -287,6 +287,15 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.area-container {
+  .search-content {
+    .item {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .area-container
   background: #fff
@@ -318,7 +327,7 @@ export default {
       left 0
       z-index 3
     .search-input
-      background: #EBEBEB;
+      background: #f6f7f8;
       margin 0 12px 0 0
       width auto
       border-radius 8px
@@ -338,7 +347,7 @@ export default {
       min-width 23%
       padding 0 3px
       display inline-block
-      // border: 1px solid #E5E5E5;
+      // border: 1px solid $border-color;
       background: #fff
       border-radius: 8px;
       height 35px
@@ -370,7 +379,7 @@ export default {
       padding-left 12px
       li
         min-width 23%
-        // border: 1px solid #E5E5E5;
+        // border: 1px solid $border-color;
         background: #fff
         border-radius: 8px;
         height 35px
@@ -394,7 +403,7 @@ export default {
     .item
       height 40px
       line-height 40px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       text-indent 20px
 :deep().van-index-bar__sidebar
   z-index 1

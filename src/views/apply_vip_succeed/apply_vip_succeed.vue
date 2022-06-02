@@ -52,7 +52,7 @@ function goToHospitalIndex() {
     left: 50%;
     bottom: 50px;
     transform: translateX(-50%);
-    border: 1px solid $theme-color;
+    border: 1px solid $border-color;
     border-radius: 36px;
     font-size: 14px;
     color: $theme-color;

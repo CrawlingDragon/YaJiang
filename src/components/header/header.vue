@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="no_index_header f22" v-if="!indexHeader" @click="clickLogo">
-        <van-image :src="logoUrl" class="logo"></van-image>
+        <van-image :src="logoUrl" class="logo" fit="scale-down"></van-image>
         为农服务平台
       </div>
       <div class="right-nav van-hairline--left">
@@ -224,6 +224,8 @@ export default {
       height: 20px;
       margin-left: 12px;
       margin-right: 10px;
+      border-radius: 100%;
+      border: 1px solid $border-color;
     }
   }
 }

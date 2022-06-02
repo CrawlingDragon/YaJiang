@@ -1,5 +1,5 @@
-// import BMapGL from "BMapGL";
-// import storage from "good-storage";
+// import BMapGL from 'BMapGL';
+import storage from 'good-storage';
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 

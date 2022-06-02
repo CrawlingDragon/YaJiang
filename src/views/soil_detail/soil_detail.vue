@@ -151,25 +151,27 @@ export default {
       border-bottom: 1px solid #e5e5e5;
       font-size: 15px;
       color: #333333;
-      padding: 15px 0;
+      padding: 15px 7px;
       &:last-child {
         border: none;
       }
       .item {
-        padding: 0 0 0 10px;
         display: inline-block;
       }
       .item01 {
-        width: 27%;
+        width: 28%;
       }
       .item02 {
-        width: 15%;
+        width: 17%;
       }
       .item03 {
-        width: 42%;
+        width: 39%;
       }
       .item04 {
         width: 16%;
+      }
+      .item {
+        padding: 0 5px;
       }
       &.title {
         .item {
@@ -193,7 +195,7 @@ export default {
         border: none;
       }
       .left {
-        width: 100px;
+        width: 90px;
       }
       .right {
         flex: 1;

@@ -112,14 +112,14 @@ export default {
         font-size 14px
         margin-bottom 5px
         &.look
-          border: 1px solid #155BBB;
+          border: 1px solid $border-color;
           background: #F1FAFE;
           color #155BBB
         &.take
-          border: 1px solid #FF6600
+          border: 1px solid $theme-color
           background #FEF4ED
           color #FF6600
         &.cancel
           background: #F6F6F6;
-          border: 1px solid #363A44;
+          border: 1px solid $border-color;
 </style>

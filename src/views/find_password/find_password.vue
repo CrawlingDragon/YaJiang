@@ -216,37 +216,45 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.find_password-container
-  height 100%
-  position absolute
-  left 0
-  right 0
-  background #fff
-  .title
-    font-size 24px
-    color #333333
-    text-align center
-    margin 40px 0
-    padding-left 40px
-    span
-      margin-left 19px
-      font-size 15px
-  .from
-    width 80%
-    margin 0 auto
-    .sub
-      background #BBBBBB
-      border none
-      &.success
-        background #ff6600
-        color #fff
-  .go-login
-    margin 15px 0
-    text-align center
-    color #ff6600
-    font-size 15px
-  .van-count-down
-    color #999
-    font-size 13px
+<style lang="scss" scoped>
+.find_password-container {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #fff;
+  .title {
+    font-size: 24px;
+    color: #333333;
+    text-align: center;
+    margin: 40px 0;
+    padding-left: 40px;
+    span {
+      margin-left: 19px;
+      font-size: 15px;
+    }
+  }
+  .from {
+    width: 80%;
+    margin: 0 auto;
+    .sub {
+      background: #bbbbbb;
+      border: none;
+      &.success {
+        background: #ff6600;
+        color: #fff;
+      }
+    }
+  }
+  .go-login {
+    margin: 15px 0;
+    text-align: center;
+    color: #ff6600;
+    font-size: 15px;
+  }
+  .van-count-down {
+    color: #999;
+    font-size: 13px;
+  }
+}
 </style>

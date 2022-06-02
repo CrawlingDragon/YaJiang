@@ -91,14 +91,18 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.hospital_online-container
-  ul
-    background #fff
-    margin-top 10px
-    padding-left 12px
-    li
-      border-bottom 1px solid #e5e5e5
-      &:last-child
-        border none
+<style lang="scss" scoped>
+.hospital_online-container {
+  ul {
+    background: #fff;
+    margin-top: 10px;
+    padding-left: 12px;
+    li {
+      border-bottom: 1px solid $border-color;
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
 </style>

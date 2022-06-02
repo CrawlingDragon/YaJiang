@@ -149,6 +149,10 @@ export default {
     :deep().van-tabbar-item--active {
       color: $theme-color;
     }
+    :deep().van-tabbar-item__text {
+      font-size: 20px !important;
+      transform: scale(1);
+    }
   }
 }
 </style>
@@ -202,4 +206,7 @@ export default {
     background url('./19.png') no-repeat
     background-size contain
     background-position center center
+  :deep().van-tabbar-item__text
+    font-size: 12px;
+    transform: scale(0.83)
 </style>

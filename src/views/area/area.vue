@@ -20,7 +20,7 @@
           :class="{ searchBox: searchBox }"
         />
       </form>
-      <div style="background: #ebebeb">
+      <div style="background: #f6f7f8">
         <div class="now-choose-title">当前选择:{{ viewAddress }}</div>
         <div class="tip-title">定位/最近访问</div>
         <div class="choose-wrap">
@@ -249,114 +249,133 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.area-container
-  background: #fff
-  .loading
-    width 100%
-    padding-top 50%
-    height 100vh
-    position: fixed
-    left 0
-    top 0
-    right: 0
-    bottom 0
-  .area-content
-    padding-top 12px
-
-    &.searchBox
-      height 300px
-      overflow hidden
-      padding-top 67px
-      position fixed
-      top 40px
-      right 0
-      left 0
-      z-index 3
-    .search-input
-      background: #EBEBEB;
-      margin 0 12px 0 0
-      width auto
-      border-radius 8px
-      &.searchBox
-        position fixed
-        top 52px
-        left 12px
-        right 0
-    .tip-title
-      font-size 14px
-      color: #363A44;
-      margin 15px 0
-      padding-left 12px
-    .choose-wrap
-      padding-left 12px
-    .choosed-area
-      min-width 23%
-      padding 0 3px
-      display inline-block
-      // border: 1px solid #E5E5E5;
-      background: #fff
+<style lang="scss" scoped>
+.area-container {
+  background: #fff;
+  .loading {
+    width: 100%;
+    padding-top: 50%;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .area-content {
+    padding-top: 12px;
+    &.searchBox {
+      height: 300px;
+      overflow: hidden;
+      padding-top: 67px;
+      position: fixed;
+      top: 40px;
+      right: 0;
+      left: 0;
+      z-index: 3;
+    }
+    .search-input {
+      background: #f6f7f8;
+      margin: 0 12px 0 0;
+      width: auto;
       border-radius: 8px;
-      height 35px
-      line-height 35px
-      text-align center
+      &.searchBox {
+        position: fixed;
+        top: 52px;
+        left: 12px;
+        right: 0;
+      }
+    }
+    .tip-title {
+      font-size: 14px;
+      color: #363a44;
+      margin: 15px 0;
+      padding-left: 12px;
+    }
+    .choose-wrap {
+      padding-left: 12px;
+    }
+    .choosed-area {
+      min-width: 23%;
+      padding: 0 3px;
+      display: inline-block;
+      // border: 1px solid $border-color;
+      background: #fff;
+      border-radius: 8px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
       font-size: 16px;
       font-family: Microsoft YaHei;
       color: #333333;
-      margin-right 2%
-      margin-bottom 10px
-      &.location
-        .icon
-          width 12px
-          height: 15px
-          background url('./icon_1.png') center no-repeat
-          background-size contain
-          margin-right: 3px
-        & > div
-          display: inline-block
-          vertical-align: middle
-      &.fail
-        color #999
-        .icon
-          background url('./icon_2.png') center no-repeat
-          background-size contain
-    .hot-city-ul
-      font-size 0
-      margin-right 12px
-      padding-left 12px
-      li
-        min-width 23%
-        // border: 1px solid #E5E5E5;
-        background: #fff
+      margin-right: 2%;
+      margin-bottom: 10px;
+    }
+    &.location {
+      .icon {
+        width: 12px;
+        height: 15px;
+        background: url('./icon_1.png') center no-repeat;
+        background-size: contain;
+        margin-right: 3px;
+      }
+      & > div {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    &.fail {
+      color: #999;
+      .icon {
+        background: url('./icon_2.png') center no-repeat;
+        background-size: contain;
+      }
+    }
+    .hot-city-ul {
+      font-size: 0;
+      margin-right: 12px;
+      padding-left: 12px;
+      li {
+        min-width: 23%;
+        // border: 1px solid $border-color;
+        background: #fff;
         border-radius: 8px;
-        height 35px
-        line-height 35px
-        text-align center
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
         font-size: 16px;
         font-family: Microsoft YaHei;
         color: #333333;
-        margin-right 1%
-        display inline-block
-        margin-bottom 10px
-  .search-content
-    position fixed
-    left 0
-    right 0
-    bottom 0
-    top 108px
-    background #fff
-    z-index 222
-    overflow auto
-    .item
-      height 40px
-      line-height 40px
-      border-bottom 1px solid #e5e5e5
-      text-indent 20px
-:deep().van-index-bar__sidebar
-  z-index 1
-.now-choose-title
-  line-height: 40px
-  padding-left 12px
-  color #333
-  background #fff
+        margin-right: 1%;
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .search-content {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 108px;
+    background: #fff;
+    z-index: 222;
+    overflow: auto;
+    .item {
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid $border-color;
+      text-indent: 20px;
+    }
+  }
+}
+:deep().van-index-bar__sidebar {
+  z-index: 1;
+}
+.now-choose-title {
+  line-height: 40px;
+  padding-left: 12px;
+  color: #333;
+  background: #fff;
+}
 </style>

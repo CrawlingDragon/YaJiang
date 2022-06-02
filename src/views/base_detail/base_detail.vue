@@ -306,7 +306,7 @@ export default {
   .info
     background #fff
     padding-top 100px
-    border-bottom 1px solid #e5e5e5
+    border-bottom 1px solid $border-color
     .item
       margin 20px 0
       width 33.33%

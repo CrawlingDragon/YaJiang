@@ -94,15 +94,20 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.message-container
-  background #fff
-  .message-ul
-    margin-left 12px
-    li
-      border-bottom 1px solid #e5e5e5
-      &:last-child
-        border-bottom none
-.van-empty
-  background #ebebeb
+<style lang="scss" scoped>
+.message-container {
+  background: #fff;
+  .message-ul {
+    margin-left: 12px;
+    li {
+      border-bottom: 1px solid $border-color;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+.van-empty {
+  background: #f6f7f8;
+}
 </style>

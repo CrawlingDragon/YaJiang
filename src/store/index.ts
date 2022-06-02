@@ -185,6 +185,5 @@ const app = createStore<GlobalState>({
       commit('setUserInfo', {});
     },
   },
-  modules: {},
 });
 export default app;

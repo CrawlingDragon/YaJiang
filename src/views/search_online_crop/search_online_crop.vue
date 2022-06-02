@@ -67,17 +67,22 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.searchOnlineCrop-container
-  .title
-    padding 21px 0 15px 12px
-    font-size 14px
-    color #363A44
-  .crop-ul
-    padding-left 12px
-    background #fff
-    li
-      border-bottom 1px solid #e5e5e5
-      &:last-child
-        border none
+<style lang="scss" scoped>
+.searchOnlineCrop-container {
+  .title {
+    padding: 21px 0 15px 12px;
+    font-size: 14px;
+    color: #363a44;
+  }
+  .crop-ul {
+    padding-left: 12px;
+    background: #fff;
+    li {
+      border-bottom: 1px solid $border-color;
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
 </style>

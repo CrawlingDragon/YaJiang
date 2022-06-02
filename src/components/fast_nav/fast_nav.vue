@@ -75,7 +75,8 @@
     </div>
     <div class="index-btn" @click="goToIndex">
       <div class="btn-content">
-        <div class="logo"></div>
+        <!-- <div class="logo"></div> -->
+        <van-image class="logo" fit="scale-down"></van-image>
         <div class="name f18">为农服务平台</div>
       </div>
     </div>
@@ -269,28 +270,57 @@ export default {
         height: 49px;
         line-height: 49px;
         color: $theme-color;
-        border: 1px solid $theme-color;
+        border: 1px solid $border-color;
       }
       .btn2 {
         height: 49px;
         line-height: 49px;
         background: $theme-color;
-        border: 1px solid $theme-color;
+        border: 1px solid $border-color;
       }
     }
   }
 }
-.btn-content {
-  border: 1px solid $theme-color;
-  color: $theme-color;
+
+.index-btn {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  .btn-content {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 20px;
+    margin: 0 auto;
+    background: rgb(248, 248, 248);
+    border-radius: 36px;
+    line-height: 1.12;
+    font-size: 12px;
+    position: relative;
+    border: 1px solid $border-color;
+    color: $theme-color;
+  }
+  .logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 1px solid $border-color;
+  }
 }
 .btn1 {
   color: $theme-color;
-  border: 1px solid $theme-color;
+  border: 1px solid $border-color;
 }
 .btn2 {
   background: $theme-color;
-  border: 1px solid $theme-color;
+  border: 1px solid $border-color;
+}
+.login-out {
+  color: $theme-color;
 }
 </style>
 <style lang="stylus" scoped>
@@ -301,7 +331,7 @@ export default {
   right 0
   left 50%
   transform translateX(-50%)
-  background #EBEBEB
+  background #f6f7f8
   z-index 11
   max-width 640px
   width 100%
@@ -312,7 +342,7 @@ export default {
     color #363A44
     font-size 14px
     background #fff
-    border-bottom 1px solid #E5E5E5
+    border-bottom 1px solid $border-color
     .van-icon
       width 45px
       font-size 14px
@@ -324,7 +354,7 @@ export default {
     background #fff
     padding-top 15px
     padding-bottom 13px
-    border-bottom 1px solid #E5E5E5
+    border-bottom 1px solid $border-color
     overflow hidden
     width 100%
     .small-title
@@ -388,33 +418,8 @@ export default {
       color $theme-color
       font-size 16px
       margin 0 12px
-  .index-btn
-    position absolute
-    bottom 30px
-    left 0
-    right 0
-    text-align center
-    .btn-content
-      display inline-block
-      width: 178px;
-      height: 36px;
-      margin 0 auto
-      background rgb(248, 248, 248)
-      border-radius 4px
-      line-height 33px
-      font-size 12px
-      // align-items center
-      // padding 0 15px
-      // color $theme-color
-      position relative
-      .logo
-        width 20px
-        height 20px
-        margin-right 5px
-        background url('../../assets/logo.png') no-repeat
-        background-size 100% 100%
-        background-position center
-      & > div
-        display inline-block
-        vertical-align middle
+
+        // background url('../../assets/logo.png') no-repeat
+        // background-size 100% 100%
+        // background-position center
 </style>

@@ -54,6 +54,29 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.old {
+  .me_attention-container {
+    .expert-ul {
+      width: 100%;
+      column-count: auto;
+      padding-right: 12px;
+      margin: 0;
+      padding-left: 12px;
+      padding-bottom: 18px;
+      li {
+        break-inside: auto;
+        height: 90px;
+        padding: 0;
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .me_attention-container
   .expert-ul

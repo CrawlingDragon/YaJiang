@@ -81,6 +81,15 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.good_base-container {
+  .base-ul {
+    li {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .good_base-container
   .base-ul
@@ -91,7 +100,7 @@ export default {
       display flex
       padding 20px 0
       position relative
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       &:last-child
         border none
       .status

@@ -14,25 +14,25 @@
 </template>
 <script>
 // import NoTake from "../no_take/no_take.vue";
-import TakeCaseItem from "../take_case/take_case_item/take_case_item.vue";
-import axios from "@/http";
-import { mapState } from "vuex";
+import TakeCaseItem from '../take_case/take_case_item/take_case_item.vue';
+import axios from '@/http';
+import { mapState } from 'vuex';
 export default {
-  name: "all_case",
+  name: 'all_case',
   components: { TakeCaseItem },
   props: {},
   data() {
-    return { caseArr: [], noData: false, action: "template_list", pId: "" };
+    return { caseArr: [], noData: false, action: 'template_list', pId: '' };
   },
   computed: {
-    ...mapState(["uId"]),
+    ...mapState(['uId']),
     from() {
-      let re = "";
-      if (this.action === "dingyue" || this.action === "templatedel") {
-        re = "template_list";
+      let re = '';
+      if (this.action === 'dingyue' || this.action === 'templatedel') {
+        re = 'template_list';
       }
       return re;
-    }
+    },
   },
   watch: {
     // action() {
@@ -46,25 +46,25 @@ export default {
   methods: {
     clickCase(caseStatus) {
       //点击订阅或者取消
-      console.log("caseStatus :>> ", caseStatus);
+      console.log('caseStatus :>> ', caseStatus);
       this.action = caseStatus.status;
       this.pId = caseStatus.pId;
-      this.getCase("click");
+      this.getCase('click');
     },
     goLook() {
       this.$router.replace({
-        path: "/into_hospital"
+        path: '/into_hospital',
       });
     },
     getCase(click) {
       axios
-        .fetchPost("/Mobile/Gbase/getUserproject", {
+        .fetchPost('/Mobile/Gbase/getUserproject', {
           uId: this.uId,
           action: this.action,
           pId: this.pId,
-          from: this.from
+          from: this.from,
         })
-        .then(res => {
+        .then((res) => {
           let data = res.data;
           if (data.code === 0) {
             this.caseArr = data.data;
@@ -76,8 +76,8 @@ export default {
             this.$toast(data.message);
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -108,7 +108,7 @@ export default {
       width: 112px;
       height: 40px;
       background: #155BBB;
-      border: 1px solid #155BBB;
+      border: 1px solid $border-color;
       border-radius: 40px;
       font-size 15px
       color #fff

@@ -331,7 +331,7 @@ export default {
     }
     .select {
       outline: none;
-      border: 1px solid #e5e5e5;
+      border: 1px solid $border-color;
       height: 30px;
       min-width: 60px;
       border-radius: 4px;
@@ -347,7 +347,7 @@ export default {
     color: $theme-color;
     font-size: 12px;
     border-radius: 4px;
-    border: 1px solid $theme-color;
+    border: 1px solid $border-color;
     border-radius: 36px;
     span {
       margin-right: 10px;

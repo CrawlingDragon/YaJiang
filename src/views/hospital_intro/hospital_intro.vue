@@ -146,6 +146,14 @@ export default {
   }
 }
 .hospital_intro-container {
+  .basic-info-box {
+    .lower-level-ul {
+      li {
+        color: $theme-color;
+        border: 1px solid $theme-color;
+      }
+    }
+  }
   .look-more {
     color: $theme-color;
   }

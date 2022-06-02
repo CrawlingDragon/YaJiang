@@ -22,7 +22,7 @@
     <div class="btn-box">
       <div class="btn f22" @click="openRatePopup">我要评价</div>
     </div>
-    <RatePopup :author="'为弄服务平台'" ref="ratePopupRef" @emitSub="comment"></RatePopup>
+    <RatePopup :author="'为农服务平台'" ref="ratePopupRef" @emitSub="comment"></RatePopup>
   </div>
 </template>
 <script setup lang="ts">
@@ -70,7 +70,7 @@ async function subCommentAjax({ roteMessage, roteValue }: subObj) {
   if (data?.code) {
     Toast(data.message);
   } else {
-    Toast('评价成功');
+    Toast('已发表');
     router.go(0);
   }
 }
@@ -122,9 +122,18 @@ async function getCommentList() {
         }
       }
       .van-icon-star {
-        width: 27px;
-        height: 25px;
+        width: 33px;
+        height: 31px;
         background: url(./41.png) no-repeat;
+        background-size: contain;
+        &:before {
+          display: none;
+        }
+      }
+      .van-icon-star-o {
+        width: 33px;
+        height: 31px;
+        background: url(./42.png) no-repeat;
         background-size: contain;
         &:before {
           display: none;
@@ -155,8 +164,8 @@ async function getCommentList() {
       }
     }
     .van-icon-star {
-      width: 33px;
-      height: 31px;
+      width: 27px;
+      height: 25px;
       background: url(./41.png) no-repeat;
       background-size: contain;
       &:before {
@@ -164,8 +173,8 @@ async function getCommentList() {
       }
     }
     .van-icon-star-o {
-      width: 33px;
-      height: 31px;
+      width: 27px;
+      height: 25px;
       background: url(./42.png) no-repeat;
       background-size: contain;
       &:before {
@@ -189,7 +198,7 @@ async function getCommentList() {
   .btn {
     width: 100%;
     height: 100%;
-    border: 1px solid $theme-color;
+    border: 1px solid $border-color;
     border-radius: 48px;
     font-size: 18px;
     color: $theme-color;

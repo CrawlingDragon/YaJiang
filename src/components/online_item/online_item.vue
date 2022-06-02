@@ -102,6 +102,14 @@ function goToExpert(authorid: string) {
     .bottom {
       display: none;
     }
+    .text {
+      color: $f-color;
+    }
+  }
+}
+.recommend_online-container {
+  .text {
+    color: $f-color;
   }
 }
 </style>
@@ -140,6 +148,8 @@ function goToExpert(authorid: string) {
     font-size 14px
     line-height 22px
     margin 10px 0
+    word-break break-all
+    padding-right 12px
   .img-list
     font-size 0
     .item

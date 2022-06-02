@@ -361,235 +361,264 @@ export default {
   }
 }
 .border {
-  border: 1px solid $theme-color;
+  border: 1px solid $border-color;
   color: $theme-color;
 }
 .rote {
   color: $theme-color;
 }
+.ask_detail-container {
+  &.jiashicang {
+    background: #080f3e;
+    top: 0;
+    padding-top: 30px;
+    .header-container {
+      background: #0c3387;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    :deep().no_index_header {
+      color: $theme-color;
+    }
+  }
+}
+.answer-box {
+  .title {
+    border-bottom: 1px solid $border-color;
+  }
+  .answer-ul {
+    padding-bottom: 55px;
+    li {
+      border-bottom: 1px solid $border-color;
+      .rote {
+        color: $theme-color !important;
+      }
+    }
+  }
+}
 </style>
 <style lang="stylus" scoped>
 .ask_detail-container
-  padding-bottom 50px
-  height 100%
-  position absolute
-  top 40px
-  bottom 0
-  right 0
-  left 0
+  padding-bottom: 50px;
+  height: 100%;
+  position :absolute;
+  top :40px;
+  bottom: 0;
+  right :0;
+  left: 0;
   .online-box
-    margin-top 10px
-    background #fff
-    padding 12px
+    margin-top :10px;
+    background :#fff;
+    padding: 12px;
   .answer-box
-    margin-top 10px
-    background #ebebeb
+    margin-top :10px;
+    background :#f6f7f8;
     .title
-      height 40px
-      line-height 40px
-      padding-left 12px
-      color #333
-      font-size 16px
-      border-bottom 1px solid #e5e5e5
-      background #fff
+      height: 40px;
+      line-height :40px;
+      padding-left :12px;
+      color :#333;
+      font-size :16px;
+      border-bottom :1px solid $border-color;
+      background :#fff;
     .answer-ul
-      padding-bottom 55px
+      padding-bottom :55px;
       li
-        border-bottom 1px solid #e5e5e5
-        padding-right 12px
-        padding-left 12px
-        padding-top 15px
-        padding-bottom 15px
-        background #fff
+        border-bottom :1px solid $border-color;
+        padding-right :12px;
+        padding-left :12px;
+        padding-top: 15px;
+        padding-bottom :15px;
+        background: #fff;
         &:last-child
-          border none
+          border: none;
         & > .top
-          display flex
-          align-items center
-          padding-bottom 10px
+          display: flex;
+          align-items :center;
+          padding-bottom: 10px;
           .avator
-            width 35px
-            height 35px
-            margin-right 15px
+            width: 35px;
+            height :35px;
+            margin-right :15px;
           .name
-            color #333333
-            font-size 15px
-            flex 1
+            color: #333333;
+            font-size: 15px;
+            flex :1;
           .time
-            color #363A44
-            font-size 12px
+            color: #363A44;
+            font-size: 12px;
         .text
-          color #666666
-          font-size 14px
-          line-height 20px
+          color: #666666;
+          font-size :14px;
+          line-height: 20px;
         .image-ul
-          font-size 0
-          padding 5px 0 0
+          font-size: 0;
+          padding:5px 0 0;
           .item
-            width 33.33%
-            display inline-block
-            padding-right 5px
-            height auto
-            margin-bottom 5px
-            height 105px
+            width: 33.33%;
+            display :inline-block;
+            padding-right :5px;
+            height :auto;
+            margin-bottom :5px;
+            height:105px;
             .answer-img
-              height 100%
+              height: 100%;
         .lookat-yinongbao
-          font-size 14px
-          color #999
+          font-size :14px;
+          color :#999;
         .rote
-          display flex
-          align-items center
-          margin-top 10px
-          color $theme-color
-          font-size 12px
+          display :flex;
+          align-items: center;
+          margin-top :10px;
+          color :$theme-color;
+          font-size :12px;
           .icon
-            width 15px
-            height 15px
-            background url('./71.png') no-repeat
-            background-size 100% 100%
-            background-position center
-            margin-right 10px
+            width:15px;
+            height :15px;
+            background :url('./71.png') no-repeat;
+            background-size: 100% 100%;
+            background-position :center;
+            margin-right :10px;
         .roted-box
-          background rgba(243, 243, 243, 1)
-          border-radius 5px
-          margin-top 15px
-          padding 10px
+          background: rgba(243, 243, 243, 1);
+          border-radius: 5px;
+          margin-top :15px;
+          padding :10px;
           & > .top
-            display flex
-            align-items center
-            margin-bottom 6px
+            display: flex;
+            align-items:center;
+            margin-bottom :6px;
             .img
-              width 35px
-              height 35px
-              margin-right 15px
+              width :35px;
+              height :35px;
+              margin-right: 15px;
             .rig
               .p1
-                color #333333
-                font-size 15px
+                color: #333333;
+                font-size :15px;
               .p2
-                color #363A44
-                font-size 12px
+                color: #363A44;
+                font-size: 12px;
         .star
-          color #666
-          font-size 13px
-          display flex
-          align-items center
-          padding-left 46px
+          color:#666;
+          font-size :13px;
+          display :flex;
+          align-items:center;
+          padding-left :46px;
           span
-            margin-left 10px
-            vertical-align middle
-            margin-top 5px
+            margin-left: 10px;
+            vertical-align :middle;
+            margin-top :5px;
         .txt
-          padding-left 46px
-          color #666666
-          font-size 13px
-          margin-top 10px
+          padding-left: 46px;
+          color :#666666;
+          font-size: 13px;
+          margin-top :10px;
   .answer-bar
-    height 50px
-    position fixed
-    bottom 0
-    left 0
-    right 0
-    background #fff
-    display flex
-    align-items center
+    height: 50px;
+    position:fixed;
+    bottom:0;
+    left :0;
+    right: 0;
+    background: #fff;
+    display :flex;
+    align-items :center;
     .border
-      border-radius 5px
-      margin 0 12px
-      flex 1
-      font-size 14px
-      height 30px
-      line-height 30px
-      padding-left 10px
+      border-radius :5px;
+      margin: 0 12px;
+      flex :1;
+      font-size: 14px;
+      height :30px;
+      line-height: 30px;
+      padding-left :10px;
       border-radius: 49px;
   .van-popup-box
     .sub
-      color #363A44
-      font-size 15px
-      text-align right
-      height 50px
-      line-height 50px
-      padding-right 12px
+      color: #363A44;
+      font-size: 15px;
+      text-align :right;
+      height :50px;
+      line-height: 50px;
+      padding-right: 12px;
     .message-box
-      border-top 1px solid #e5e5e5
-      height 175px
+      border-top :1px solid #e5e5e5;
+      height :175px;
       .message
-        height 100%
+        height :100%;
   .rotes
-    padding 14px 12px
+    padding :14px 12px;
     .sub
-      position absolute
-      right 0
-      top 0
-      color #999
-      font-size 12px
-      padding 16px 12px
+      position: absolute;
+      right :0;
+      top :0;
+      color :#999;
+      font-size :12px;
+      padding :16px 12px;
     .title
-      color #333333
-      font-size 15px
-      margin-bottom 15px
-      font-weight 400
+      color :#333333;
+      font-size: 15px;
+      margin-bottom: 15px;
+      font-weight :400;
     .rote-text
-      color #666666
-      font-size 13px
-      vertical-align middle
-      line-height 27px
-      display inline-block
-      vertical-align top
-      margin-top 3px
-      margin-left 20px
+      color: #666666;
+      font-size :13px;
+      vertical-align :middle;
+      line-height :27px;
+      display :inline-block;
+      vertical-align: top;
+      margin-top :3px;
+      margin-left: 20px;
     .message
-      height 100px
-      border 1px solid #e5e5e5
-      margin-top 10px
+      height: 100px;
+      border :1px solid #e5e5e5;
+      margin-top: 10px;
       :deep().van-field__word-limit
-        margin-top 0
+        margin-top: 0;
 .online-box
-  position relative
+  position: relative;
   .top
-    padding-top 15px
-    display flex
-    align-items center
+    padding-top :15px;
+    display :flex;
+    align-items: center;
     .avator
-      width 35px
-      height 35px
-      margin-right 15px
+      width :35px;
+      height :35px;
+      margin-right :15px;
     .name
-      flex 1
-      color #343434
-      font-size 15px
-      line-height 20px
+      flex: 1;
+      color :#343434;
+      font-size: 15px;
+      line-height: 20px;
     .time
-      width auto
-      font-size 12px
-      color #9A9A9A
-      line-height 20px
+      width :auto;
+      font-size: 12px;
+      color :#9A9A9A;
+      line-height :20px;
   .subsidy
-    position absolute
-    right 13px
-    top 20px
-    width 15px
-    height 15px
-    background url('./55.png') no-repeat
-    background-size cover
-    background-position center center
+    position: absolute;
+    right :13px;
+    top :20px;
+    width :15px;
+    height: 15px;
+    background: url('./55.png') no-repeat;
+    background-size :cover;
+    background-position :center center;
   .text
-    color #666666
-    font-size 14px
-    line-height 22px
-    margin 10px 0
+    color :#666666;
+    font-size: 14px;
+    line-height :22px;
+    margin :10px 0;
   .img-list
-    font-size 0
+    font-size: 0;
     .item
-      width 33.33%
-      height 105px
-      padding-right 12px
-      display inline-block
-      margin-bottom 12px
+      width: 33.33%;
+      height :105px;
+      padding-right: 12px;
+      display :inline-block;
+      margin-bottom: 12px;
       .img
-        width 100%
-        height 100%
+        width:100%;
+        height :100%;
   .bottom
     padding-bottom 14px
     padding-top 12px

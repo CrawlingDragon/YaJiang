@@ -8,7 +8,13 @@
     <div class="number">
       <div class="expert" v-if="list.num_expert != 0">专家 {{ list.num_expert }}</div>
       <div class="line" v-show="list.num_expert != 0 && list.num_chufang != 0">|</div>
-      <div class="online" v-if="list.num_chufang != 0">处方 {{ list.num_chufang }}</div>
+      <div
+        class="online"
+        v-if="list.num_chufang != 0"
+        :style="{ 'margin-left': list.num_expert == 0 ? '0px' : '10px' }"
+      >
+        处方 {{ list.num_chufang }}
+      </div>
       <div
         class="line"
         v-show="list.num_wen != 0 && list.isstore == 0"
@@ -91,7 +97,7 @@ function goToIndexHospital() {
   height 100%
   .image
     width 100%
-    height 140px
+    height calc((50vw - 18px)/(3/2))
     margin-bottom 5px
   .p1
     font-size 14px

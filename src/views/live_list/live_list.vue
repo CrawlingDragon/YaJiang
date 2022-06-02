@@ -46,22 +46,27 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.live_list-container
-  background #fff
-  .list-content
-    background #fff
-  .title
-    text-align center
-    padding 0 12px
-    padding 12px
-    font-size 20px
-  .hospital-name
-    text-align right
-    color #155BBB
-    padding-right 12px
-    margin-bottom 20px
-    font-size 14px
-  :deep()img
-    max-width 100%
+<style lang="scss" scoped>
+.live_list-container {
+  background: #fff;
+  .list-content {
+    background: #fff;
+  }
+  .title {
+    text-align: center;
+    padding: 0 12px;
+    padding: 12px;
+    font-size: 20px;
+  }
+  .hospital-name {
+    text-align: right;
+    color: #155bbb;
+    padding-right: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  :deep()img {
+    max-width: 100%;
+  }
+}
 </style>

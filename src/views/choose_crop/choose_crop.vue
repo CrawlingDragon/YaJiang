@@ -151,92 +151,104 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.choose_crop-container
-  padding-top 54px
-  position relative
-  position fixed
-  background #fff
-  left 0
-  top 0
-  right 0
-  bottom 0
-  z-index 333333
-  overflow auto
-  background #EBEBEB
-  .content
-    height auto
-  .from
-    position fixed
-    top 0px
-    left 0
-    right 0
-    z-index 99999999999
-  .history-box
-    margin-top 10px
-    padding-bottom 15px
-    .title
-      height 40px
-      line-height 40px
-      color #333333
-      font-size 15px
-      padding-left 12px
-      background #fff
-      margin-bottom 10px
-    .history-ul
-      padding-left 12px
-      font-size 0
-
-      .small-title
-        font-size 12px
-        color #363A44
-        line-height 12px
-        padding 15px 0
-      li
-        min-width 65px
-        padding 0 5px
-        height 25px
-        line-height 25px
-        color #333333
-        background #fff
-        font-size 15px
-        display inline-block
-        margin-right 15px
-        margin-bottom 10px
-        border-radius 8px
-        text-align center
-  .search_result-ul
-    position absolute
-    top 62px
-    left 0
-    right 0
-    bottom 0
-    background #EBEBEB
-    z-index 111
-    border-top 1px solid #e5e5e5
-    li
-      line-height 40px
-      border-bottom 1px solid #e5e5e5
-      background #fff
-      height 40px
-      color #333333
-      font-size 14px
-      padding 0 12px
-    .noData
-      height 300px
-      padding-top 200px
-      text-align center
-      .other
-        color $theme-color
-.bar
-  z-index 9999999
-  position fixed
-  background #fff
-  left 0
-  top 54px
-  right 0
-  bottom 0
-  width 100%
-  height 100%
-  overflow auto
+<style lang="scss" scoped>
+.choose_crop-container {
+  padding-top: 54px;
+  position: relative;
+  position: fixed;
+  background: #fff;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 333333;
+  overflow: auto;
+  background: #f6f7f8;
+  .content {
+    height: auto;
+  }
+  .from {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    z-index: 99999999999;
+  }
+  .history-box {
+    margin-top: 10px;
+    padding-bottom: 15px;
+    .title {
+      height: 40px;
+      line-height: 40px;
+      color: #333333;
+      font-size: 15px;
+      padding-left: 12px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+    .history-ul {
+      padding-left: 12px;
+      font-size: 0;
+    }
+    .small-title {
+      font-size: 12px;
+      color: #363a44;
+      line-height: 12px;
+      padding: 15px 0;
+    }
+    li {
+      min-width: 65px;
+      padding: 0 5px;
+      height: 25px;
+      line-height: 25px;
+      color: #333333;
+      background: #fff;
+      font-size: 15px;
+      display: inline-block;
+      margin-right: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+  }
+  .search_result-ul {
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f6f7f8;
+    z-index: 111;
+    border-top: 1px solid #e5e5e5;
+    li {
+      line-height: 40px;
+      border-bottom: 1px solid $border-color;
+      background: #fff;
+      height: 40px;
+      color: #333333;
+      font-size: 14px;
+      padding: 0 12px;
+    }
+    .noData {
+      height: 300px;
+      padding-top: 200px;
+      text-align: center;
+    }
+    .other {
+      color: $theme-color;
+    }
+  }
+}
+.bar {
+  z-index: 9999999;
+  position: fixed;
+  background: #fff;
+  left: 0;
+  top: 54px;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
 </style>

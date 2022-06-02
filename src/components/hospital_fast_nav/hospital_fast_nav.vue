@@ -31,9 +31,10 @@
       </div>
       <div
         class="join-btn f20"
-        v-if="hospitalIsStore == 1 && hospitalIsMember == 0"
         @click="goToApply"
+        v-if="hospitalIsStore == 1 && hospitalIsMember == 0"
       >
+        <!-- v-if="hospitalIsStore == 1 && hospitalIsMember == 0" -->
         申请加入医院
         <span class="free f14">免费</span>
       </div>
@@ -322,12 +323,116 @@ export default {
     }
   }
 }
-.join-btn {
-  background: $theme-three-color;
-}
-.box {
-  border: 1px solid $theme-color;
-  color: $theme-color;
+.hospital_fast_nav-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #f6f7f8;
+  z-index: 111;
+  .wrap {
+    background: #fff;
+  }
+  .top {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid $border-color;
+    .kind {
+      font-size: 14px;
+      color: #363a44;
+      margin-left: 12px;
+      flex: 1;
+    }
+    .cross {
+      width: 45px;
+      border-left: 1px solid #e5e5e5;
+      height: 100%;
+      text-align: center;
+      font-size: 15px;
+      line-height: 40px;
+      color: #9d9d9d;
+    }
+  }
+  .join-btn {
+    width: auto;
+    margin: 50px 16px 0;
+    color: #fff;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    font-size: 15px;
+    position: relative;
+    border-radius: 49px;
+    background: $theme-three-color;
+    .free {
+      position: absolute;
+      right: 23px;
+      top: 8px;
+      font-size: 12px;
+      line-height: 12px;
+    }
+  }
+  .go-index {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    color: $theme-color;
+    font-size: 14px;
+    text-align: center;
+    .box {
+      border-radius: 36px;
+      display: inline-block;
+      padding: 8px 20px;
+      line-height: 1.12;
+      border: 1px solid $border-color;
+      color: $theme-color;
+      .logo {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        vertical-align: middle;
+        border-radius: 100%;
+        overflow: hidden;
+      }
+      & > .name {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  .joined {
+    color: #363a44;
+    font-size: 12px;
+    text-align: center;
+    margin: 30px auto 50px;
+    line-height: 1.12;
+  }
+  .know-vip {
+    color: $theme-color;
+    font-size: 12px;
+    padding: 30px 0 50px;
+    text-align: center;
+    line-height: 1.12;
+  }
+  .nav-box {
+    background: #fff;
+    .title {
+      font-size: 12px;
+      padding-left: 12px;
+      line-height: 41px;
+      color: $f-color;
+    }
+    span {
+      margin-left: 9px;
+      color: $f-color-second;
+      font-size: 12px;
+    }
+  }
 }
 .nav-ul {
   font-size: 0;
@@ -345,101 +450,4 @@ export default {
     padding: 0;
   }
 }
-
-.nav-box {
-  background: #fff;
-  .title {
-    font-size: 12px;
-    padding-left: 12px;
-    line-height: 41px;
-    color: $f-color;
-  }
-  span {
-    margin-left: 9px;
-    color: $f-color-second;
-    font-size: 12px;
-  }
-}
-.know-vip {
-  color: $theme-color;
-  font-size: 12px;
-  padding: 20px 0;
-  text-align: center;
-}
-</style>
-<style lang="stylus" scoped>
-.hospital_fast_nav-container
-  position fixed
-  left 0
-  right 0
-  top 0
-  bottom 0
-  background #EBEBEB
-  z-index 111
-  .wrap
-    background #fff
-  .top
-    display flex
-    height 40px
-    align-items center
-    background #fff
-    border-bottom 1px solid #e5e5e5
-    .kind
-      font-size 14px
-      color #363A44
-      margin-left 12px
-      flex 1
-    .cross
-      width 45px
-      border-left 1px solid #e5e5e5
-      height 100%
-      text-align center
-      font-size 15px
-      line-height 40px
-      color #9D9D9D
-
-  .join-btn
-    width 80%
-    margin 20px auto 0
-    color #fff
-    text-align center
-    height 50px
-    line-height 50px
-    font-size 15px
-    position relative
-    border-radius 8px
-    .free
-      position absolute
-      right 6px
-      top 6px
-      font-size 12px
-      line-height 12px
-
-  .go-index
-    position absolute
-    bottom 40px
-    left 0
-    right 0
-    color $theme-color
-    font-size 14px
-    text-align center
-    .box
-      border-radius 4px
-      display inline-block
-      padding 0 10px
-      line-height 30px
-      .logo
-        display inline-block
-        width 20px
-        height 20px
-        margin-right 5px
-        vertical-align middle
-      & > .name
-        display inline-block
-        vertical-align middle
-  .joined
-    color #363A44
-    font-size 12px
-    text-align center
-    margin 20px auto
 </style>

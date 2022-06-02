@@ -180,6 +180,16 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.preview {
+  .step-title-bar {
+    border-top: 8px solid $border-color;
+  }
+  .img {
+    border: 1px solid $border-color;
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .preview
   .step-title-bar
@@ -187,7 +197,7 @@ export default {
     overflow auto
     padding 10px 12px
     background #fff
-    border-top:8px solid #e5e5e5
+    // border-top:8px solid #e5e5e5
     .title-content
       .item-wrap
         display inline-block
@@ -288,7 +298,7 @@ export default {
                 width 60px
                 height 60px
                 background: #FFFFFF;
-                border: 1px solid #E5E5E5;
+                border: 1px solid $border-color;
                 margin-right 10px
               .pharmacy-text
                 .p1

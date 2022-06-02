@@ -70,7 +70,7 @@ export default {
       padding: 15px 12px;
       padding-left: 0;
       background: #fff;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid $border-color;
       &:last-child {
         border: none;
       }

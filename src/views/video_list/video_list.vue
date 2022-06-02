@@ -62,26 +62,32 @@ export default {
   name: 'videoList',
 };
 </script>
-<style lang="stylus" scoped>
-.video_list-container
-  padding-bottom 60px
-  .video-ul
-    margin-top 10px
-    li
-      border-bottom 1px solid #e5e5e5
-      padding 15px 12px 0 12px
-      background #fff
-      &:last-child
-        border none
-      .img
-        width 100%
-        height 150px
-      .p1
-        height 45px
-        line-height 45px
-        color #333
-        font-size 16px
-        overflow hidden
-        text-overflow ellipsis
-        white-space nowrap
+<style lang="scss" scoped>
+.video_list-container {
+  padding-bottom: 60px;
+  .video-ul {
+    margin-top: 10px;
+    li {
+      border-bottom: 1px solid $border-color;
+      padding: 15px 12px 0 12px;
+      background: #fff;
+      &:last-child {
+        border: none;
+      }
+      .img {
+        width: 100%;
+        height: 150px;
+      }
+      .p1 {
+        height: 45px;
+        line-height: 45px;
+        color: #333;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
 </style>

@@ -497,7 +497,7 @@ export default {
       .item
         padding 15px
         padding-right 0
-        border-bottom 1px solid #e5e5e5
+        border-bottom 1px solid $border-color
         &:last-child
           border none
         .name

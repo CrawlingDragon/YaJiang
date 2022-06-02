@@ -104,38 +104,53 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.cetu_list-container
-  .cetu_ul
-    padding-left 12px
-    background #fff
-    margin-top 10px
-    li
-      border-bottom 1px solid #e5e5e5
-      padding 14px 12px 12px 0
-      min-height 50px
-      &:last-child
-        border none
-      .top
-        display flex
-        align-items center
-        flex-wrap nowrap
-        .title
-          min-width 0
-          flex 1
-          overflow hidden
-          text-overflow ellipsis
-          white-space nowrap
-          font-size 15px
-          color #000
-        .time
-          width 100px
-          margin-left 15px
-          font-size 12px
-          color #999
-      .hospital
-        width 100%
-        color #363A44
-        font-size 12px
-        line-height 22px
+<style lang="scss" scoped>
+.old {
+  .cetu_list-container {
+    .time {
+      width: auto !important;
+    }
+  }
+}
+.cetu_list-container {
+  .cetu_ul {
+    padding-left: 12px;
+    background: #fff;
+    margin-top: 10px;
+    li {
+      border-bottom: 1px solid $border-color;
+      padding: 14px 12px 12px 0;
+      min-height: 50px;
+      &:last-child {
+        border: none;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        .title {
+          min-width: 0;
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 15px;
+          color: #000;
+        }
+        .time {
+          width: 100px;
+          margin-left: 15px;
+          font-size: 12px;
+          color: #999;
+        }
+      }
+      .hospital {
+        width: 100%;
+        color: #363a44;
+        font-size: 12px;
+        line-height: 22px;
+      }
+    }
+  }
+}
 </style>

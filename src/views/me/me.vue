@@ -16,32 +16,34 @@
       <van-cell title="加入的医院" to="/me_hospital" is-link>
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
-          <div class="icon01"></div>
+          <!-- <div class="icon01"></div> -->
+          <van-image class="icon01 icon" fit="scale-down"></van-image>
         </template>
       </van-cell>
       <van-cell title="挂号记录" to="/me_registration" is-link>
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
-          <div class="icon02"></div>
+          <van-image class="icon02 icon" fit="scale-down"></van-image>
         </template>
       </van-cell>
 
       <van-cell title="土壤检测" :to="{ path: '/whole_cetu_list' }" is-link>
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
-          <div class="icon04"></div>
+          <!-- <div class="icon04"></div> -->
+          <van-image class="icon04 icon" fit="scale-down"></van-image>
         </template>
       </van-cell>
       <van-cell title="坐诊巡诊" to="/whole_zuozhen_list" is-link>
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
-          <div class="icon05"></div>
+          <van-image class="icon05 icon" fit="scale-down"></van-image>
         </template>
       </van-cell>
       <van-cell title="问答管理" to="/me_answer" is-link>
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
-          <div class="icon06"></div>
+          <van-image class="icon06 icon" fit="scale-down"></van-image>
         </template>
       </van-cell>
       <!-- <van-cell
@@ -59,7 +61,7 @@
       <van-cell title="作物解决方案" to="/preview_list" is-link style="margin-top: 10px">
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
-          <div class="icon11"></div>
+          <van-image class="icon11 icon" fit="scale-down"></van-image>
         </template>
       </van-cell>
     </div>
@@ -72,19 +74,19 @@
     >
       <!-- 使用 right-icon 插槽来自定义右侧图标 -->
       <template #icon>
-        <div class="icon07"></div>
+        <van-image class="icon07 icon" fit="scale-down"></van-image>
       </template>
     </van-cell>
     <van-cell title="我的关注" to="/me_attention" is-link>
       <!-- 使用 right-icon 插槽来自定义右侧图标 -->
       <template #icon>
-        <div class="icon08"></div>
+        <van-image class="icon08 icon" fit="scale-down"></van-image>
       </template>
     </van-cell>
     <van-cell title="投诉与评价" is-link style="margin-top: 10px" @click="callPhone">
       <!-- 使用 right-icon 插槽来自定义右侧图标 -->
       <template #icon>
-        <div class="icon09"></div>
+        <van-image class="icon09 icon" fit="scale-down"></van-image>
         <a href="tel:4008596318" ref="tel"></a>
       </template>
     </van-cell>
@@ -169,117 +171,76 @@ export default {
     }
   }
 }
-.right {
-  color: $theme-color;
+
+.me-container {
+  padding-bottom: 60px;
+  .user-box {
+    display: flex;
+    padding: 20px 12px;
+    align-items: center;
+    background: #fff;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    .avator {
+      width: 65px;
+      height: 65px;
+      margin-right: 15px;
+    }
+    .mid {
+      flex: 1;
+      padding-top: 10px;
+      .p1 {
+        color: #333333;
+        font-size: 20px;
+        line-height: 20px;
+        margin-bottom: 5px;
+        span {
+          margin-left: 12px;
+          font-size: 16px;
+          color: #343a45;
+        }
+      }
+    }
+    .p2 {
+      color: #999;
+      font-size: 12px;
+    }
+    .right {
+      color: $theme-color;
+      font-size: 14px;
+      padding: 0 12px 0 12px;
+    }
+  }
+  .icon {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+  }
+  .van-cell {
+    align-items: center;
+    font-size: 16px;
+    color: #343a45;
+  }
 }
 </style>
-<style lang="stylus" scoped>
-.me-container
-  padding-bottom 60px
-  .user-box
-    display flex
-    padding 20px 12px
-    align-items center
-    background #fff
-    margin-bottom 10px
-    margin-top 10px
-    flex-wrap wrap
-    .avator
-      width 65px
-      height 65px
-      margin-right 15px
-    .mid
-      flex 1
-      padding-top 10px
-      .p1
-        color #333333
-        font-size 20px
-        line-height 20px
-        margin-bottom 5px
-        span
-          margin-left 12px
-          font-size: 16px;
-          color: #343A45;
-      .p2
-        color #999
-        font-size 12px
-    .right
-      color $theme-color
-      font-size 14px
-      padding 0 12px 0 12px
-  .my-ul
-    .icon01
-      width 30px
-      height 30px
-      background url('./62.png') no-repeat
-      background-size 100%
-      background-position center
-      margin-right 10px
-    .icon02
-      width 30px
-      height 30px
-      background url('./60.png') no-repeat
-      background-size 100%
-      background-position center
-      margin-right 10px
-    .icon03
-      width 30px
-      height 28px
-      background url('./61.png') no-repeat
-      background-size 100%
-      background-position center
-      margin-right 10px
-    .icon04
-      width 24px
-      height 30px
-      background url('./63.png') no-repeat
-      background-size 100%
-      background-position center
-      margin-right 10px
-    .icon05
-      width 30px
-      height 28px
-      background url('./64.png') no-repeat
-      background-size 100%
-      background-position center
-      margin-right 10px
-    .icon06
-      width 28px
-      height 30px
-      background url('./59.png') no-repeat
-      background-size 100%
-      background-position center
-      margin-right 10px
-  .icon07
-    width 30px
-    height 30px
-    background url('./65.png') no-repeat
-    background-size 100%
-    background-position center
-    margin-right 10px
-.icon08
-  width 30px
-  height 30px
-  background url('./66.png') no-repeat
-  background-size 100%
-  background-position center
-  margin-right 10px
-.icon09
-  width 30px
-  height 27px
-  background url('./67.png') no-repeat
-  background-size 100%
-  background-position center
-  margin-right 10px
-.icon11
-  width 30px
-  height 30px
-  background url('./11.png') no-repeat
-  background-size 100%
-  background-position center
-  margin-right 10px
-.van-cell
-  align-items center
-  font-size: 16px;
-  color: #343A45;
-</style>
+// .icon01 // width: 30px; // height: 30px; // background: url('./62.png') no-repeat; //
+background-size: 100%; // background-position :center; // margin-right: 10px; // .icon02
+// width: 30px; // height: 30px; // background: url('./60.png') no-repeat; //
+background-size: 100%; // background-position: center; // margin-right :10px; // .icon03
+// width :30px; // height :28px; // background :url('./61.png') no-repeat; //
+background-size: 100%; // background-position: center; // margin-right: 10px; // .icon04
+// width: 24px; // height: 30px; // background: url('./63.png') no-repeat; //
+background-size: 100%; // background-position: center; // margin-right :10px; // .icon05
+// width :30px; // height: 28px; // background: url('./64.png') no-repeat; //
+background-size: 100%; // background-position :center; // margin-right: 10px; // .icon06
+// width: 28px; // height: 30px; // background :url('./59.png') no-repeat; //
+background-size: 100%; // background-position: center; // margin-right: 10px; // .icon07
+// width: 30px; // height :30px; // background :url('./65.png') no-repeat; //
+background-size :100%; // background-position: center; // margin-right :10px; // .icon08
+// width :30px; // height :30px; // background :url('./66.png') no-repeat; //
+background-size :100%; // background-position :center; // margin-right: 10px; // .icon09
+// width: 30px; // height :27px; // background :url('./67.png') no-repeat; //
+background-size :100%; // background-position :center; // margin-right :10px; // .icon11
+// width :30px; // height:30px; // background :url('./11.png') no-repeat; //
+background-size: 100%; // background-position :center; // margin-right :10px;

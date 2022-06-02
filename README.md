@@ -33,3 +33,7 @@
 ## 提问的定位
 
 ## 适老版的专家主页，赞数
+
+expert-detail
+
+ul-li 组件，尝试在把 ul 渲染成一个组件，<UL><slot></slot></UL> item 渲染全部的 li， <UL><LI></LI></UL> 书本的 212 页

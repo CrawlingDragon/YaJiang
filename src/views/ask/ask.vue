@@ -2,7 +2,7 @@
   <div class="ask-container">
     <Header :indexHeader="false"></Header>
     <HospitalHeader v-if="from == 'hospital'" navHeader="提问"></HospitalHeader>
-    <div class="title">问题描述</div>
+    <div class="title f22">问题描述</div>
     <van-form @submit="onSubmit" class="from">
       <van-field
         v-model="message"
@@ -23,11 +23,13 @@
             :before-delete="deleteItem"
             accept="image/*"
             :max-count="9"
-          />
+          >
+            <div class="upload-btn"></div>
+          </van-uploader>
         </template>
       </van-field>
       <div class="choose-crop" @click="goToChooseCrop">
-        <div class="left">作物</div>
+        <div class="left f22">作物</div>
         <van-field
           v-model="crop"
           readonly
@@ -209,10 +211,14 @@ export default {
 <style lang="scss" scoped>
 .old {
   .ask-container {
-    .uploader {
-      height: auto !important;
-    }
     .from {
+      .uploader {
+        height: auto !important;
+        .upload-btn {
+          width: 100px;
+          height: 100px;
+        }
+      }
       .choose-crop {
         height: 56px;
       }
@@ -242,9 +248,9 @@ export default {
       margin-right: 12px;
       margin-left: 12px;
       width: auto;
-      height: 130px;
+      height: 140px;
       font-size: 12px;
-      border: 1px solid #e5e5e5;
+      border: 1px solid $border-color;
     }
     .uploader {
       padding: 10px 12px;
@@ -252,13 +258,19 @@ export default {
       &.van-cell::after {
         display: none;
       }
+      .upload-btn {
+        width: 70px;
+        height: 70px;
+        background: url('./upload-btn.png') no-repeat center;
+        background-size: 100% 100%;
+      }
     }
     .choose-crop {
       border-bottom: 1px solid #e5e5e5;
       display: flex;
       align-items: center;
       height: 50px;
-      padding-left: 12px;
+      padding: 0 12px;
       .left {
         width: 106px;
         color: #333333;
@@ -290,20 +302,20 @@ export default {
           margin: 0 12px;
         }
       }
-      .list {
-        height: 50px;
-        line-height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 16px;
-        color: #333;
-        padding: 0 35px 0 12px;
-        border-bottom: 1px solid #e5e5e5;
-      }
+    }
+    .list {
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      color: #333;
+      padding: 0 35px 0 12px;
+      border-bottom: 1px solid #e5e5e5;
     }
     .sub {
-      background: #ebebeb;
+      background: #f6f7f8;
       padding: 16px;
       padding-bottom: 60px;
       .btn {

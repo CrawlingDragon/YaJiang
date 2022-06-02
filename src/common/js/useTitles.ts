@@ -5,7 +5,6 @@ export function useTitles(propTitle: string): Ref {
   title.value = propTitle;
   onActivated(() => {
     title.value = propTitle;
-    console.log(' title.value :>> ');
   });
   return title;
 }

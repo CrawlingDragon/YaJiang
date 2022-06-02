@@ -46,7 +46,7 @@ function goTop() {
   bottom: 60px;
   color: $f-color;
   background: #fff;
-  border: 1px solid #e5e5e5;
+  border: 1px solid $border-color;
   border-radius: 100%;
   line-height: 1.1;
 }

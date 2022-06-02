@@ -169,7 +169,7 @@ export default {
       width 60%
       display inline-block
       height 40px
-      border: 1px solid #155BBB;
+      border: 1px solid $border-color;
       border-radius: 8px;
       text-align center
       line-height 40px
@@ -187,7 +187,7 @@ export default {
       display inline-block
       float right
       height 40px
-      border: 1px solid #155BBB;
+      border: 1px solid $border-color;
       border-radius: 8px;
       text-align center
       line-height 40px

@@ -6,7 +6,7 @@
 </template>
 <script>
 export default {
-  name: "no_take",
+  name: 'no_take',
   components: {},
   props: {},
   data() {
@@ -19,10 +19,10 @@ export default {
   methods: {
     goLook() {
       this.$router.replace({
-        path: "/allCase"
+        path: '/allCase',
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus" scoped>
@@ -37,7 +37,7 @@ export default {
     width: 112px;
     height: 40px;
     background: #155BBB;
-    border: 1px solid #155BBB;
+    border: 1px solid $border-color;
     border-radius: 40px;
     font-size 15px
     color #fff

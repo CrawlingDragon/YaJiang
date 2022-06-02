@@ -191,11 +191,11 @@ export default {
     left 0
     right 0
     bottom 0
-    background #EBEBEB
+    background #f6f7f8
     z-index 111
     li
       line-height 40px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       background #fff
       height 40px
       color #333333

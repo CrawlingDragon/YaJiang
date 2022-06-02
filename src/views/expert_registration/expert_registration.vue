@@ -203,7 +203,17 @@ export default {
 .right {
   .number {
     color: $theme-color;
-    border: 1px solid $theme-color;
+    border: 1px solid $border-color;
+  }
+}
+.expert_registration-container {
+  .title {
+    border-bottom: 1px solid $border-color;
+  }
+  .item-box {
+    .item {
+      border-bottom: 1px solid $border-color;
+    }
   }
 }
 </style>
@@ -215,7 +225,7 @@ export default {
     height 40px
     line-height 40px
     font-size 0
-    border-bottom 1px solid #e5e5e5
+    border-bottom 1px solid $border-color
     padding 0 12px
     display flex
     & > div
@@ -233,7 +243,7 @@ export default {
     padding 0 12px
     .item
       background #fff
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       display flex
       height 75px
       align-items center

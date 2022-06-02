@@ -6,12 +6,12 @@
     :style="{ height: '234px' }"
     class="rotes"
   >
-    <div class="sub subText" :class="{ content: messageRote !== '' }" @click="subRemark">
+    <div class="sub subText f18" :class="{ content: roteValue !== 0 }" @click="subRemark">
       发表
     </div>
-    <div class="title">评价 {{ author }}</div>
+    <div class="title f18">评价 {{ author }}</div>
     <van-rate v-model="roteValue" icon="star" void-icon="star-o" />
-    <span class="rote-text">{{ formatStar(roteValue) }}</span>
+    <span class="rote-text f18">{{ formatStar(roteValue) }}</span>
     <van-field
       v-model="messageRote"
       autosize
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { formatStar } from '@/common/js/formatStar';
-import { Toast } from 'vant';
+// import { Toast } from 'vant';
 // 给谁评价的props
 const props = defineProps<{ author: string }>();
 
@@ -47,7 +47,7 @@ const showRote = ref<boolean>(false);
 // 填写评价的 ref
 const messageRote = ref<string>('');
 // 评分值的ref
-const roteValue = ref<number>(1);
+const roteValue = ref<number>(0);
 
 // 弹出弹窗方法
 const open = () => {
@@ -58,9 +58,9 @@ const open = () => {
 defineExpose({ open });
 function subRemark(err: any) {
   //发表评价
-  // 表单验证， 必须评星 和 填写内容
-  if (messageRote.value === '') {
-    Toast('评价内容不能为空');
+  // 表单验证， 必须评星
+  if (roteValue.value === 0) {
+    // Toast('评价内容不能为空');
     return;
   }
   showRote.value = false;
@@ -77,7 +77,7 @@ function subRemark(err: any) {
     position: absolute;
     right: 0;
     top: 0;
-    color: #b3b4ba;
+    color: $f-color-three;
     font-size: 12px;
     padding: 16px 12px;
     &.content {
@@ -103,7 +103,7 @@ function subRemark(err: any) {
   }
   .message {
     // height: 100px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid $border-color;
     margin-top: 10px;
     // :deep().van-field__word-limit {
     //   margin-top: 0;

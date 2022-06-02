@@ -225,6 +225,30 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.expert-container {
+  .btn-look {
+    color: $theme-color;
+  }
+  .edit {
+    color: $theme-color;
+    border: 2px solid $theme-color;
+  }
+  .title-bar {
+    border-bottom: 1px solid $border-color;
+  }
+  .tabs {
+    :deep().van-tabs__wrap {
+      border-bottom: 1px solid $border-color;
+    }
+    .answer-ul {
+      li {
+        border-bottom: 1px solid $border-color;
+      }
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .expert-container
   .person-box
@@ -313,7 +337,7 @@ export default {
       padding-left 12px
       color #666666
       font-size 12px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       position relative
       .look-more
         color #165CBB
@@ -340,13 +364,13 @@ export default {
     margin-top 10px
     background #fff
     :deep().van-tabs__wrap
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
     :deep().van-tab--active
       color #155BBB
     .answer-ul
       padding 0 12px
       li
-        border-bottom 1px solid #e5e5e5
+        border-bottom 1px solid $border-color
         &:last-child
           border none
     .hospital-ul

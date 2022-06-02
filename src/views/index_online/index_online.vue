@@ -82,10 +82,31 @@ function previewImg(item: Item) {
   });
 }
 </script>
+<style lang="scss" scoped>
+.index_online-container {
+  .choose-box,
+  .address-box {
+    border-bottom: 1px solid $border-color;
+  }
+  .online-box {
+    .e-ul {
+      border-bottom: 1px solid $border-color;
+    }
+    .title {
+      border-bottom: 1px solid $border-color;
+    }
+    .o-ul {
+      li {
+        border-bottom: 1px solid $border-color;
+      }
+    }
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .old
   .index_online-container
-    padding-bottom: 96px ;
+    padding-bottom: 96px;
 .index_online-container
   padding-bottom: 50px ;
   .header-container
@@ -103,7 +124,7 @@ function previewImg(item: Item) {
     display flex
     align-items center
     background #fff
-    border-bottom 1px solid #e5e5e5
+    border-bottom 1px solid $border-color
     position relative
     margin-top 10px
     z-index 2
@@ -147,7 +168,7 @@ function previewImg(item: Item) {
       background rgba(0, 0, 0, 0.7)
       top 90px
       // background #fff
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       z-index 111
       overflow hidden
       .wrap
@@ -180,12 +201,12 @@ function previewImg(item: Item) {
       height 40px
       line-height 40px
       padding-left 12px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
     .o-ul
       margin-left 12px
       li
         width 100%
-        border-bottom 1px solid #e5e5e5
+        border-bottom 1px solid $border-color
         &:last-child
           border none
     .e-ul
@@ -193,7 +214,7 @@ function previewImg(item: Item) {
       display flex
       flex-wrap wrap
       margin-left 12px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       padding-bottom 5px
       li
         width 50%

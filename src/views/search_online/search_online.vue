@@ -131,7 +131,22 @@ export default {
   },
 };
 </script>
-
+<style lang="scss" scoped>
+.old {
+  .search-online {
+    .content02 {
+      .title {
+        display: none;
+      }
+    }
+  }
+}
+.search-online {
+  li {
+    border-bottom: 1px solid $border-color;
+  }
+}
+</style>
 <style lang="stylus" scoped>
 .search-online
   .content01
@@ -170,7 +185,7 @@ export default {
       background #fff
       padding 0 12px
       li
-        border-bottom 1px solid #e5e5e5
+        border-bottom 1px solid $border-color
         &:last-child
           border none
 </style>

@@ -282,6 +282,7 @@ export default {
   }
 }
 .hospital_nav-container {
+  margin-top: 10px;
   padding: 15px 0;
   background-color: rgba(0, 0, 0, 0.5);
   background-size: cover;
@@ -314,6 +315,9 @@ export default {
     color: #fff;
     display: flex;
     justify-content: space-between;
+    .right-title {
+      font-size: 12px;
+    }
   }
   .nav-ul {
     z-index: 2;

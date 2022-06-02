@@ -120,69 +120,87 @@ function goToCenter(item) {
 }
 </script>
 
-<style lang="stylus" scoped>
-.invite-ul
-  margin-top 10px
-  & > li
-    padding 0 12px
-    background #fff
-    margin-bottom 10px
-    &.agree-li,&.refuse-li
-      .name
-        color #363A44 !important
-      .agree
-        background $theme-secondary-color !important
-      .refuse
-        color #fff !important
-        background #B8B8B8 !important
-        border none !important
-      .disabled
-        color red
-    .time
-      height 40px
-      line-height 40px
+<style lang="scss" scoped>
+.invite-ul {
+  margin-top: 10px;
+  & > li {
+    padding: 0 12px;
+    background: #fff;
+    margin-bottom: 10px;
+    &.agree-li,
+    &.refuse-li {
+      .name {
+        color: #363a44 !important;
+      }
+      .agree {
+        background: $theme-secondary-color !important;
+      }
+      .refuse {
+        color: #fff !important;
+        background: #b8b8b8 !important;
+        border: none !important;
+      }
+      .disabled {
+        color: red;
+      }
+    }
+    .time {
+      height: 40px;
+      line-height: 40px;
       font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
-      color: #363A44;
-    .mid
-      display flex
-      padding-bottom 15px
-      .img
-        width 60px
-        height 60px
-        background: #E5E5E5;
+      color: #363a44;
+    }
+    .mid {
+      display: flex;
+      padding-bottom: 15px;
+      .img {
+        width: 60px;
+        height: 60px;
+        background: #e5e5e5;
         border-radius: 10px;
-        margin-right 10px
-      .name
-        display flex
-        justify-content  space-around
+        margin-right: 10px;
+      }
+      .name {
+        display: flex;
+        justify-content: space-around;
         color: #333333;
-        flex-direction column
-        flex 1
-        min-width 0
-        .center-name
-          font-size 19px
-        .small-title
-          font-size 14px
-    .btns
-      text-align right
-      height 50px
-      line-height 50px
-      .btn
-        display inline-block
-        width 80px
-        height 30px
-        line-height 30px
-        vertical-align middle
-        text-align center
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        .center-name {
+          font-size: 19px;
+        }
+        .small-title {
+          font-size: 14px;
+        }
+      }
+    }
+    .btns {
+      text-align: right;
+      height: 50px;
+      line-height: 50px;
+      .btn {
+        display: inline-block;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+        text-align: center;
         border-radius: 4px;
-        &.agree
-          background $theme-color
-          color #fff
-        &.refuse
-          color #ff6600
-          margin-left 15px
-          border 1px solid #ff6600
-          background #fff
+        &.agree {
+          background: $theme-color;
+          color: #fff;
+        }
+        &.refuse {
+          color: #ff6600;
+          margin-left: 15px;
+          border: 1px solid #ff6600;
+          background: #fff;
+        }
+      }
+    }
+  }
+}
 </style>

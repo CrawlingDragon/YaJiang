@@ -4,8 +4,8 @@
     <div class="swiper-box">
       <Swiper />
     </div>
-    <div class="nav-box">
-      <IndexNav />
+    <div class="nav-wrap">
+      <IndexNav :routerItem="[]" />
     </div>
     <div class="hospital-box">
       <div class="title">
@@ -81,8 +81,9 @@ import IndexNav from '@/components/index_nav/index_nav.vue';
 import { ImagePreview } from 'vant';
 import { mapState, mapGetters, mapMutations } from 'vuex';
 import { onMounted, ref, watch, onActivated } from 'vue';
-// import { inToHospitalLocal } from '@/common/js/into_hospital_local';
+import { inToHospitalLocal } from '@/common/js/into_hospital_local';
 import { useTitles } from '@/common/js/useTitles';
+import { fetchPost } from '../../http';
 
 export default {
   setup() {
@@ -270,16 +271,46 @@ export default {
     }
   }
 }
-.help-bar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 21px 0;
-  color: $f-color-second;
-  a {
-    color: $theme-color;
-    display: inline;
+.index-container {
+  .help-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 21px 0;
+    color: $f-color-second;
+    a {
+      color: $theme-color;
+      display: inline;
+    }
+  }
+
+  .title {
+    border-bottom: 1px solid $border-color;
+  }
+
+  .nowAddress {
+    border: 1px solid $border-color;
+  }
+  .e-ul {
+    padding-top: 10px;
+    column-gap: 0;
+    column-count: 2;
+    margin-left: 12px;
+    // border-bottom: 1px solid $border-color;
+    padding-bottom: 5px;
+    li {
+      break-inside: avoid;
+      padding-right: 12px;
+      padding-bottom: 10px;
+    }
+  }
+  .o-ul {
+    margin-left: 12px;
+    li {
+      width: 100%;
+      border-bottom: 1px solid $border-color;
+    }
   }
 }
 </style>
@@ -293,19 +324,16 @@ export default {
       display block
       width 100%
       height 100%
-  .nav-box
-    height 100px
-    display flex
-    align-items center
-    background #FFFFFF
-    margin-bottom 10px
-
+  .nav-wrap
+    min-height 100px
+    width 100%
   .hospital-box
     background #fff
     .title
       height 60px
       padding-left 12px
-      border-bottom 1px solid #E5E5E5
+      padding-right 12px
+      border-bottom 1px solid $border-color
       line-height 40px
       font-size 17px
       color #343434
@@ -318,11 +346,10 @@ export default {
         line-height 1.2
         margin-top 11px
       .small-title
-        margin-left 10px
         color #9A9A9A
         font-size 12px
         line-height 1.2
-        margin-top 9px
+        margin-top 5px
       .look-bar
         text-align center
         color #165CBC
@@ -338,7 +365,7 @@ export default {
         top 10px
         padding 3px 8px
         background: #FFFFFF;
-        border: 1px solid $theme-color;
+        border: 1px solid $border-color;
         border-radius: 8px;
         color $theme-color
         line-height: 1.1
@@ -392,7 +419,7 @@ export default {
       color #343434
       height 40px
       line-height 40px
-      border-bottom 1px solid #e5e5e5
+      border-bottom 1px solid $border-color
       background #fff
       text-align center
       position relative
@@ -409,18 +436,8 @@ export default {
       margin-left 12px
       li
         width 100%
-        border-bottom 1px solid #e5e5e5
-  .e-ul
-    padding-top 10px
-    column-gap 0
-    column-count 2
-    margin-left 12px
-    border-bottom 1px solid #e5e5e5
-    padding-bottom 5px
-    li
-      break-inside avoid
-      padding-right 12px
-      padding-bottom 10px
+        border-bottom 1px solid $border-color
+
   .tips
     line-height 30px
     font-size 14px

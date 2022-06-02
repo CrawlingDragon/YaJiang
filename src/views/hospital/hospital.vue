@@ -34,7 +34,7 @@
       <div class="btn f18">查看更多 ></div>
     </div>
     <div class="online-list">
-      <div class="title f22" v-show="wenList.length != 0">网诊</div>
+      <div class="title f22">网诊</div>
       <ul class="ul-online" v-show="wenList.length != 0">
         <li v-for="item in wenList" :key="item.tid">
           <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
@@ -202,77 +202,93 @@ export default {
   }
 }
 </style>
-<style lang="stylus" scoped>
-.hospital-container
-  padding-bottom 50px
-  .info-list
-    background #fff
-    .title
-      font-size 17px
-      color #333
-      padding-left 12px
-      height 40px
-      line-height 40px
-      border-bottom 1px solid #e5e5e5
-    ul
-      border-bottom 1px solid #e5e5e5
-      padding-left 12px
-      li
-        border-bottom 1px solid #e5e5e5
-        &:last-child
-          border none
-  .look-more
-    height 41px
-    text-align center
-    color #155BBB
-    line-height 41px
-    margin-bottom 10px
-    font-size 12px
-    background #fff
-  .expert-list
-    background #fff
-    .title
-      height 40px
-      line-height 40px
-      padding-left 12px
-      font-size 17px
-      color #333
-      border-bottom 1px solid #e5e5e5
-    .expert-ul
-      margin-left 12px
-      column-count 2
-      -webkit-column-count 2
-      column-gap 0
-      border-bottom 1px solid #e5e5e5
-      padding-bottom 15px
-      padding-top 15px
-      li
-        padding-right 12px
-        margin-bottom 10px
-        break-inside avoid
-        -webkit-column-break-inside:avoid
+<style lang="scss" scoped>
+.hospital-container {
+  padding-bottom: 50px;
+  .info-list {
+    background: #fff;
+    .title {
+      font-size: 17px;
+      color: #333;
+      padding-left: 12px;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid $border-color;
+    }
+    ul {
+      border-bottom: 1px solid $border-color;
+      padding-left: 12px;
+      li {
+        border-bottom: 1px solid $border-color;
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+  }
+  .look-more {
+    height: 41px;
+    text-align: center;
+    color: #155bbb;
+    line-height: 41px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    background: #fff;
+  }
+  .expert-list {
+    background: #fff;
+    .title {
+      height: 40px;
+      line-height: 40px;
+      padding-left: 12px;
+      font-size: 17px;
+      color: #333;
+      border-bottom: 1px solid $border-color;
+    }
+    .expert-ul {
+      margin-left: 12px;
+      column-count: 2;
+      -webkit-column-count: 2;
+      column-gap: 0;
+      border-bottom: 1px solid $border-color;
+      padding-bottom: 15px;
+      padding-top: 15px;
+      li {
+        padding-right: 12px;
+        margin-bottom: 10px;
+        break-inside: avoid;
+        -webkit-column-break-inside: avoid;
         page-break-inside: avoid;
         vertical-align: top;
         // display: inline-block;
-        width 100%
+        width: 100%;
+      }
+    }
+  }
 
-  .online-list
-    background #fff
-    .title
-      height 40px
-      line-height 40px
-      padding-left 12px
-      font-size 17px
-      color #333
-      border-bottom 1px solid #e5e5e5
-    .ul-online
-      margin-left 12px
-      display flex
-      flex-wrap wrap
-      border-bottom 1px solid #e5e5e5
-      li
-        border-bottom 1px solid #e5e5e5
-        width 100%
-        &:last-child
-          border none
+  .online-list {
+    background: #fff;
+    .title {
+      height: 40px;
+      line-height: 40px;
+      padding-left: 12px;
+      font-size: 17px;
+      color: #333;
+      border-bottom: 1px solid $border-color;
+    }
+    .ul-online {
+      margin-left: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: 1px solid $border-color;
+      li {
+        border-bottom: 1px solid $border-color;
+        width: 100%;
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+  }
+}
 </style>

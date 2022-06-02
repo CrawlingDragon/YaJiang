@@ -174,7 +174,7 @@ export default {
         line-height 25px
         &.btn2
           background: #F1FAFE;
-          border: 1px solid #155BBB;
+          border: 1px solid $border-color;
           color #155BBB
         &.btn1
           border 1px solid #FF6600
