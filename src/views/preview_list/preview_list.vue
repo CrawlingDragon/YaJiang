@@ -4,12 +4,7 @@
   <div>
     <Header :indexHeader="false"></Header>
     <ul class="ul">
-      <li
-        v-for="item in caseList"
-        :key="item.pid"
-        class="item"
-        @click="goPreview(item.pid)"
-      >
+      <li v-for="item in caseList" :key="item.pid" class="item" @click="goPreview(item.pid)">
         <van-image :src="item.icon" class="img" radius="8"></van-image>
         <div class="text">
           <p class="van-multi-ellipsis--l2 f22">
@@ -36,7 +31,7 @@ useTitles('作物解决方案');
 
 //store
 const uId = computed(() => store.state.uId);
-const initMid = computed(() => store.state.initMid);
+const initMid = computed(() => store.getters.initMid);
 
 // 数据列表
 interface Case {

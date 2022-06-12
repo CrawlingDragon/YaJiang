@@ -13,7 +13,13 @@
         <div class="icon icon01"></div>
         <p>线上网诊</p>
       </li>
-      <li @click="goToZuo" v-if="hospitalIsStore == 1">
+      <template v-for="(item, index) in nav" :key="item.label">
+        <li @click="goCustomPage(item.label)" v-if="hospitalIsStore == 1 && item.state == 1">
+          <div class="icon" :class="item.label"></div>
+          <p>{{ item.name }}</p>
+        </li>
+      </template>
+      <!-- <li @click="goToZuo" v-if="hospitalIsStore == 1">
         <div class="icon icon02"></div>
         <p>坐诊巡诊</p>
       </li>
@@ -25,6 +31,11 @@
         <div class="icon icon04"></div>
         <p>专家挂号</p>
       </li>
+      <li @click="goToLive" v-if="hospitalIsStore == 0">
+        <div class="icon icon12"></div>
+        <p>直播</p>
+      </li> -->
+
       <li @click="goToAsk" v-if="hospitalIsStore == 1">
         <div class="icon icon05"></div>
         <p>提问</p>
@@ -34,10 +45,7 @@
         <div class="icon icon04"></div>
         <p>专家</p>
       </li>
-      <li @click="goToLive" v-if="hospitalIsStore == 0" v-show="false">
-        <div class="icon icon12"></div>
-        <p>直播</p>
-      </li>
+
       <li v-if="hospitalIsStore == 1 && hospitalIsMember == 1" @click="isVip">
         <div class="icon icon08"></div>
         <p>已是会员</p>
@@ -51,7 +59,10 @@
 </template>
 <script>
 import { mapState, useStore } from 'vuex';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { getHospitalFastNav } from '@/service/base';
+import { useRouter } from 'vue-router';
+import { Dialog } from 'vant';
 export default {
   name: 'hospitalNav',
   components: {},
@@ -70,13 +81,136 @@ export default {
     },
   },
   setup() {
+    //坐诊巡诊，测土配方，挂号管理，人才培训的 导航
     const store = useStore();
-    // const ucuid = computed(() => store.state.ucuid);
+    const router = useRouter();
+    //用户uId
+    const uId = computed(() => store.state.uId);
+    // 是否已经加入医院
+    const hospitalIsMember = computed(() => store.state.hospitalIsMember);
+    //导航数组
+    const nav = ref([]);
+
+    // 请求数据
+    onMounted(async () => {
+      const data = await getHospitalFastNav();
+      nav.value = data;
+    });
+
+    // label: "zuozhen"- "坐诊巡诊"
+    // label: "cetu"- "测土配方"
+    // label: "subscribe"-"挂号管理"
+    // label: "tarin"-"人才培训"
+    function goCustomPage(label) {
+      switch (label) {
+        case 'zuozhen':
+          // 坐诊巡诊
+          goToZuo();
+          break;
+        case 'cetu':
+          // 测土配方
+          goToCeTu();
+          break;
+        case 'subscribe':
+          // 挂号管理
+          goToRegistration();
+          break;
+        case 'tarin':
+          // 人才培训
+          goToLive();
+          break;
+      }
+    }
+    // 路由 坐诊巡诊
+    function goToZuo() {
+      if (uId.value == '' || uId.value == undefined) {
+        router.push({
+          path: '/zuozhen_list',
+        });
+        return;
+      }
+      if (hospitalIsMember.value == 0) {
+        Dialog.confirm({
+          message: '抱歉坐诊巡诊是会员服务，请先申请加入医院再访问',
+          cancelButtonText: '申请加入会员',
+          confirmButtonText: '好的',
+          cancelButtonColor: '#155BBB',
+          confirmButtonColor: '#999',
+        })
+          .then(() => {})
+          .catch(() => {
+            router.push({
+              path: '/apply_vip',
+            });
+          });
+      } else {
+        router.push({ path: '/zuozhen_list' }).catch((err) => err);
+      }
+    }
+
+    // 路由 测土配方
+    function goToCeTu() {
+      if (uId.value == '' || uId.value == undefined) {
+        router.push({
+          path: '/cetu_list',
+        });
+        return;
+      }
+      if (hospitalIsMember.value == 0) {
+        Dialog.confirm({
+          message: '抱歉测土配方是会员服务，请先申请再访问',
+          cancelButtonText: '申请加入会员',
+          confirmButtonText: '好的',
+          cancelButtonColor: '#155BBB',
+          confirmButtonColor: '#999',
+        })
+          .then(() => {
+            // on confirm
+          })
+          .catch(() => {
+            // on cancel
+            router.push({ path: '/apply_vip' });
+          });
+      } else {
+        router.push({ path: 'cetu_list' }).catch((err) => err);
+      }
+    }
+    function goToRegistration() {
+      // 路由 专家挂号
+      if (uId.value == '' || uId.value == undefined) {
+        router.push({
+          path: '/expert_registration',
+        });
+        return;
+      }
+      if (hospitalIsMember.value == 0) {
+        Dialog.confirm({
+          message: '抱歉专家挂号是会员服务，请先申请加入医院再访问',
+          cancelButtonText: '申请加入会员',
+          confirmButtonText: '好的',
+          cancelButtonColor: '#155BBB',
+          confirmButtonColor: '#999',
+        })
+          .then(() => {})
+          .catch(() => {
+            // on cancel
+            router.push({
+              path: '/apply_vip',
+            });
+          });
+      } else {
+        router.push({ path: '/expert_registration' }).catch((err) => err);
+      }
+    }
+    // 培训 直播
+    function goToLive() {
+      router.push({ path: '/live' }).catch((err) => err);
+    }
+    return { nav, goCustomPage };
   },
   data() {
     return {
       bjSrc: '',
-      shareUrl: import.meta.env.VITE_APP_SHARE_URL,
     };
   },
   computed: {
@@ -89,91 +223,7 @@ export default {
       // 路由 去线上网诊
       this.$router.push({ path: 'hospital_online' }).catch((err) => err);
     },
-    goToZuo() {
-      // 路由 坐诊巡诊
-      if (this.uId == '' || this.uId == undefined) {
-        this.$router.push({
-          path: '/zuozhen_list',
-        });
-        return;
-      }
-      if (this.hospitalIsMember == 0) {
-        this.$dialog
-          .confirm({
-            message: '抱歉坐诊巡诊是会员服务，请先申请加入医院再访问',
-            cancelButtonText: '申请加入会员',
-            confirmButtonText: '好的',
-            cancelButtonColor: '#155BBB',
-            confirmButtonColor: '#999',
-          })
-          .then(() => {})
-          .catch(() => {
-            this.$router.push({
-              path: '/apply_vip',
-            });
-          });
-      } else {
-        this.$router.push({ path: 'zuozhen_list' }).catch((err) => err);
-      }
-    },
-    goToCeTu() {
-      // 路由 测土配方
-      if (this.uId == '' || this.uId == undefined) {
-        this.$router.push({
-          path: '/cetu_list',
-        });
-        return;
-      }
-      if (this.hospitalIsMember == 0) {
-        this.$dialog
-          .confirm({
-            message: '抱歉测土配方是会员服务，请先申请再访问',
-            cancelButtonText: '申请加入会员',
-            confirmButtonText: '好的',
-            cancelButtonColor: '#155BBB',
-            confirmButtonColor: '#999',
-          })
-          .then(() => {
-            // on confirm
-          })
-          .catch(() => {
-            // on cancel
-            this.$router.push({ path: '/apply_vip' });
-          });
-      } else {
-        this.$router.push({ path: 'cetu_list' }).catch((err) => err);
-      }
-    },
-    goToRegistration() {
-      // 路由 专家挂号
-      if (this.uId == '' || this.uId == undefined) {
-        this.$router.push({
-          path: '/expert_registration',
-        });
-        return;
-      }
-      if (this.hospitalIsMember == 0) {
-        this.$dialog
-          .confirm({
-            message: '抱歉专家挂号是会员服务，请先申请加入医院再访问',
-            cancelButtonText: '申请加入会员',
-            confirmButtonText: '好的',
-            cancelButtonColor: '#155BBB',
-            confirmButtonColor: '#999',
-          })
-          .then(() => {
-            // on confirm
-          })
-          .catch(() => {
-            // on cancel
-            this.$router.push({
-              path: '/apply_vip',
-            });
-          });
-      } else {
-        this.$router.push({ path: '/expert_registration' }).catch((err) => err);
-      }
-    },
+
     goToAsk() {
       // 路由 提问
       if (this.uId == '' || this.uId == undefined) {
@@ -202,9 +252,7 @@ export default {
             });
           });
       } else {
-        this.$router
-          .push({ path: '/ask', query: { from: 'hospital' } })
-          .catch((err) => err);
+        this.$router.push({ path: '/ask', query: { from: 'hospital' } }).catch((err) => err);
       }
     },
     goToExpert() {
@@ -231,10 +279,7 @@ export default {
         })
         .catch((err) => err);
     },
-    goToLive() {
-      // 路由 直播
-      this.$router.push({ path: '/live' }).catch((err) => err);
-    },
+
     isVip() {
       this.$dialog
         .confirm({
@@ -345,7 +390,7 @@ export default {
         background-position: center center;
         margin: 0 auto 10px;
       }
-      .icon02 {
+      .zuozhen {
         width: 25px;
         height: 24px;
         background: url('./44.png') no-repeat;
@@ -353,7 +398,7 @@ export default {
         background-position: center center;
         margin: 0 auto 10px;
       }
-      .icon03 {
+      .cetu {
         width: 20px;
         height: 25px;
         background: url('./45.png') no-repeat;
@@ -361,7 +406,7 @@ export default {
         background-position: center center;
         margin: 0 auto 10px;
       }
-      .icon04 {
+      .subscribe {
         width: 25px;
         height: 25px;
         background: url('./38.png') no-repeat;
@@ -409,7 +454,7 @@ export default {
         background-position: center center;
         margin: 0 auto 10px;
       }
-      .icon12 {
+      .tarin {
         width: 25px;
         height: 25px;
         background: url('./53.png') no-repeat;

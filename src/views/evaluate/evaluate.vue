@@ -190,6 +190,7 @@ async function getCommentList() {
 }
 .btn-box {
   width: 100%;
+  max-width: 640px;
   height: 64px;
   background: #ffffff;
   position: fixed;

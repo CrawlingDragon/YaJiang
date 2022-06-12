@@ -23,7 +23,7 @@ import { getVideo } from '@/service/getVideo';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-useTitles('培训视频');
+useTitles('视频');
 
 interface Video {
   id: string;
@@ -31,9 +31,9 @@ interface Video {
   title: string;
 }
 const list = ref<Video[]>([]);
-const page = ref(1);
-const loading = ref(false);
-const finished = ref(false);
+const page = ref<number>(1);
+const loading = ref<boolean>(false);
+const finished = ref<boolean>(false);
 function onLoad() {
   getList();
 }
@@ -58,7 +58,6 @@ function goToDetail(id: string) {
 </script>
 <script lang="ts">
 export default {
-  setup() {},
   name: 'videoList',
 };
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div class="foot-container">
     <van-tabbar v-model="myActive" route>
-      <van-tabbar-item :to="indexRoute" class="f20">
+      <van-tabbar-item :to="item.url" class="f20" v-for="(item, index) in menu">
         <!-- @click="goToIndex"  -->
         <template #icon="props">
-          <div class="icon" :class="props.active ? icon01.active : icon01.inactive"></div>
+          <div class="icon" :class="props.active ? icon(index).active : icon(index).inactive"></div>
         </template>
-        首页
+        {{ item.name }}
       </van-tabbar-item>
-      <van-tabbar-item :to="hospital" class="f20">
+      <!-- <van-tabbar-item :to="hospital" class="f20">
         <template #icon="props">
           <div class="icon" :class="props.active ? icon02.active : icon02.inactive"></div>
         </template>
@@ -31,16 +31,20 @@
           <div class="icon" :class="props.active ? icon05.active : icon05.inactive"></div>
         </template>
         我的
-      </van-tabbar-item>
+      </van-tabbar-item> -->
     </van-tabbar>
   </div>
 </template>
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState, useStore, mapGetters } from 'vuex';
+import { computed } from 'vue';
 export default {
   name: 'foot',
-  components: {},
-  props: {},
+  setup() {
+    const store = useStore();
+    const menu = computed(() => store.getters.getterFooterMenu);
+    return { menu };
+  },
   data() {
     return {
       hospital: '/into_hospital',
@@ -69,7 +73,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['initMid']),
+    ...mapGetters(['initMid']),
   },
   watch: {
     $route(newVal) {
@@ -83,6 +87,39 @@ export default {
   },
   methods: {
     ...mapMutations(['setMid']),
+    icon(index) {
+      return {
+        active: `icon0${index + 1}_active`,
+        inactive: `icon0${index + 1}_inactive`,
+      };
+      //   case 0:
+      //     return {
+      //       active: `icon0${index}_active`,
+      //       inactive: `icon0${index}_inactive`,
+      //     };
+      //   case 1:
+      //     return {
+      //       active: `icon0${index}_active`,
+      //       inactive: `icon0${index}_inactive`,
+      //     };
+      //   case 2:
+      //     return {
+      //       active: `icon0${index}_active`,
+      //       inactive: `icon0${index}_inactive`,
+      //     };
+      //   case 3:
+      //     return {
+      //       active: `icon0${index}_active`,
+      //       inactive: `icon0${index}_inactive`,
+      //     };
+      //   case 4:
+      //     return {
+      //       active: `icon0${index}_active`,
+      //       inactive: `icon0${index}_inactive`,
+      //     };
+      // }
+      // return;
+    },
     getRouterName(name) {
       switch (name) {
         case 'hospital':

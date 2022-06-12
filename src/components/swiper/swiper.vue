@@ -1,5 +1,5 @@
 <template>
-  <van-swipe :autoplay="3000" :style="{ height: h }" ref="swiperRef">
+  <van-swipe :autoplay="3000" ref="swiperRef" class="swipe-wrap-custom">
     <van-swipe-item
       v-for="image in swiperArr"
       :key="image.id"
@@ -15,7 +15,6 @@
 import { onMounted, ref, watch } from 'vue';
 import { getIndexAdList } from '@/service/banner';
 import { useWindowSize } from '@vant/use';
-
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 //router
@@ -80,4 +79,9 @@ function goToMessageDetail(item: SwiperItem) {
   }
 }
 </script>
-<style lang=""></style>
+<style lang="scss" scoped>
+.swipe-wrap-custom {
+  width: 100%;
+  height: calc(100vw / (750 / 188));
+}
+</style>

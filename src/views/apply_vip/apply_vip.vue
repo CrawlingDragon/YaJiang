@@ -42,7 +42,14 @@
         :rules="[{ required: true, message: '点击选择省市区' }]"
       />
       <van-popup v-model:show="showArea" position="bottom">
-        <van-area :area-list="areaList" @confirm="onConfirm" @cancel="showArea = false" />
+        <!-- <van-area :area-list="areaList" @confirm="onConfirm" @cancel="showArea = false" /> -->
+        <van-cascader
+          v-model="cascaderValue"
+          title="请选择所在地区"
+          :options="options"
+          @close="showArea = false"
+          @finish="onFinish"
+        />
       </van-popup>
       <van-field
         v-model="detailAddress"
@@ -102,8 +109,10 @@
 <script>
 import Header from '@/components/hospital_header/hospital_header';
 import areaList from '@/common/js/area';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
+import { ref } from 'vue';
+import { area } from '@/common/js/area_level4.js';
 
 export default {
   name: 'applyVip',
@@ -111,6 +120,37 @@ export default {
   props: {},
   setup() {
     useTitles('申请会员');
+    const showArea = ref(false);
+    const address = ref('');
+    const cascaderValue = ref(''); // 完整选择的四级地址
+    const province = ref(''); // 用于传输数据的省
+    const city = ref(''); // 用于传输数据的市
+    const town = ref(''); // 用于传输数据的区
+    const county = ref(''); // 用于传输数据的县
+    // 选项列表，children 代表子选项，支持多级嵌套
+    const options = area;
+    const onFinish = ({ selectedOptions }) => {
+      showArea.value = false;
+      address.value = selectedOptions.map((option) => option.text).join('/');
+      console.log('selectedOptions :>> ', selectedOptions);
+      console.log('selectedOptions[0] :>> ', selectedOptions[0]);
+      province.value = selectedOptions[0].text;
+      city.value = selectedOptions[1].text;
+      town.value = selectedOptions[2]?.text;
+      county.value = selectedOptions[3]?.text;
+    };
+
+    return {
+      province,
+      city,
+      town,
+      county,
+      options,
+      onFinish,
+      address,
+      showArea,
+      cascaderValue,
+    };
   },
   data() {
     return {
@@ -119,15 +159,22 @@ export default {
       phone: '1',
       card: '1',
       sex: '',
-      province: '',
-      city: '',
-      town: '',
-      address: '',
+      // province: '',
+      // city: '',
+      // town: '',
+      // address: '',
       cardShow: false,
       sexShow: false,
       detailAddress: '',
-      showArea: false,
-      addList: [{ fid: '', name: '雷笋', mushu: '', unit: '亩' }],
+      // showArea: false,
+      addList: [
+        {
+          fid: '1',
+          name: '',
+          mushu: '',
+          unit: '亩',
+        },
+      ],
       areaList: areaList, // 数据格式见 Area 组件文档
       actions: [{ name: '男' }, { name: '女' }],
       choosedIndex: 0, //选中的作物 数组index
@@ -135,7 +182,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['mid', 'uId', 'initMid', 'hospitalName']),
+    ...mapState(['mid', 'uId', 'hospitalName']),
+    ...mapGetters(['initMid', 'getterDefaultCrop']),
     cropNumberBoolean() {
       let x = true;
       this.addList.forEach((item) => {
@@ -152,23 +200,30 @@ export default {
   mounted() {
     this.getUserInfo();
     this.getHospitalTown();
+    this.addList[0].name = this.getterDefaultCrop.name;
+    this.addList[0].fid = this.getterDefaultCrop.num;
   },
   methods: {
     add() {
-      this.addList.push({ fid: '', name: '雷笋', mushu: '', unit: '亩' });
+      this.addList.push({
+        fid: this.getterDefaultCrop.num,
+        name: this.getterDefaultCrop.name,
+        mushu: '',
+        unit: '亩',
+      });
     },
     onSelectSex(val) {
       this.sex = val.name;
       this.sexShow = false;
     },
-    onConfirm(values) {
-      console.log(values);
-      this.address = values.map((item) => item.name).join('/');
-      this.province = values[0].name;
-      this.city = values[1].name;
-      this.town = values[2].name;
-      this.showArea = false;
-    },
+    // onConfirm(values) {
+    //   console.log(values);
+    //   this.address = values.map((item) => item.name).join('/');
+    //   this.province = values[0].name;
+    //   this.city = values[1].name;
+    //   this.town = values[2].name;
+    //   this.showArea = false;
+    // },
     onSubmit(values) {
       if (
         values.sex == '' ||

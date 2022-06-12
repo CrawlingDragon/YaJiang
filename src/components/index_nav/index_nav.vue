@@ -1,22 +1,24 @@
 <template>
   <div class="nav-box" :class="{ threeLine: routerItem.length % 3 === 0 }">
-    <template v-for="item in routerItem" :key="item.path">
-      <router-link :to="item.path" class="item">
+    <template v-for="item in routerItem" :key="item.url">
+      <router-link :to="item.url" class="item">
         <!-- <div class="icon" :class="item.icon"></div> -->
-        <van-image class="icon" fit="cover" src="item.icon"></van-image>
-        <p class="f20">{{ item.title }}</p>
+        <van-image class="icon" fit="cover" :src="item.image"></van-image>
+        <p class="f20">{{ item.name }}</p>
       </router-link>
     </template>
   </div>
 </template>
 <script lang="ts" setup>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+const store = useStore();
 interface PropsItem {
-  path: string;
-  icon: string;
-  title: string;
+  url: string;
+  image: string;
+  name: string;
 }
-
-const props = defineProps<{ routerItem: PropsItem[] }>();
+const routerItem = computed<PropsItem[]>(() => store.getters.getterIndexMenu.topMenu);
 </script>
 <style lang="scss">
 .old {

@@ -43,11 +43,11 @@ export function deleteUrlCode() {
 }
 
 // 去登录函数
-export function login(url = deleteUrlCode()) {
+export function login(login_type = 'password', url = deleteUrlCode()) {
   //deleteUrlCode函数
   window.location.href = `${
     import.meta.env.VITE_APP_USER_CENTER_CODE_URL
-  }authorize?login_type=password&response_type=code&client_id=thy&redirect_uri=${url}`;
+  }authorize?login_type=${login_type}&response_type=code&client_id=thy&redirect_uri=${url}`;
 }
 
 export function fetchGetToken(code: string) {

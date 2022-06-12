@@ -95,7 +95,7 @@
 </template>
 <script>
 import Header from '@/components/header/header';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Foot from '@/components/foot/foot';
 import { useTitles } from '@/common/js/useTitles.ts';
 export default {
@@ -114,7 +114,8 @@ export default {
   },
 
   computed: {
-    ...mapState(['uId', 'initMid']),
+    ...mapState(['uId']),
+    ...mapGetters(['initMid']),
   },
   created() {},
   watch: {
@@ -225,22 +226,20 @@ export default {
 }
 </style>
 // .icon01 // width: 30px; // height: 30px; // background: url('./62.png') no-repeat; //
-background-size: 100%; // background-position :center; // margin-right: 10px; // .icon02
-// width: 30px; // height: 30px; // background: url('./60.png') no-repeat; //
-background-size: 100%; // background-position: center; // margin-right :10px; // .icon03
-// width :30px; // height :28px; // background :url('./61.png') no-repeat; //
-background-size: 100%; // background-position: center; // margin-right: 10px; // .icon04
-// width: 24px; // height: 30px; // background: url('./63.png') no-repeat; //
-background-size: 100%; // background-position: center; // margin-right :10px; // .icon05
-// width :30px; // height: 28px; // background: url('./64.png') no-repeat; //
-background-size: 100%; // background-position :center; // margin-right: 10px; // .icon06
-// width: 28px; // height: 30px; // background :url('./59.png') no-repeat; //
-background-size: 100%; // background-position: center; // margin-right: 10px; // .icon07
-// width: 30px; // height :30px; // background :url('./65.png') no-repeat; //
-background-size :100%; // background-position: center; // margin-right :10px; // .icon08
-// width :30px; // height :30px; // background :url('./66.png') no-repeat; //
-background-size :100%; // background-position :center; // margin-right: 10px; // .icon09
-// width: 30px; // height :27px; // background :url('./67.png') no-repeat; //
-background-size :100%; // background-position :center; // margin-right :10px; // .icon11
-// width :30px; // height:30px; // background :url('./11.png') no-repeat; //
-background-size: 100%; // background-position :center; // margin-right :10px;
+background-size: 100%; // background-position :center; // margin-right: 10px; // .icon02 // width:
+30px; // height: 30px; // background: url('./60.png') no-repeat; // background-size: 100%; //
+background-position: center; // margin-right :10px; // .icon03 // width :30px; // height :28px; //
+background :url('./61.png') no-repeat; // background-size: 100%; // background-position: center; //
+margin-right: 10px; // .icon04 // width: 24px; // height: 30px; // background: url('./63.png')
+no-repeat; // background-size: 100%; // background-position: center; // margin-right :10px; //
+.icon05 // width :30px; // height: 28px; // background: url('./64.png') no-repeat; //
+background-size: 100%; // background-position :center; // margin-right: 10px; // .icon06 // width:
+28px; // height: 30px; // background :url('./59.png') no-repeat; // background-size: 100%; //
+background-position: center; // margin-right: 10px; // .icon07 // width: 30px; // height :30px; //
+background :url('./65.png') no-repeat; // background-size :100%; // background-position: center; //
+margin-right :10px; // .icon08 // width :30px; // height :30px; // background :url('./66.png')
+no-repeat; // background-size :100%; // background-position :center; // margin-right: 10px; //
+.icon09 // width: 30px; // height :27px; // background :url('./67.png') no-repeat; //
+background-size :100%; // background-position :center; // margin-right :10px; // .icon11 // width
+:30px; // height:30px; // background :url('./11.png') no-repeat; // background-size: 100%; //
+background-position :center; // margin-right :10px;

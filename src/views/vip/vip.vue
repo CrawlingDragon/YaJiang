@@ -3,32 +3,12 @@
     <Header :indexHeader="false"></Header>
     <div class="content">
       <div class="icon"></div>
-      <p class="h1 f30">新型庄稼医院会员权益</p>
-      <p class="p2 f20">一站式解决作物问题</p>
+      <p class="h1 f30">{{ vipReactive.title }}</p>
+      <p class="p2 f20">{{ vipReactive.subtitle }}</p>
       <ul>
-        <li>
-          <div class="left">线上网诊</div>
-          <div class="right">享受医院专属答疑服务</div>
-        </li>
-        <li>
-          <div class="left">坐诊巡诊</div>
-          <div class="right">坐诊巡诊一站式解决作物问题</div>
-        </li>
-        <li>
-          <div class="left">测土配方</div>
-          <div class="right">土壤养分检测，科学种养</div>
-        </li>
-        <li>
-          <div class="left">专家挂号</div>
-          <div class="right">预约专家挂号，一对一服务</div>
-        </li>
-        <li>
-          <div class="left">作物解决方案</div>
-          <div class="right">全年作物解决方案，种植更安心</div>
-        </li>
-        <li>
-          <div class="left">供应链金融</div>
-          <div class="right">会员优先享受惠农贷款服务</div>
+        <li v-for="item in vipReactive.equityLists" :key="item.name">
+          <div class="left">{{ item.name }}</div>
+          <div class="right">{{ item.desc }}</div>
         </li>
       </ul>
       <div class="btn f20" @click="goToIntoHospital">
@@ -41,10 +21,29 @@
 <script setup lang="ts">
 import Header from '@/components/header/header.vue';
 import { useRouter } from 'vue-router';
-import { onActivated } from 'vue';
+import { reactive, onMounted } from 'vue';
+import { getVip } from '@/service/getVip';
 import { useTitles } from '@/common/js/useTitles';
-
+// 设置title
 useTitles('会员权益');
+
+interface VipReactive {
+  title: string;
+  subtitle: string;
+  equityLists: { name: string; desc: string }[];
+}
+// 获取权益的列表内容（定制）
+let vipReactive: VipReactive = reactive({
+  title: '',
+  subtitle: '',
+  equityLists: [],
+});
+onMounted(async () => {
+  const { title, subtitle, equityLists } = await getVip();
+  vipReactive.title = title;
+  vipReactive.subtitle = subtitle;
+  vipReactive.equityLists = equityLists;
+});
 const router = useRouter();
 // 路由：进院
 function goToIntoHospital() {

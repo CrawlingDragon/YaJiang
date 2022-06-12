@@ -67,9 +67,7 @@
     </div>
     <div
       class="person-info"
-      v-if="
-        expertData.identity == 1 && (expertData.skill != '' || expertData.introduce != '')
-      "
+      v-if="expertData.identity == 1 && (expertData.skill != '' || expertData.introduce != '')"
     >
       <div class="title-bar f17" @click="goToPersondetail">
         个人简介
@@ -148,7 +146,7 @@ import Header from '@/components/header/header';
 import OnlineItem from '@/components/online_item/online_item';
 import RecommendHospital from '@/components/recommend_hospital/recommend_hospital';
 import { ImagePreview } from 'vant';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 import { login } from '@/common/js/getToken';
 export default {
@@ -198,7 +196,8 @@ export default {
     from() {
       return this.$route.query.from;
     },
-    ...mapState(['uId', 'aiExpertId']),
+    ...mapState(['uId']),
+    ...mapGetters(['aiExpertId']),
   },
   created() {},
   watch: {
@@ -409,9 +408,7 @@ export default {
     },
     scrollHandler() {
       var After_scollH =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
+        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
       var differH = After_scollH - Before_scollH;
       if (differH == 0) {
         return false;

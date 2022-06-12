@@ -9,7 +9,6 @@ interface GlobalState {
   uId: string; // 从缓存中获取uId
   userInfo: {};
   // uid: window.localStorage.getItem("uid") || undefined, //登录用户uid
-  initMid: number; //顶级医院mid 63580    56915
   mid: string | null; //医院mid
   joinTime: string | null; //用户加入医院的时间
   hospitalName: string | null; //医院名字
@@ -19,20 +18,25 @@ interface GlobalState {
   userAvatar: string | null; //用户头像
   hospitalIsMember: string | null; //是否是医院会员
   hospitalLogo: string | null; //医院主页logo
-  aiExpertId: string | null; //ai 智能专家id
+  // aiExpertId: string | null; //ai 智能专家id
   ucuid?: string | null; //农资店铺 ucuid
   logined?: string | null | undefined;
   axiosAddress: string; // 用于接口请求的地址参数
   userInfoLocation: string;
   geoAddress: string;
   latelyAddressArray: string[];
+  settingMenu: { h5title: string; topMenu: any[]; bottomMenu: any[]; bottomContent: any };
+  defaultSet: {
+    initMid: number;
+    aiExpertId: number;
+    defaultCrop: { name: string; num: string };
+  }; //默认配置
   old: boolean; //是否是适老版
 }
 const app = createStore<GlobalState>({
   state: {
     uId: storage.get('uId', ''), // 从缓存中获取uId
     userInfo: storage.get('userInfo', {}),
-    initMid: storage.get('initMid', 0), //顶级医院mid 63580    56915
     mid: window.localStorage.getItem('mid'), //医院mid
     joinTime: window.localStorage.getItem('joinTime'), //用户加入医院的时间
     hospitalName: window.localStorage.getItem('hospitalName'), //医院名字
@@ -42,7 +46,6 @@ const app = createStore<GlobalState>({
     userAvatar: window.localStorage.getItem('userAvatar'), //用户头像
     hospitalIsMember: window.localStorage.getItem('hospitalIsMember'), //是否是医院会员
     hospitalLogo: window.localStorage.getItem('hospitalLogo'), //医院主页logo
-    aiExpertId: window.localStorage.getItem('aiExpertId'), //ai 智能专家id
     ucuid: window.localStorage.getItem('ucuid'), //农资店铺 ucuid
     logined: window.localStorage.getItem('logined'),
     axiosAddress: storage.get('axiosAddress', ''), // 用于接口请求的地址参数
@@ -50,6 +53,23 @@ const app = createStore<GlobalState>({
     geoAddress: storage.get('geoAddress', ''), // 用于保存定位产生的地址
     latelyAddressArray: storage.get('latelyAddressArray', []),
     old: false, //是否是适老版
+    settingMenu: {
+      // 首页配置和脚部配置
+      h5title: '', // 首页的title
+      topMenu: [], // 首页的快速导航
+      bottomMenu: [], // 首页的底部配置
+      bottomContent: {}, // 整站的脚部配置
+    },
+    // initMid: storage.get('initMid', 0), //顶级医院mid 63580    56915
+    // aiExpertId: window.localStorage.getItem('aiExpertId'), //ai 智能专家id
+    defaultSet: {
+      initMid: 0,
+      aiExpertId: 0,
+      defaultCrop: {
+        num: '0',
+        name: '',
+      },
+    },
   },
   getters: {
     viewAddress: (state) => {
@@ -76,11 +96,52 @@ const app = createStore<GlobalState>({
         return address[address.length - 1];
       }
     },
+    getterIndexMenu(state) {
+      // 首页的快速导航和底部文案的 getter
+      return {
+        topMenu: state.settingMenu.topMenu,
+        bottomContent: state.settingMenu.bottomContent,
+      };
+    },
+
+    getterGlobalTitle(state) {
+      // 首页和全局默认的title de getter
+      return state.settingMenu.h5title;
+    },
+    getterFooterMenu(state) {
+      // 底部bar配置的 getter
+      return state.settingMenu.bottomMenu;
+    },
+    initMid(state) {
+      //默认的全局医院mid
+      return state.defaultSet.initMid;
+    },
+    aiExpertId(state) {
+      // ai的id
+      return state.defaultSet.aiExpertId;
+    },
+    getterDefaultCrop(state) {
+      // 默认作物
+      return state.defaultSet.defaultCrop;
+    },
   },
   mutations: {
-    setInitMid(state, initMid) {
-      state.initMid = initMid;
-      storage.set('initMid', initMid);
+    setSettingMenu(state, data) {
+      // 设置首页的配置项
+      state.settingMenu = data;
+    },
+    setDefaultSetting(state, setting) {
+      // 设置默认配置，默认的总院mid，ai的id，默认作物的名称和id
+      const { aiExpert, defalutCrop, defalutCropName, mid } = setting;
+      let obj = {
+        initMid: mid,
+        aiExpertId: aiExpert,
+        defaultCrop: {
+          num: defalutCrop,
+          name: defalutCropName,
+        },
+      };
+      state.defaultSet = obj;
     },
     switchOld(state, boolean) {
       // 切换适老板的函数
@@ -146,10 +207,10 @@ const app = createStore<GlobalState>({
       state.hospitalIsMember = hospitalIsMember;
       window.localStorage.setItem('hospitalIsMember', hospitalIsMember);
     },
-    setAiExpertId(state, aiExpertId) {
-      state.aiExpertId = aiExpertId;
-      window.localStorage.setItem('aiExpertId', aiExpertId);
-    },
+    // setAiExpertId(state, aiExpertId) {
+    //   state.aiExpertId = aiExpertId;
+    //   window.localStorage.setItem('aiExpertId', aiExpertId);
+    // },
     setUcUid(state, ucuid) {
       state.ucuid = ucuid;
       window.localStorage.setItem('ucuid', ucuid);

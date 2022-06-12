@@ -14,7 +14,7 @@
 </template>
 <script>
 import Header from '@/components/header/header';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 export default {
   setup() {
@@ -31,7 +31,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['uId', 'initMid']),
+    ...mapState(['uId']),
+    ...mapGetters(['initMid']),
   },
   watch: {},
   created() {},

@@ -52,7 +52,7 @@
 </template>
 <script>
 import Header from '@/components/hospital_header/hospital_header';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 import { inject } from 'vue';
 export default {
@@ -78,7 +78,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['initMid']),
+    ...mapGetters(['initMid']),
     noData() {
       return this.finished && this.list.length === 0;
     },
@@ -125,13 +125,11 @@ export default {
         });
     },
     getKind() {
-      this.$axios
-        .fetchPost('Mobile/Picture/getCategorys', { mId: this.initMid })
-        .then((res) => {
-          if (res.data.code == 0) {
-            this.kindList = res.data.data;
-          }
-        });
+      this.$axios.fetchPost('Mobile/Picture/getCategorys', { mId: this.initMid }).then((res) => {
+        if (res.data.code == 0) {
+          this.kindList = res.data.data;
+        }
+      });
     },
     // 返回一个特定的 DOM 节点，作为挂载的父节点
     getContainer() {

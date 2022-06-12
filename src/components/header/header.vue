@@ -6,16 +6,12 @@
         <van-icon name="search" :size="size" />
       </div>
       <div class="tabbar" v-if="indexHeader">
-        <div class="item f22" :class="{ active: tabbarActive == 0 }" @click="goToIndex">
-          推荐
-        </div>
-        <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">
-          网诊
-        </div>
+        <div class="item f22" :class="{ active: tabbarActive == 0 }" @click="goToIndex">推荐</div>
+        <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">网诊</div>
       </div>
       <div class="no_index_header f22" v-if="!indexHeader" @click="clickLogo">
-        <van-image :src="logoUrl" class="logo" fit="scale-down"></van-image>
-        为农服务平台
+        <van-image :src="headerBottomBar.icon" class="logo" fit="scale-down"></van-image>
+        {{ headerBottomBar.name }}
       </div>
       <div class="right-nav van-hairline--left">
         <div class="index-icon" @click.stop="goToIndex">
@@ -29,9 +25,8 @@
 </template>
 <script>
 import fastNav from '@/components/fast_nav/fast_nav.vue';
-import logoUrl from '../../assets/logo.png';
-import { mapState } from 'vuex';
-import { inject } from 'vue';
+import { mapState, useStore, mapGetters } from 'vuex';
+import { inject, computed } from 'vue';
 export default {
   name: 'headers',
   components: { fastNav },
@@ -46,8 +41,10 @@ export default {
     },
   },
   setup() {
+    const store = useStore();
+    const headerBottomBar = computed(() => store.getters.getterGlobalTitle);
     const size = inject('size');
-    return { size };
+    return { size, headerBottomBar };
   },
   data() {
     return {
@@ -56,10 +53,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['uId', 'initMid']),
-    logoUrl() {
-      return logoUrl;
-    },
+    ...mapState(['uId']),
+    ...mapGetters(['initMid']),
   },
   watch: {
     $route() {

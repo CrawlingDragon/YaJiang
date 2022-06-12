@@ -45,15 +45,9 @@
         <div class="left">咨询专家</div>
         <div class="right">{{ expert }}</div>
       </div>
-      <Loacl
-        :propMid="from ? mid : initMid"
-        ref="localRef"
-        v-model:address="address"
-      ></Loacl>
+      <Local :propMid="from ? mid : initMid" ref="localRef" v-model:address="address"></Local>
       <div class="sub">
-        <van-button round block type="info" native-type="submit" class="btn f20">
-          提交
-        </van-button>
+        <van-button round block type="info" native-type="submit" class="btn f20"> 提交 </van-button>
       </div>
     </van-form>
     <router-view v-slot="{ Component }">
@@ -69,17 +63,17 @@
 import Header from '@/components/header/header';
 import HospitalHeader from '@/components/hospital_header/hospital_header';
 import Foot from '@/components/foot/foot';
-import Loacl from '@/components/local/local.vue';
+import Local from '@/components/local/local.vue';
 import { useTitles } from '@/common/js/useTitles';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Compressor from 'compressorjs';
-import { onActivated } from 'vue';
+import { onActivated, onMounted } from 'vue';
 export default {
   setup() {
     useTitles('提问');
   },
   name: 'ask',
-  components: { Header, Foot, HospitalHeader, Loacl },
+  components: { Header, Foot, HospitalHeader, Local },
   props: {},
   data() {
     return {
@@ -97,8 +91,13 @@ export default {
       submitBoolean: true,
     };
   },
+  mounted() {
+    this.crop = this.getterDefaultCrop.name;
+    this.fid = this.getterDefaultCrop.num;
+  },
   computed: {
-    ...mapState(['uId', 'mid', 'initMid', 'hospitalName']),
+    ...mapState(['uId', 'mid', 'hospitalName']),
+    ...mapGetters(['initMid', 'getterDefaultCrop']),
     from() {
       return this.$route.query.from;
     },

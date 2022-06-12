@@ -11,11 +11,7 @@
           <van-grid-item text="线上网诊" @click="goToOnline" />
           <van-grid-item text="坐诊巡诊" @click="goToZuo" v-if="hospitalIsStore == 1" />
           <van-grid-item text="测土配方" @click="goToCeTu" v-if="hospitalIsStore == 1" />
-          <van-grid-item
-            text="专家挂号"
-            @click="goToRegistration"
-            v-if="hospitalIsStore == 1"
-          />
+          <van-grid-item text="专家挂号" @click="goToRegistration" v-if="hospitalIsStore == 1" />
           <van-grid-item text="资讯" @click="goToMessage" />
           <van-grid-item text="专家" @click="goToExpert" />
           <van-grid-item
@@ -227,9 +223,7 @@ export default {
             });
           });
       } else {
-        this.$router
-          .push({ path: '/ask', query: { from: 'hospital' } })
-          .catch((err) => err);
+        this.$router.push({ path: '/ask', query: { from: 'hospital' } }).catch((err) => err);
       }
       this.$emit('changeFlag', false);
     },

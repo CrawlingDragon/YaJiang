@@ -2,8 +2,8 @@
   <div :class="{ old: old }" class="app-box">
     <router-view v-slot="{ Component }">
       <keep-alive
-        exclude="Login,mLogin,findPassword,sign,lookExpert,live,messageDetail"
-        include="searchOnline,applyVip,index,area,intoHospital,indexOnline"
+        exclude="Login,mLogin,findPassword,sign,lookExpert,messageDetail"
+        include="searchOnline,applyVip,index,area,intoHospital,indexOnline,live"
       >
         <component :is="Component" />
       </keep-alive>
@@ -13,15 +13,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, provide, onMounted, ref } from 'vue';
+import { computed, provide, onMounted, ref, reactive } from 'vue';
 import { useStore } from 'vuex';
 import GoTop from '@/components/goTop/goTop.vue';
 import SwitchOld from '@/components/switchOld/switchOld.vue';
-import { getAi } from '@/service/getAi';
-import { getInitMid } from '@/service/getInitMid';
+import { getIndexSettingMenu, getHeadFastNav, getDefaultSet } from '@/service/base';
+// import { getAi } from '@/service/getAi';
+
 const store = useStore();
 const old = computed(() => store.state.old);
 
+const headerFastBar = reactive({
+  bar: {},
+});
 // 适老板的图标的size
 const sizeComputed = computed(() => {
   return old.value ? 33 : '';
@@ -30,13 +34,22 @@ provide('size', sizeComputed);
 
 onMounted(async () => {
   // 获取ai的id
-  const data = await getAi();
-  store.commit('setAiExpertId', data);
+  // const data = await getAi();
+  // store.commit('setAiExpertId', data);
 
   // 获取初始的总院mid
-  const { mid: initMid } = await getInitMid();
-  store.commit('setInitMid', initMid);
+  // const { mid: initMid } = await getInitMid();
+  // store.commit('setInitMid', initMid);
+  const data = await getDefaultSet();
+  store.commit('setDefaultSetting', data);
+  // 获取首页的配置项
+  const result = await getIndexSettingMenu();
+  store.commit('setSettingMenu', result);
+
+  // 获取头部快速导航的栏目
+  headerFastBar.bar = await getHeadFastNav();
 });
+provide('headerFastBar', headerFastBar);
 </script>
 
 <style lang="scss">

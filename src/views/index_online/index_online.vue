@@ -35,7 +35,7 @@ useTitles('网诊');
 // vuex
 const store = useStore();
 const uId = computed(() => store.state.uId);
-const initMid = computed(() => store.state.initMid);
+const initMid = computed(() => store.getters.initMid);
 
 // ref
 const onlineArr = ref<OnlineItemTs[]>([]);

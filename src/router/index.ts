@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw, RouterScrollBehavior } from 'vue-router';
 import store from '../store';
 import { getUrlQuery } from '../common/js/util';
 import { fetchGetToken, login } from '../common/js/getToken';
@@ -213,6 +213,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/live/live.vue'),
   },
   {
+    path: '/live_detail/:tId',
+    name: 'live_detail',
+    component: () => import('../views/live_detail/live_detail.vue'),
+  },
+  {
     path: '/live_list',
     name: 'liveList',
     component: () => import('../views/live_list/live_list.vue'),
@@ -386,8 +391,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/cropManagement',
         name: 'cropManagement',
-        component: () =>
-          import('../views/base_center/crop_management/crop_management.vue'),
+        component: () => import('../views/base_center/crop_management/crop_management.vue'),
       },
       {
         path: '/cropRecord',
@@ -431,13 +435,22 @@ const routes: RouteRecordRaw[] = [
     name: 'not_found',
     component: () => import('../views/not_found/not_found.vue'),
   },
+  {
+    path: '/pick_code',
+    meta: { needLogin: true },
+    component: () => import('../views/pick_code/pick_code.vue'),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
-  scrollBehavior() {
-    return { left: 0, top: 0 };
+  scrollBehavior(to, from, savedPosition) {
+    if (to.name === 'live' && savedPosition) {
+      return savedPosition;
+    } else {
+      return { left: 0, top: 0 };
+    }
   },
 });
 

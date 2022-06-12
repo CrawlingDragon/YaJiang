@@ -57,7 +57,7 @@
 <script>
 import Header from '@/components/hospital_header/hospital_header.vue';
 import OnlineItem from '@/components/online_item/online_item.vue';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 var Before_scollH = 0;
 export default {
@@ -91,7 +91,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['uId', 'mid', 'initMid']),
+    ...mapState(['uId', 'mid']),
+    ...mapGetters(['initMid']),
   },
   watch: {
     scollType(newVal) {
@@ -113,9 +114,7 @@ export default {
   methods: {
     scrollHandler() {
       var After_scollH =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
+        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
       var differH = After_scollH - Before_scollH;
       if (differH == 0) {
         return false;
