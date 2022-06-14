@@ -10,7 +10,7 @@
         <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">网诊</div>
       </div>
       <div class="no_index_header f22" v-if="!indexHeader" @click="clickLogo">
-        <van-image :src="headerBottomBar.icon" class="logo" fit="scale-down"></van-image>
+        <van-image :src="headerBottomBar.icon" class="logo" fit="scale-down" round></van-image>
         {{ headerBottomBar.name }}
       </div>
       <div class="right-nav van-hairline--left">

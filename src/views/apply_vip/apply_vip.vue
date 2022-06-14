@@ -2,6 +2,7 @@
   <div class="apply_vip-container">
     <Header header="indexHeader" navHeader="申请会员"></Header>
     <van-form @submit="onSubmit">
+      <van-field v-model="phone" name="phone" label="手机号" readonly />
       <van-field
         v-model="name"
         name="name"
@@ -10,15 +11,26 @@
         required
         :rules="[{ required: true, message: '请输入姓名' }]"
       />
-      <van-field v-model="phone" name="phone" label="手机号" readonly />
+
       <van-field
         v-model="card"
         name="card"
         label="身份证"
+        required
+        :readonly="cardReadonly"
         placeholder="请输入身份证号码"
-        readonly
+        :rules="[
+          { validator, message: '请输入正确的身份证格式' },
+          { required: true, message: '请输入身份证' },
+        ]"
       />
-      <!-- <van-number-keyboard :show="cardShow" extra-key="X" close-button-text="完成" @blur="cardShow = false" v-model="card" /> -->
+      <!-- <van-number-keyboard
+        :show="cardShow"
+        extra-key="X"
+        close-button-text="完成"
+        @blur="cardShow = false"
+        v-model="card"
+      /> -->
       <van-field
         v-model="sex"
         name="sex"
@@ -63,19 +75,14 @@
       <div class="add-box" v-for="(item, index) in addList" :key="index">
         <van-field
           v-model="item.name"
-          name="作物名"
+          name="item.name"
           label="作物名"
           placeholder="请选择"
           readonly
+          :rules="[{ required: item.required, message: '作物必填' }]"
           @click="goToChooseCrop(index)"
         />
-        <van-field
-          v-model="item.mushu"
-          name="种养数量"
-          label="种养数量"
-          placeholder="请选择"
-          type="number"
-        >
+        <van-field v-model="item.mushu" name="数量" label="数量" placeholder="请选择" type="number">
           <template #button>
             <select name="" id="" class="select" v-model="item.unit">
               <option value="亩">亩</option>
@@ -97,7 +104,7 @@
         </van-button>
       </div>
     </van-form>
-    <div class="bottom-title f14">申请加入植物医院，享受会员服务</div>
+    <div class="bottom-title f14">申请加入会员，享受会员服务</div>
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" @getCrop="choosedCrop" />
@@ -113,7 +120,7 @@ import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 import { ref } from 'vue';
 import { area } from '@/common/js/area_level4.js';
-
+import { isCardNo } from '@/common/js/util';
 export default {
   name: 'applyVip',
   components: { Header },
@@ -126,25 +133,25 @@ export default {
     const province = ref(''); // 用于传输数据的省
     const city = ref(''); // 用于传输数据的市
     const town = ref(''); // 用于传输数据的区
-    const county = ref(''); // 用于传输数据的县
+    const residecommunity = ref(''); // 用于传输数据的县
     // 选项列表，children 代表子选项，支持多级嵌套
     const options = area;
+
+    //选择四级地址函数
     const onFinish = ({ selectedOptions }) => {
       showArea.value = false;
       address.value = selectedOptions.map((option) => option.text).join('/');
-      console.log('selectedOptions :>> ', selectedOptions);
-      console.log('selectedOptions[0] :>> ', selectedOptions[0]);
       province.value = selectedOptions[0].text;
       city.value = selectedOptions[1].text;
       town.value = selectedOptions[2]?.text;
-      county.value = selectedOptions[3]?.text;
+      residecommunity.value = selectedOptions[3] ? selectedOptions[3].text : '';
     };
 
     return {
       province,
       city,
       town,
-      county,
+      residecommunity,
       options,
       onFinish,
       address,
@@ -157,7 +164,7 @@ export default {
       userInfo: '',
       name: '',
       phone: '1',
-      card: '1',
+      card: '',
       sex: '',
       // province: '',
       // city: '',
@@ -173,22 +180,37 @@ export default {
           name: '',
           mushu: '',
           unit: '亩',
+          required: false,
         },
       ],
       areaList: areaList, // 数据格式见 Area 组件文档
       actions: [{ name: '男' }, { name: '女' }],
       choosedIndex: 0, //选中的作物 数组index
       hospitalTown: '',
+      cardReadonly: false,
     };
   },
   computed: {
     ...mapState(['mid', 'uId', 'hospitalName']),
     ...mapGetters(['initMid', 'getterDefaultCrop']),
-    cropNumberBoolean() {
+    // cropNumberBoolean() {
+    //   // 如果有作物，没有选择数量，则弹窗提示
+    //   let x = true;
+    //   this.addList.forEach((item) => {
+    //     if (item.name != '') {
+    //       if (item.mushu == '') {
+    //         x = false;
+    //       }
+    //     }
+    //   });
+    //   return x;
+    // },
+    cropNameBoolean() {
+      // 如果有作物数量，没有选择作物，则弹窗提示
       let x = true;
       this.addList.forEach((item) => {
-        if (item.name != '') {
-          if (item.mushu == '') {
+        if (item.mushu != '') {
+          if (item.name == '') {
             x = false;
           }
         }
@@ -203,13 +225,39 @@ export default {
     this.addList[0].name = this.getterDefaultCrop.name;
     this.addList[0].fid = this.getterDefaultCrop.num;
   },
+  watch: {
+    addList: {
+      handler(newVal) {
+        // console.log('newVal', newVal);
+        newVal.forEach((item) => {
+          if (item.mushu != '') {
+            item.required = true;
+          } else {
+            item.required = false;
+          }
+        });
+      },
+      deep: true,
+    },
+  },
   methods: {
+    validator(val) {
+      if (val == '') {
+        return true;
+      }
+      if (this.cardReadonly) {
+        return true;
+      }
+      return isCardNo(val);
+    },
+
     add() {
       this.addList.push({
         fid: this.getterDefaultCrop.num,
         name: this.getterDefaultCrop.name,
         mushu: '',
         unit: '亩',
+        required: false,
       });
     },
     onSelectSex(val) {
@@ -242,8 +290,12 @@ export default {
           });
         return;
       }
-      if (!this.cropNumberBoolean) {
-        this.$toast('作物亩数不能为空');
+      // if (!this.cropNumberBoolean) {
+      //   this.$toast('作物亩数不能为空');
+      //   return;
+      // }
+      if (!this.cropNameBoolean) {
+        this.$toast('作物名不能为空');
         return;
       }
       // 申请地址和医院地址不是同一个
@@ -279,6 +331,7 @@ export default {
           province: this.province,
           city: this.city,
           town: this.town,
+          residecommunity: this.residecommunity, //第四级地址
           address: this.detailAddress,
           zuowu: this.addList,
         })
@@ -326,11 +379,20 @@ export default {
         })
         .then((res) => {
           if (res.data.code == 0) {
-            this.phone = res.data.data.username;
-            this.card = '待完成';
+            let data = res.data.data;
+            this.phone = data.username;
+            if (data.idcard) {
+              this.cardReadonly = true;
+            } else {
+              this.cardReadonly = false;
+            }
+            this.card = data.idcard;
+            // console.log('res.data.data', res.data.data);
+            // this.card = '待完成';
           }
         });
     },
+    // 获取申请医院的镇 （地址），用来判断用户选择的地址和医院的地址远近
     getHospitalTown() {
       this.$axios
         .fetchPost('Mobile/Mpublic/MpublicPage', {

@@ -62,7 +62,10 @@
     >
       <p class="f18">{{ getterIndexMenu.bottomContent.content1 }}</p>
       <p class="f18">
-        {{ getterIndexMenu.bottomContent.content2 }}
+        {{ getterIndexMenu.bottomContent.content2
+        }}<a :href="`tel:${getterIndexMenu.bottomContent.content3}`">{{
+          getterIndexMenu.bottomContent.content3
+        }}</a>
         <!-- 服务咨询热线: <a href="tel:0571-87661693">0571-87661693</a> -->
       </p>
     </div>
@@ -111,8 +114,8 @@ export default {
   },
 
   computed: {
-    ...mapState([ 'uId', 'axiosAddress', 'userInfo']),
-    ...mapGetters(['viewAddress', 'viewSecondAddress', 'getterIndexMenu','initMid']),
+    ...mapState(['uId', 'axiosAddress', 'userInfo']),
+    ...mapGetters(['viewAddress', 'viewSecondAddress', 'getterIndexMenu', 'initMid']),
   },
   watch: {
     uId() {

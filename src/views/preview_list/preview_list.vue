@@ -44,7 +44,7 @@ interface Case {
 const caseList = ref<Case[]>([]);
 const ajaxed = ref<boolean>(false);
 onMounted(async () => {
-  const data = await getPerviewList({ uId: uId.value, mId: '' });
+  const data = await getPerviewList({ uId: uId.value, mId: initMid.value });
   caseList.value = data;
   ajaxed.value = true;
 });

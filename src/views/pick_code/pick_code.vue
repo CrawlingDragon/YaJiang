@@ -49,7 +49,9 @@ export default {
     }
     .pick-qrcode {
       width: calc(480 / 750 * 100%);
+      max-width: 640px;
       height: calc(480 / 750 * 100%);
+      max-height: 640px;
     }
   }
 }

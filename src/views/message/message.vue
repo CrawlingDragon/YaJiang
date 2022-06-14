@@ -51,9 +51,11 @@ async function getList() {
     finished.value = true;
     return;
   }
-  loading.value = false;
-  list.value = list.value.concat(data);
-  page.value += 1;
+  setTimeout(() => {
+    loading.value = false;
+    list.value = list.value.concat(data);
+    page.value += 1;
+  }, 1000);
 }
 
 function goToMessageDetail(id: string, catId: string): void {

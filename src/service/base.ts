@@ -33,3 +33,5 @@ export { getHeadFastNav } from './getHeadFastNav';
 export { getDefaultSet } from './getDefaultSet';
 export { getTrainList, getTrainInfo } from './getTrainList';
 export { getHospitalFastNav } from './getHospitalFastNav';
+export { getMeSetting } from './getMeSetting';
+export { getAboutUs } from './getAboutUs';

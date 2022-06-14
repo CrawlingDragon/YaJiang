@@ -10,7 +10,7 @@ const props = defineProps({
   },
 });
 const trainStatusStr = computed(() => {
-  return props.trainStatus === '1' ? '未开始' : props.trainStatus === '2' ? '进行中 ' : '已结束';
+  return props.trainStatus === '1' ? '未开始' : props.trainStatus === '2' ? '培训中' : '已结束';
 });
 const trainStatusClass = computed(() => {
   return props.trainStatus === '1'

@@ -4,12 +4,7 @@
     <div class="wrap van-hairline--top van-hairline--bottom">
       <div class="left-bar" v-if="header == 'indexHeader'">
         <p class="p1 f22">{{ navHeader }}</p>
-        <van-icon
-          name="wap-nav"
-          class="hospital-icon"
-          @click="showNavFast"
-          :size="size"
-        />
+        <van-icon name="wap-nav" class="hospital-icon" @click="showNavFast" :size="size" />
       </div>
       <div class="left-bar" v-if="header == 'logoHeader'">
         <van-image class="logo" :src="logoImg"></van-image>
@@ -22,9 +17,7 @@
       </div>
       <div
         class="left-bar"
-        v-if="
-          header != 'indexHeader' && header != 'logoHeader' && header != 'searchHeader'
-        "
+        v-if="header != 'indexHeader' && header != 'logoHeader' && header != 'searchHeader'"
       >
         <slot></slot>
       </div>
@@ -32,7 +25,7 @@
         <div class="index-icon" @click="goToIndex"></div>
         <div class="fast-nav-icon" @click="rightIcon"></div>
       </div>
-      <fastNav :showFlag="flag" @changeFlag="closeFast"></fastNav>
+      <fastNav v-model:showFlag="flag" @changeFlag="closeFast"></fastNav>
       <hospitalFastNav :showFlag="flagHospital" @changeFlag="close"></hospitalFastNav>
     </div>
   </div>

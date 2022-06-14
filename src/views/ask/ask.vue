@@ -79,7 +79,7 @@ export default {
     return {
       address: '定位中···',
       message: '',
-      crop: '雷笋',
+      crop: '请选择',
       fid: '',
       uploader: [],
       imgList: [],
@@ -92,7 +92,7 @@ export default {
     };
   },
   mounted() {
-    this.crop = this.getterDefaultCrop.name;
+    this.crop = this.getterDefaultCrop.name ? this.getterDefaultCrop.name : '请选择';
     this.fid = this.getterDefaultCrop.num;
   },
   computed: {
@@ -155,7 +155,7 @@ export default {
         quality: 0.4,
         success(result) {
           let formData = new FormData();
-          // console.log("result", result);
+          console.log('result', result);
           formData.append('urls[]', result, result.name);
           that.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
             // console.log("res :>> ", res);
@@ -328,8 +328,5 @@ export default {
       }
     }
   }
-}
-:deep().van-field__control {
-  font-size: 14px;
 }
 </style>

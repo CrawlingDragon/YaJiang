@@ -431,11 +431,6 @@ export default {
       color #333
       flex 1
     .login-out
-      color $theme-color
       font-size 16px
       margin 0 12px
-
-        // background url('../../assets/logo.png') no-repeat
-        // background-size 100% 100%
-        // background-position center
 </style>

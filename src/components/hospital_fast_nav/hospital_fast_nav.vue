@@ -9,9 +9,18 @@
         <div class="title f18">会员服务<span>专属会员服务，一站式解决作物问题</span></div>
         <van-grid class="nav-ul" :border="false" :gutter="10" :column-num="old ? 3 : 4">
           <van-grid-item text="线上网诊" @click="goToOnline" />
-          <van-grid-item text="坐诊巡诊" @click="goToZuo" v-if="hospitalIsStore == 1" />
+          <template v-for="nav in hospitalSettingNav">
+            <van-grid-item
+              :text="nav.name"
+              @click="goCustomPage(nav.label)"
+              v-if="hospitalIsStore == 1 && nav.state == 1"
+            />
+          </template>
+          <!-- 
           <van-grid-item text="测土配方" @click="goToCeTu" v-if="hospitalIsStore == 1" />
           <van-grid-item text="专家挂号" @click="goToRegistration" v-if="hospitalIsStore == 1" />
+          <van-grid-item text="直播" @click="goToLive" v-if="false" /> -->
+
           <van-grid-item text="资讯" @click="goToMessage" />
           <van-grid-item text="专家" @click="goToExpert" />
           <van-grid-item
@@ -21,7 +30,6 @@
             v-show="false"
           />
           <van-grid-item text="会员提问" @click="goToAsk" v-if="hospitalIsStore == 1" />
-          <van-grid-item text="直播" @click="goToLive" v-if="false" />
           <van-grid-item text="简介" @click="goToIntro" />
         </van-grid>
       </div>
@@ -49,15 +57,48 @@
 </template>
 <script>
 import { mapState, useStore } from 'vuex';
-
+import { Dialog } from 'vant';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useHospitalNav } from '@/common/js/useHospitalNav';
 export default {
   name: 'hospitalFastNav',
-  components: {},
   setup() {
     const store = useStore();
+    const router = useRouter();
     const old = computed(() => store.state.old);
-    return { old };
+
+    //快速导航配置内容
+    const hospitalSettingNav = computed(() => store.state.hospitalSettingNav);
+    //坐诊巡诊,测土配方,挂号管理,人才培训对应的路由函数
+    const { goToZuo, goToCeTu, goToRegistration, goToLive } = useHospitalNav();
+
+    // label: "zuozhen"- "坐诊巡诊"
+    // label: "cetu"- "测土配方"
+    // label: "subscribe"-"挂号管理"
+    // label: "tarin"-"人才培训"
+    function goCustomPage(label) {
+      switch (label) {
+        case 'zuozhen':
+          // 坐诊巡诊
+          goToZuo();
+          break;
+        case 'cetu':
+          // 测土配方
+          goToCeTu();
+          break;
+        case 'subscribe':
+          // 挂号管理
+          goToRegistration();
+          break;
+        case 'tarin':
+          // 人才培训
+          goToLive();
+          break;
+      }
+    }
+
+    return { old, hospitalSettingNav, goCustomPage };
   },
   props: {
     showFlag: {
@@ -352,7 +393,7 @@ export default {
   }
   .join-btn {
     width: auto;
-    margin: 50px 16px 0;
+    margin: 24px 16px 0;
     color: #fff;
     text-align: center;
     height: 50px;
@@ -403,13 +444,13 @@ export default {
     color: #363a44;
     font-size: 12px;
     text-align: center;
-    margin: 30px auto 50px;
+    margin: 40px auto 16px;
     line-height: 1.12;
   }
   .know-vip {
     color: $theme-color;
     font-size: 12px;
-    padding: 30px 0 50px;
+    padding: 16px 0 24px;
     text-align: center;
     line-height: 1.12;
   }

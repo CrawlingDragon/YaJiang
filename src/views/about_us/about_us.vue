@@ -2,19 +2,21 @@
   <div class="about-us">
     <Header :indexHeader="false"></Header>
     <div class="content">
-      <p class="p1 f17">
-        天目雷笋为农服务平台通过数字化手段实现对天目雷笋产业生产环节的指导和服务，实现让手机成为新农具，促进天目雷笋健康、有序、高质高效发展。
-      </p>
-      <p class="p1 f17">
-        平台所包含的服务内容通过介入雷笋生产环节中的投入品施用和农技服务，推进肥药两制双专和科学施用肥药，同时引导笋农及时正确作业，让笋农可以实现适宜的时间做合理的农事，提高雷笋农事作业及时性和标准化，为雷笋品质溯源提供了真实可靠的服务过程数据。平台还提供人工智能辅助诊疗在内的多种农技服务渠道途径，通过生产标准化指导和农技精准化服务以解决在传统种植模式下笋农因个人技术差异导致雷笋品质参差不齐的问题，为雷笋溯源、雷笋分析决策提供数据支撑。
-      </p>
+      <p class="p1 f17" v-html="text"></p>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import Header from '@/components/header/header.vue';
 import { useTitles } from '@/common/js/useTitles';
+import { onMounted, ref } from 'vue';
+import { getAboutUs } from '@/service/base';
 useTitles('关于我们');
+const text = ref('');
+onMounted(async () => {
+  const data = await getAboutUs();
+  text.value = data.content;
+});
 </script>
 <style lang="scss" scoped>
 .about-us {

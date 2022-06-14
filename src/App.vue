@@ -8,7 +8,7 @@
         <component :is="Component" />
       </keep-alive>
     </router-view>
-    <SwitchOld></SwitchOld>
+    <SwitchOld v-if="false"></SwitchOld>
     <GoTop />
   </div>
 </template>
@@ -18,7 +18,7 @@ import { useStore } from 'vuex';
 import GoTop from '@/components/goTop/goTop.vue';
 import SwitchOld from '@/components/switchOld/switchOld.vue';
 import { getIndexSettingMenu, getHeadFastNav, getDefaultSet } from '@/service/base';
-// import { getAi } from '@/service/getAi';
+import { getHospitalFastNav } from '@/service/base';
 
 const store = useStore();
 const old = computed(() => store.state.old);
@@ -33,18 +33,16 @@ const sizeComputed = computed(() => {
 provide('size', sizeComputed);
 
 onMounted(async () => {
-  // 获取ai的id
-  // const data = await getAi();
-  // store.commit('setAiExpertId', data);
-
-  // 获取初始的总院mid
-  // const { mid: initMid } = await getInitMid();
-  // store.commit('setInitMid', initMid);
+  // 获取初始的总院mid，获取ai的id
   const data = await getDefaultSet();
   store.commit('setDefaultSetting', data);
   // 获取首页的配置项
   const result = await getIndexSettingMenu();
   store.commit('setSettingMenu', result);
+
+  // 获取医院的快速导航配置
+  const hospitalNav = await getHospitalFastNav();
+  store.commit('setHospitalSettingNav', hospitalNav);
 
   // 获取头部快速导航的栏目
   headerFastBar.bar = await getHeadFastNav();

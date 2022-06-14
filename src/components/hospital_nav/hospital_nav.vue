@@ -13,7 +13,7 @@
         <div class="icon icon01"></div>
         <p>线上网诊</p>
       </li>
-      <template v-for="(item, index) in nav" :key="item.label">
+      <template v-for="(item, index) in hospitalSettingNav" :key="item.label">
         <li @click="goCustomPage(item.label)" v-if="hospitalIsStore == 1 && item.state == 1">
           <div class="icon" :class="item.label"></div>
           <p>{{ item.name }}</p>
@@ -33,7 +33,7 @@
       </li>
       <li @click="goToLive" v-if="hospitalIsStore == 0">
         <div class="icon icon12"></div>
-        <p>直播</p>
+        <p>培训</p>
       </li> -->
 
       <li @click="goToAsk" v-if="hospitalIsStore == 1">
@@ -61,8 +61,9 @@
 import { mapState, useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
 import { getHospitalFastNav } from '@/service/base';
-import { useRouter } from 'vue-router';
+
 import { Dialog } from 'vant';
+import { useHospitalNav } from '@/common/js/useHospitalNav';
 export default {
   name: 'hospitalNav',
   components: {},
@@ -81,21 +82,12 @@ export default {
     },
   },
   setup() {
-    //坐诊巡诊，测土配方，挂号管理，人才培训的 导航
     const store = useStore();
-    const router = useRouter();
-    //用户uId
-    const uId = computed(() => store.state.uId);
-    // 是否已经加入医院
-    const hospitalIsMember = computed(() => store.state.hospitalIsMember);
-    //导航数组
-    const nav = ref([]);
+    //快速导航配置内容
+    const hospitalSettingNav = computed(() => store.state.hospitalSettingNav);
 
-    // 请求数据
-    onMounted(async () => {
-      const data = await getHospitalFastNav();
-      nav.value = data;
-    });
+    //坐诊巡诊,测土配方,挂号管理,人才培训对应的路由函数
+    const { goToZuo, goToCeTu, goToRegistration, goToLive } = useHospitalNav();
 
     // label: "zuozhen"- "坐诊巡诊"
     // label: "cetu"- "测土配方"
@@ -121,92 +113,8 @@ export default {
           break;
       }
     }
-    // 路由 坐诊巡诊
-    function goToZuo() {
-      if (uId.value == '' || uId.value == undefined) {
-        router.push({
-          path: '/zuozhen_list',
-        });
-        return;
-      }
-      if (hospitalIsMember.value == 0) {
-        Dialog.confirm({
-          message: '抱歉坐诊巡诊是会员服务，请先申请加入医院再访问',
-          cancelButtonText: '申请加入会员',
-          confirmButtonText: '好的',
-          cancelButtonColor: '#155BBB',
-          confirmButtonColor: '#999',
-        })
-          .then(() => {})
-          .catch(() => {
-            router.push({
-              path: '/apply_vip',
-            });
-          });
-      } else {
-        router.push({ path: '/zuozhen_list' }).catch((err) => err);
-      }
-    }
 
-    // 路由 测土配方
-    function goToCeTu() {
-      if (uId.value == '' || uId.value == undefined) {
-        router.push({
-          path: '/cetu_list',
-        });
-        return;
-      }
-      if (hospitalIsMember.value == 0) {
-        Dialog.confirm({
-          message: '抱歉测土配方是会员服务，请先申请再访问',
-          cancelButtonText: '申请加入会员',
-          confirmButtonText: '好的',
-          cancelButtonColor: '#155BBB',
-          confirmButtonColor: '#999',
-        })
-          .then(() => {
-            // on confirm
-          })
-          .catch(() => {
-            // on cancel
-            router.push({ path: '/apply_vip' });
-          });
-      } else {
-        router.push({ path: 'cetu_list' }).catch((err) => err);
-      }
-    }
-    function goToRegistration() {
-      // 路由 专家挂号
-      if (uId.value == '' || uId.value == undefined) {
-        router.push({
-          path: '/expert_registration',
-        });
-        return;
-      }
-      if (hospitalIsMember.value == 0) {
-        Dialog.confirm({
-          message: '抱歉专家挂号是会员服务，请先申请加入医院再访问',
-          cancelButtonText: '申请加入会员',
-          confirmButtonText: '好的',
-          cancelButtonColor: '#155BBB',
-          confirmButtonColor: '#999',
-        })
-          .then(() => {})
-          .catch(() => {
-            // on cancel
-            router.push({
-              path: '/apply_vip',
-            });
-          });
-      } else {
-        router.push({ path: '/expert_registration' }).catch((err) => err);
-      }
-    }
-    // 培训 直播
-    function goToLive() {
-      router.push({ path: '/live' }).catch((err) => err);
-    }
-    return { nav, goCustomPage };
+    return { hospitalSettingNav, goCustomPage };
   },
   data() {
     return {

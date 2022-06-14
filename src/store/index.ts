@@ -31,6 +31,7 @@ interface GlobalState {
     aiExpertId: number;
     defaultCrop: { name: string; num: string };
   }; //默认配置
+  hospitalSettingNav: { name: string; state: number; label: string }[];
   old: boolean; //是否是适老版
 }
 const app = createStore<GlobalState>({
@@ -63,13 +64,15 @@ const app = createStore<GlobalState>({
     // initMid: storage.get('initMid', 0), //顶级医院mid 63580    56915
     // aiExpertId: window.localStorage.getItem('aiExpertId'), //ai 智能专家id
     defaultSet: {
-      initMid: 0,
-      aiExpertId: 0,
+      initMid: 0, // 全局医院的initMid
+      aiExpertId: 0, // ai的专家id
       defaultCrop: {
+        // 默认作物的名字和id
         num: '0',
         name: '',
       },
     },
+    hospitalSettingNav: [{ name: '', state: 0, label: '' }], // 医院快速导航和医院首页的导航配置项
   },
   getters: {
     viewAddress: (state) => {
@@ -103,7 +106,6 @@ const app = createStore<GlobalState>({
         bottomContent: state.settingMenu.bottomContent,
       };
     },
-
     getterGlobalTitle(state) {
       // 首页和全局默认的title de getter
       return state.settingMenu.h5title;
@@ -126,6 +128,9 @@ const app = createStore<GlobalState>({
     },
   },
   mutations: {
+    setHospitalSettingNav(state, data) {
+      state.hospitalSettingNav = data;
+    },
     setSettingMenu(state, data) {
       // 设置首页的配置项
       state.settingMenu = data;
