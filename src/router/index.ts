@@ -469,7 +469,7 @@ router.beforeEach(async (to, from) => {
     const url = window.location.origin + to.path;
     storage.set('redirect_uri', url);
     // 跳转到用户中心
-    login(url);
+    login('password', url);
   }
 });
 

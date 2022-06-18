@@ -2,14 +2,20 @@
   <div class="video_detail-container">
     <Header :indexHeader="false"></Header>
     <div class="video-box">
-      <video :src="detail.videourl" class="video" controls></video>
+      <van-image :src="detail.image" class="video" fit="contain" radius="10"> </van-image>
+      <a
+        class="play-icon"
+        v-if="detail.trainType === '1'"
+        :href="detail.trainAddress"
+        target="_blank"
+      ></a>
       <div class="status">
         <status :trainStatus="detail.trainStatus" />
       </div>
     </div>
     <div class="title">
       <div class="left">{{ detail.title }}</div>
-      <div class="right">{{ detail.hospitalName }}</div>
+      <div class="right" @click="goPageHospital">{{ detail.hospitalName }}</div>
     </div>
     <ul class="ul">
       <li>
@@ -35,12 +41,15 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Header from '@/components/header/header.vue';
 import status from '@/components/live_status/live_status.vue';
 import { getTrainInfo } from '@/service/base';
 import { useTitles } from '@/common/js/useTitles';
+import { useStore } from 'vuex';
 const route = useRoute();
+const router = useRouter();
+const store = useStore();
 
 //set title
 useTitles('培训详情');
@@ -59,6 +68,7 @@ interface Detail {
   trainType?: string;
   videourl?: string;
   trainTeacher?: string;
+  mid?: string;
 }
 
 // 根据路由获取tId
@@ -70,6 +80,11 @@ onMounted(async () => {
   const data = await getTrainInfo(tId.value as string);
   detail.value = data;
 });
+
+function goPageHospital() {
+  store.commit('setMid', detail.value.mid);
+  router.push({ path: '/hospital' });
+}
 </script>
 <script lang="ts">
 export default {
@@ -92,13 +107,26 @@ export default {
     position: relative;
     .video {
       width: 100%;
-      height: auto;
+      height: 150px;
+      background: #999;
     }
     .status {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 10px;
+      right: 10px;
       z-index: 1;
+    }
+    .play-icon {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: url('./play.png') no-repeat center;
+      background-size: cover;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      z-index: 2;
     }
   }
   .title {
@@ -107,15 +135,18 @@ export default {
     margin-bottom: 15px;
     margin-top: 22px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
     .left {
       color: $f-color;
       font-size: $f20;
+      flex: 1;
+      min-width: 0;
+      padding-right: 10px;
     }
     .right {
       color: $theme-color;
       font-size: $f14;
+      width: auto;
     }
   }
   .text {

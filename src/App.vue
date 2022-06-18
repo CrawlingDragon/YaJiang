@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, provide, onMounted, ref, reactive } from 'vue';
+import { computed, provide, onMounted, watch, reactive } from 'vue';
 import { useStore } from 'vuex';
 import GoTop from '@/components/goTop/goTop.vue';
 import SwitchOld from '@/components/switchOld/switchOld.vue';
@@ -22,7 +22,7 @@ import { getHospitalFastNav } from '@/service/base';
 
 const store = useStore();
 const old = computed(() => store.state.old);
-
+const getterGlobalTitle = computed(() => store.getters.getterGlobalTitle);
 const headerFastBar = reactive({
   bar: {},
 });
@@ -48,6 +48,12 @@ onMounted(async () => {
   headerFastBar.bar = await getHeadFastNav();
 });
 provide('headerFastBar', headerFastBar);
+
+watch(getterGlobalTitle, (newVal) => {
+  //根据接口请求，设置网站.ico
+  let icon: any = document.querySelector('link[rel="icon"]');
+  icon.href = newVal.icon;
+});
 </script>
 
 <style lang="scss">

@@ -71,7 +71,7 @@
         required
         :rules="[{ required: true, message: '请输入详细地址' }]"
       />
-      <div class="title f18">种植作物情况</div>
+      <div class="title f18">作物情况</div>
       <div class="add-box" v-for="(item, index) in addList" :key="index">
         <van-field
           v-model="item.name"

@@ -4,7 +4,10 @@
       <van-tabbar-item :to="item.url" class="f20" v-for="(item, index) in menu">
         <!-- @click="goToIndex"  -->
         <template #icon="props">
-          <div class="icon" :class="props.active ? icon(index).active : icon(index).inactive"></div>
+          <div
+            class="icon"
+            :class="props.active ? icon(item.label).active : icon(item.label).inactive"
+          ></div>
         </template>
         {{ item.name }}
       </van-tabbar-item>
@@ -87,38 +90,35 @@ export default {
   },
   methods: {
     ...mapMutations(['setMid']),
-    icon(index) {
+    icon(label) {
+      let index = 0;
+      switch (label) {
+        // 0:url: "/index", image: ""}
+        // 1: {name: "进院", url: "/into_hospital", image: ""}
+        // 2: {name: "提问", url: "/ask", image: ""}
+        // 3: {name: "资讯", url: "/message", image: ""}
+        // 4: {name: "我的", url: "/me", image: ""}
+
+        case 'index':
+          index = 1;
+          break;
+        case 'hospital':
+          index = 2;
+          break;
+        case 'ask':
+          index = 3;
+          break;
+        case 'message':
+          index = 4;
+          break;
+        case 'me':
+          index = 5;
+          break;
+      }
       return {
-        active: `icon0${index + 1}_active`,
-        inactive: `icon0${index + 1}_inactive`,
+        active: `icon0${index}_active`,
+        inactive: `icon0${index}_inactive`,
       };
-      //   case 0:
-      //     return {
-      //       active: `icon0${index}_active`,
-      //       inactive: `icon0${index}_inactive`,
-      //     };
-      //   case 1:
-      //     return {
-      //       active: `icon0${index}_active`,
-      //       inactive: `icon0${index}_inactive`,
-      //     };
-      //   case 2:
-      //     return {
-      //       active: `icon0${index}_active`,
-      //       inactive: `icon0${index}_inactive`,
-      //     };
-      //   case 3:
-      //     return {
-      //       active: `icon0${index}_active`,
-      //       inactive: `icon0${index}_inactive`,
-      //     };
-      //   case 4:
-      //     return {
-      //       active: `icon0${index}_active`,
-      //       inactive: `icon0${index}_inactive`,
-      //     };
-      // }
-      // return;
     },
     getRouterName(name) {
       switch (name) {

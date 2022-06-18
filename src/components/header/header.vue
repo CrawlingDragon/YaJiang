@@ -10,7 +10,12 @@
         <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">网诊</div>
       </div>
       <div class="no_index_header f22" v-if="!indexHeader" @click="clickLogo">
-        <van-image :src="headerBottomBar.icon" class="logo" fit="scale-down" round></van-image>
+        <van-image
+          :src="headerBottomBar.icon"
+          class="logo"
+          fit="scale-down"
+          radius="10%"
+        ></van-image>
         {{ headerBottomBar.name }}
       </div>
       <div class="right-nav van-hairline--left">
@@ -219,7 +224,7 @@ export default {
       height: 20px;
       margin-left: 12px;
       margin-right: 10px;
-      border-radius: 100%;
+      border-radius: 10px;
       border: 1px solid $border-color;
     }
   }

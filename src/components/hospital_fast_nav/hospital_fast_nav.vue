@@ -484,5 +484,8 @@ export default {
     font-size: 16px;
     padding: 0;
   }
+  :deep().van-grid-item {
+    margin-top: 10px;
+  }
 }
 </style>

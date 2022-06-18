@@ -1,7 +1,7 @@
 <template>
   <div class="live-container">
     <Header :indexHeader="false" v-if="from == 'index'"></Header>
-    <HospitalHeader indexHeader="indexHeader" navHeader="直播" v-else></HospitalHeader>
+    <HospitalHeader indexHeader="indexHeader" navHeader="培训" v-else></HospitalHeader>
     <!-- <div class="program" @click="goLive" v-if="menum == 1">直播节目单</div> -->
     <ul class="live-ul">
       <van-list
@@ -11,7 +11,11 @@
         @load="onLoad"
       >
         <li v-for="item in list" :key="item.id" @click.stop="liveHref(item.tId)">
-          <van-image class="live-img" :src="item.image" fit="cover" radius="10px"></van-image>
+          <van-image class="live-img" :src="item.image" fit="cover" radius="10px">
+            <div class="status">
+              <LiveStatus :trainStatus="item.trainStatus" />
+            </div>
+          </van-image>
           <div class="bottom">
             <div class="left">{{ item.title }}</div>
             <div class="right">{{ item.startTime }}</div>
@@ -27,9 +31,6 @@
             <span>
               {{ item.hospitalName }}
             </span>
-          </div>
-          <div class="status">
-            <LiveStatus :trainStatus="item.trainStatus" />
           </div>
         </li>
       </van-list>
@@ -56,7 +57,7 @@ export default {
   name: 'live',
   components: { Header, HospitalHeader, LiveStatus },
   setup() {
-    useTitles('直播');
+    useTitles('培训');
     const route = useRoute();
     const router = useRouter();
     const store = useStore();
@@ -188,38 +189,52 @@ export default {
     .live-img {
       width: 100%;
       height: 150px;
+      position: relative;
+      .status {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
     }
 
     .bottom {
       display: flex;
       justify-content: space-between;
       align-items: end;
-      height: 30px;
+      min-height: 30px;
       align-items: center;
     }
     .left {
       color: $f-color;
       font-size: 16px;
+      flex: 1;
+      min-width: 0;
+      padding-right: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .right {
       color: $f-color-second;
       font-size: 12px;
+      width: auto;
     }
-    .status {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-    }
+
     .hospital {
       display: flex;
       justify-content: space-between;
       align-items: end;
       color: $theme-color;
-      text-align: right;
       min-height: 22px;
       .address {
         color: $f-color-second;
         font-size: 14px;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        white-space: nowrap;
+        padding-right: 10px;
       }
     }
   }

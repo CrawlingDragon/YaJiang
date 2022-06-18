@@ -1,11 +1,19 @@
 <template>
   <div class="nav-box" :class="{ threeLine: routerItem.length % 3 === 0 }">
     <template v-for="item in routerItem" :key="item.url">
-      <router-link :to="item.url" class="item">
+      <router-link
+        :to="item.url === '/live' ? 'live?from=index' : item.url"
+        class="item"
+        v-if="item.type === 'inside'"
+      >
         <!-- <div class="icon" :class="item.icon"></div> -->
         <van-image class="icon" fit="cover" :src="item.image"></van-image>
         <p class="f20">{{ item.name }}</p>
       </router-link>
+      <a :href="item.url" class="item" target="_blank" v-if="item.type === 'outside'">
+        <van-image class="icon" fit="cover" :src="item.image"></van-image>
+        <p class="f20">{{ item.name }}</p>
+      </a>
     </template>
   </div>
 </template>
@@ -17,6 +25,7 @@ interface PropsItem {
   url: string;
   image: string;
   name: string;
+  type: string;
 }
 const routerItem = computed<PropsItem[]>(() => store.getters.getterIndexMenu.topMenu);
 </script>

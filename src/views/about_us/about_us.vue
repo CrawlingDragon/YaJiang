@@ -19,12 +19,17 @@ onMounted(async () => {
 });
 </script>
 <style lang="scss" scoped>
+:deep()img {
+  max-width: 100%;
+  display: block;
+}
 .about-us {
   background: #fff;
   margin-top: 15px;
   overflow-y: auto;
   .content {
     padding: 20px 12px 15px;
+
     .p1 {
       color: $f-color;
       font-size: 14px;

@@ -79,7 +79,12 @@
     <div class="index-btn" @click="goToRouterPage('/')">
       <div class="btn-content">
         <!-- <div class="logo"></div> -->
-        <van-image class="logo" fit="scale-down" :src="headerBottomBar.icon"></van-image>
+        <van-image
+          class="logo"
+          fit="scale-down"
+          :src="headerBottomBar.icon"
+          radius="10%"
+        ></van-image>
         <div class="name f18">{{ headerBottomBar.name }}</div>
       </div>
     </div>
@@ -322,7 +327,7 @@ export default {
     width: 20px;
     height: 20px;
     margin-right: 5px;
-    border-radius: 100%;
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid $border-color;
   }
