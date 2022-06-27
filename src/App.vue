@@ -2,7 +2,7 @@
   <div :class="{ old: old }" class="app-box">
     <router-view v-slot="{ Component }">
       <keep-alive
-        exclude="Login,mLogin,findPassword,sign,lookExpert,messageDetail"
+        exclude="Login,mLogin,findPassword,sign,lookExpert,messageDetail,hospitalFastNav"
         include="searchOnline,applyVip,index,area,intoHospital,indexOnline,live"
       >
         <component :is="Component" />

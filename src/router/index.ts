@@ -420,10 +420,12 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/preview_list',
+    meta: { needLogin: true },
     component: () => import('../views/preview_list/preview_list.vue'),
   },
   {
     path: '/preview',
+    meta: { needLogin: true },
     component: () => import('../views/solution/preview/preview.vue'),
   },
   {

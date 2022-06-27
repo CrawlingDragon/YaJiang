@@ -6,7 +6,7 @@
         v-model="value"
         show-action
         clearable
-        placeholder="搜索问答"
+        :placeholder="'搜索' + getDefaultMenuName.questionName"
         @search="onSearch"
         @cancel="onCancel"
       />
@@ -22,12 +22,12 @@
         <van-image class="img" :src="item.icon"></van-image>
         <div class="text">
           <div class="p1">{{ item.name }}</div>
-          <div class="p2">网诊：{{ item.threads }}次</div>
+          <div class="p2">{{ getDefaultMenuName.questionName }}：{{ item.threads }}次</div>
         </div>
       </div>
     </div>
     <div class="content02" v-if="online.length != ''">
-      <div class="title">线上网诊</div>
+      <div class="title">线上{{ getDefaultMenuName.questionName }}</div>
       <ul class="online-ul">
         <van-list
           v-model:loading="loading"
@@ -48,9 +48,17 @@
 import Header from '@/components/header/header';
 import OnlineItem from '@/components/online_item/online_item';
 import { useTitles } from '@/common/js/useTitles';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
   setup() {
-    useTitles('搜索网诊');
+    const store = useStore();
+    const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
+    const title = '搜索' + getDefaultMenuName.value.questionName;
+    useTitles(title);
+    return {
+      getDefaultMenuName,
+    };
   },
   name: 'searchOnline',
   components: { Header, OnlineItem },

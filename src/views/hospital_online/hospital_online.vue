@@ -1,6 +1,10 @@
 <template>
   <div class="hospital_online-container">
-    <Header header="indexHeader" navHeader="线上网诊" :mid="mid"></Header>
+    <Header
+      header="indexHeader"
+      :navHeader="'线上' + getDefaultMenuName.questionName"
+      :mid="mid"
+    ></Header>
     <ul v-show="!noData">
       <van-list
         v-model:loading="loading"
@@ -19,7 +23,7 @@
 <script>
 import Header from '@/components/hospital_header/hospital_header';
 import OnlineItem from '@/components/online_item/online_item';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { ImagePreview } from 'vant';
 import { useTitles } from '@/common/js/useTitles';
 
@@ -48,6 +52,7 @@ export default {
   created() {},
   computed: {
     ...mapState(['mid', 'hospitalName']),
+    ...mapGetters(['getDefaultMenuName']),
   },
 
   watch: {},

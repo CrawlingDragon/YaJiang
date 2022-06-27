@@ -10,6 +10,7 @@
         placeholder="请输入姓名"
         required
         :rules="[{ required: true, message: '请输入姓名' }]"
+        :readonly="nameReadonly"
       />
 
       <van-field
@@ -116,9 +117,9 @@
 <script>
 import Header from '@/components/hospital_header/hospital_header';
 import areaList from '@/common/js/area';
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, useStore } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { area } from '@/common/js/area_level4.js';
 import { isCardNo } from '@/common/js/util';
 export default {
@@ -127,6 +128,7 @@ export default {
   props: {},
   setup() {
     useTitles('申请会员');
+    const store = useStore();
     const showArea = ref(false);
     const address = ref('');
     const cascaderValue = ref(''); // 完整选择的四级地址
@@ -134,9 +136,62 @@ export default {
     const city = ref(''); // 用于传输数据的市
     const town = ref(''); // 用于传输数据的区
     const residecommunity = ref(''); // 用于传输数据的县
-    // 选项列表，children 代表子选项，支持多级嵌套
-    const options = area;
 
+    // 选项列表，children 代表子选项，支持多级嵌套
+    // const options = area;
+
+    //接口传回的默认地址，选四级地址限定在默认地址之内
+    //province: "四川省",city: "甘孜州",town: "雅江县",street: ""
+    const region = computed(() => store.getters.getterDefaultRegion);
+
+    //根据region 返回地区选择的 配置项
+    const options = computed(() => {
+      let arr = [];
+      if (region.value.province == '') {
+        // 如果省为空，配置项直接是默认配置
+        arr = area;
+      }
+      area.forEach((element) => {
+        if (element.text == region.value.province) {
+          // arr唯一项 等于 对应的省内容
+          arr[0] = element;
+          if (region.value.city == '') {
+            // 如果市为空，则退出循环
+            return;
+          }
+          element.children.forEach((item2) => {
+            if (item2.text == region.value.city) {
+              // console.log('item', item);
+              // 重置市对象的children内容，也就是删除不符合的项
+              arr[0].children = [];
+              // 然后唯一项设置为对应的市内容
+              arr[0].children[0] = item2;
+              if (region.value.town == '') {
+                // 如果区为空，则退出循环
+                return;
+              }
+              // 区和县的内容 和省市 相同
+              item2.children.forEach((item3) => {
+                if (item3.text === region.value.town) {
+                  arr[0].children[0].children = [];
+                  arr[0].children[0].children[0] = item3;
+                  if (region.value.street == '') {
+                    // 如果县为空 就退出
+                    return;
+                  }
+                  item3.children.forEach((item4) => {
+                    arr[0].children[0].children[0].children = [];
+                    arr[0].children[0].children[0].children[0] = item4;
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+      // console.log('arr', arr);
+      return arr;
+    });
     //选择四级地址函数
     const onFinish = ({ selectedOptions }) => {
       showArea.value = false;
@@ -157,6 +212,7 @@ export default {
       address,
       showArea,
       cascaderValue,
+      region,
     };
   },
   data() {
@@ -188,6 +244,7 @@ export default {
       choosedIndex: 0, //选中的作物 数组index
       hospitalTown: '',
       cardReadonly: false,
+      nameReadonly: false,
     };
   },
   computed: {
@@ -238,6 +295,9 @@ export default {
         });
       },
       deep: true,
+    },
+    uId() {
+      this.getUserInfo();
     },
   },
   methods: {
@@ -379,12 +439,19 @@ export default {
         })
         .then((res) => {
           if (res.data.code == 0) {
+            // console.log('res.data', res.data);
             let data = res.data.data;
             this.phone = data.username;
+            this.name = data.realname;
             if (data.idcard) {
               this.cardReadonly = true;
             } else {
               this.cardReadonly = false;
+            }
+            if (data.importuser == 0) {
+              this.nameReadonly = false;
+            } else {
+              this.nameReadonly = true;
             }
             this.card = data.idcard;
             // console.log('res.data.data', res.data.data);

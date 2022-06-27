@@ -25,13 +25,21 @@ interface GlobalState {
   userInfoLocation: string;
   geoAddress: string;
   latelyAddressArray: string[];
-  settingMenu: { h5title: string; topMenu: any[]; bottomMenu: any[]; bottomContent: any };
+  settingMenu: {
+    h5title: string;
+    topMenu: any[];
+    bottomMenu: any[];
+    bottomContent: any;
+    menuName: {};
+  };
   defaultSet: {
     initMid: number;
     aiExpertId: number;
     defaultCrop: { name: string; num: string };
+    region: {};
   }; //默认配置
   hospitalSettingNav: { name: string; state: number; label: string }[];
+
   old: boolean; //是否是适老版
 }
 const app = createStore<GlobalState>({
@@ -60,6 +68,7 @@ const app = createStore<GlobalState>({
       topMenu: [], // 首页的快速导航
       bottomMenu: [], // 首页的底部配置
       bottomContent: {}, // 整站的脚部配置
+      menuName: {}, //默认menu 名称
     },
     // initMid: storage.get('initMid', 0), //顶级医院mid 63580    56915
     // aiExpertId: window.localStorage.getItem('aiExpertId'), //ai 智能专家id
@@ -71,6 +80,7 @@ const app = createStore<GlobalState>({
         num: '0',
         name: '',
       },
+      region: {},
     },
     hospitalSettingNav: [{ name: '', state: 0, label: '' }], // 医院快速导航和医院首页的导航配置项
   },
@@ -126,6 +136,14 @@ const app = createStore<GlobalState>({
       // 默认作物
       return state.defaultSet.defaultCrop;
     },
+    getDefaultMenuName(state) {
+      //默认menu名字，比如协会，医院，问答还是网诊
+      return state.settingMenu.menuName;
+    },
+    getterDefaultRegion(state) {
+      //默认地区，用于申请会员的默认地区选择
+      return state.defaultSet.region;
+    },
   },
   mutations: {
     setHospitalSettingNav(state, data) {
@@ -137,7 +155,7 @@ const app = createStore<GlobalState>({
     },
     setDefaultSetting(state, setting) {
       // 设置默认配置，默认的总院mid，ai的id，默认作物的名称和id
-      const { aiExpert, defalutCrop, defalutCropName, mid } = setting;
+      const { aiExpert, defalutCrop, defalutCropName, mid, region } = setting;
       let obj = {
         initMid: mid,
         aiExpertId: aiExpert,
@@ -145,6 +163,7 @@ const app = createStore<GlobalState>({
           num: defalutCrop,
           name: defalutCropName,
         },
+        region,
       };
       state.defaultSet = obj;
     },
@@ -225,6 +244,7 @@ const app = createStore<GlobalState>({
       window.localStorage.setItem('logined', logined);
     },
     setHospitalLogo(state, hospitalLogo) {
+      state.hospitalLogo = hospitalLogo;
       window.localStorage.setItem('hospitalLogo', hospitalLogo);
     },
     setOld(state, old) {

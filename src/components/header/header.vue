@@ -7,7 +7,9 @@
       </div>
       <div class="tabbar" v-if="indexHeader">
         <div class="item f22" :class="{ active: tabbarActive == 0 }" @click="goToIndex">推荐</div>
-        <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">网诊</div>
+        <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">
+          {{ getDefaultMenuName.questionName }}
+        </div>
       </div>
       <div class="no_index_header f22" v-if="!indexHeader" @click="clickLogo">
         <van-image
@@ -59,7 +61,7 @@ export default {
   },
   computed: {
     ...mapState(['uId']),
-    ...mapGetters(['initMid']),
+    ...mapGetters(['initMid', 'getDefaultMenuName']),
   },
   watch: {
     $route() {

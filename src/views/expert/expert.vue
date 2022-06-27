@@ -122,8 +122,10 @@
         </ul>
       </van-tab>
       <van-tab sticky v-if="id != aiExpertId">
-        <template #title> 加入的医院 {{ expertData.join }} </template>
-        <van-empty description="暂未加入医院" v-if="noData3" />
+        <template #title>
+          加入的{{ getDefaultMenuName.hospitalName }} {{ expertData.join }}
+        </template>
+        <van-empty :description="'暂未加入' + getDefaultMenuName.hospitalName" v-if="noData3" />
         <ul class="hospital-ul" v-show="id != aiExpertId" v-else>
           <van-list
             v-model:loading="loading3"
@@ -197,7 +199,7 @@ export default {
       return this.$route.query.from;
     },
     ...mapState(['uId']),
-    ...mapGetters(['aiExpertId']),
+    ...mapGetters(['aiExpertId', 'getDefaultMenuName']),
   },
   created() {},
   watch: {

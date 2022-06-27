@@ -105,7 +105,7 @@ export default {
         height: 100%;
         position: relative;
         :deep().top {
-          height: 80px;
+          min-height: 80px;
         }
         .right {
           .address {

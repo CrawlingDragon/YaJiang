@@ -4,7 +4,7 @@
   <div class="pick-wrap">
     <div class="pick-box">
       <div class="name">{{ userInfo.realname }}</div>
-      <div class="phone">{{ userInfo.username }}</div>
+      <div class="phone">{{ userInfo.pickId }}</div>
       <van-image :src="userInfo.pickQrcode" class="pick-qrcode"></van-image>
     </div>
   </div>

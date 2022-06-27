@@ -26,11 +26,11 @@
         <van-icon name="arrow" class="arrow" />
       </li>
       <li @click="areaShow = true">
-        <div class="left f20">所在地</div>
+        <div class="left f20">所在地1</div>
         <div class="mid f20">{{ resideprovince }}{{ residecity }}{{ residedist }}</div>
         <van-icon name="arrow" class="arrow" />
       </li>
-      <li v-if="pickCode" @click="goPickCodePage">
+      <li v-if="pickCode" @click="goPickCodePage" style="justify-content: space-between">
         <div class="left f20">我的采摘码</div>
         <div class="mid f20">
           <div class="code-image"></div>
@@ -286,8 +286,12 @@ export default {
         color: #333333;
         font-size: 16px;
         display: flex;
-        justify-content: end;
+        // justify-content: end;
+        justify-content: flex-end;
         margin-right: 4px;
+        min-width: 0;
+        // background: pink;
+
         .avator {
           width: 40px;
           height: 40px;

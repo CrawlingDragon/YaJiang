@@ -7,12 +7,15 @@
         <p class="p2 f18">{{ item.showtime }}</p>
       </li>
     </ul>
-    <van-empty description="暂无医院就诊记录" v-if="noData"></van-empty>
+    <van-empty
+      :description="'暂无' + getDefaultMenuName.hospitalName + '就诊记录'"
+      v-if="noData"
+    ></van-empty>
   </div>
 </template>
 <script>
 import Header from '@/components/hospital_header/hospital_header';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 
 export default {
@@ -31,6 +34,7 @@ export default {
   },
   computed: {
     ...mapState(['mid', 'hospitalName']),
+    ...mapGetters(['getDefaultMenuName']),
   },
   created() {},
   watch: {},
@@ -40,15 +44,13 @@ export default {
   methods: {
     getOnlineList() {
       this.noData = false;
-      this.$axios
-        .fetchPost('/Mobile/Treatment/getWenzhen', { mId: this.mid })
-        .then((res) => {
-          if (res.data.code == 0) {
-            this.list = res.data.data;
-          } else if (res.data.code == 201) {
-            this.noData = true;
-          }
-        });
+      this.$axios.fetchPost('/Mobile/Treatment/getWenzhen', { mId: this.mid }).then((res) => {
+        if (res.data.code == 0) {
+          this.list = res.data.data;
+        } else if (res.data.code == 201) {
+          this.noData = true;
+        }
+      });
     },
     goToDetail(id) {
       this.$router.push({

@@ -1,7 +1,7 @@
 <template>
   <!-- 首页推荐医院列表 -->
   <div class="recommend-hospital-wrap" @click="goToIndexHospital">
-    <van-image :src="list.logo" fit="cover" class="image" lazy-load />
+    <van-image :src="list.case_img" fit="cover" class="image" lazy-load />
     <p class="p1 f22">{{ list.title }}</p>
     <p class="p2">{{ list.level }}·{{ list.issort }}</p>
     <p class="p3" v-show="list.zuowu != '暂未设置'">科室：{{ list.zuowu }}</p>
@@ -15,11 +15,7 @@
       >
         处方 {{ list.num_chufang }}
       </div>
-      <div
-        class="line"
-        v-show="list.num_wen != 0 && list.isstore == 0"
-        style="margin-left: 10px"
-      >
+      <div class="line" v-show="list.num_wen != 0 && list.isstore == 0" style="margin-left: 10px">
         |
       </div>
       <div class="online" v-if="list.num_wen != 0 && list.isstore == 0">
@@ -45,6 +41,7 @@ interface HospitalList {
   isstore?: number;
   mid?: string;
   issort?: number;
+  case_img: string;
 }
 const props = defineProps<{
   list: HospitalList;
@@ -95,9 +92,11 @@ function goToIndexHospital() {
   padding-bottom 15px
   background #F5F5F5
   height 100%
+  overflow hidden
   .image
     width 100%
     height calc((50vw - 18px)/(3/2))
+    max-height 60%
     margin-bottom 5px
   .p1
     font-size 14px

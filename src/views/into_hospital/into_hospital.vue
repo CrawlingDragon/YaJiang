@@ -2,7 +2,7 @@
   <div class="into_hospital-conatiner">
     <Header :indexHeader="false"></Header>
     <div class="box" v-if="list_joinin.length">
-      <div class="title f22">加入的医院</div>
+      <div class="title f22">加入的{{ getDefaultMenuName.hospitalName }}</div>
       <ul>
         <li v-for="item in list_joinin" :key="item.id">
           <RecommendHospital :list="item"></RecommendHospital>
@@ -10,18 +10,14 @@
       </ul>
     </div>
     <div class="box" v-if="list_area.length">
-      <div class="title f22">植物医院</div>
+      <div class="title f22">{{ getDefaultMenuName.hospitalName }}</div>
       <ul>
         <li v-for="item in list_area" :key="item.id">
           <RecommendHospital :list="item"></RecommendHospital>
         </li>
       </ul>
     </div>
-    <van-loading
-      size="24px"
-      vertical
-      style="height: 200px; padding-top: 130px"
-      v-if="loading"
+    <van-loading size="24px" vertical style="height: 200px; padding-top: 130px" v-if="loading"
       >加载中...</van-loading
     >
     <Foot></Foot>
@@ -42,14 +38,15 @@ useTitles('进院');
 //vuex
 const store = useStore();
 const uId = computed(() => store.state.uId);
+const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
 
 //单个医院接口
 interface Hospital {
   id: string;
 }
 // ref
-const list_joinin = ref<Hospital[]>([]); //加入的医院
-const list_area = ref<Hospital[]>([]); //植物医院
+const list_joinin = ref<any[]>([]); //加入的医院
+const list_area = ref<any[]>([]); //植物医院
 const loading = ref<boolean>(true);
 
 onMounted(async () => {

@@ -25,9 +25,10 @@ const store = useStore();
 interface SwiperItem {
   id: string;
   logo: string;
-  module: string;
+  urlType: string;
   mid: string;
   catid: string;
+  urlAddress: string;
 }
 
 // init data
@@ -59,22 +60,22 @@ function initSwiperHeight(width = 0) {
 }
 
 function goToMessageDetail(item: SwiperItem) {
-  //轮播图去资讯详情页
-  switch (item.module) {
-    case 'mp':
-      store.commit('setMid', item.mid);
-      setTimeout(() => {
-        router.push({ path: '/hospital' });
-      });
+  //轮播图去资讯详
+  // urlType == 0 : 不跳转
+  // urlType == 1：内部跳转，暂定资讯页
+  // urlType == 2：外部跳转
+  switch (item.urlType) {
+    case '0':
+      return;
       break;
-    case 'webview':
-      window.open(item.mid, '_blank');
-      break;
-    case 'news':
+    case '1':
       router.push({
         path: '/message_detail',
-        query: { id: item.mid, catid: item.catid },
+        query: { id: item.id, catid: item.catid },
       });
+      break;
+    case '2':
+      window.open(item.urlAddress, '_blank');
       break;
   }
 }
@@ -82,6 +83,6 @@ function goToMessageDetail(item: SwiperItem) {
 <style lang="scss" scoped>
 .swipe-wrap-custom {
   width: 100%;
-  height: calc(100vw / (750 / 188));
+  height: min(calc(100vw / (750 / 260)), 222px);
 }
 </style>

@@ -9,6 +9,7 @@ interface User {
   residecity?: string;
   residedist?: string;
   pickQrcode?: string;
+  pickId: string;
   realname: string;
 }
 export function saveUid(user: User) {
@@ -28,8 +29,9 @@ export function saveUserInfo(user: User) {
     residedist,
     pickQrcode,
     realname,
+    pickId,
   } = user;
   const location =
     resideprovince + (residecity ? ',' + residecity : '') + (residedist ? ',' + residedist : '');
-  return { username, uid, avatar, status, location, pickQrcode, realname };
+  return { username, uid, avatar, status, location, pickQrcode, pickId, realname };
 }

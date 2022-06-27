@@ -71,6 +71,7 @@ export function fetchGetToken(code: string) {
         // 保存uId
         store.commit('setuId', res.data.access_token);
 
+        let token = res.data.access_token;
         // 请求接口，获取对应token的用户信息，并保存
         leansAxios
           .fetchPost('Mobile/User/userCenter', {
@@ -81,6 +82,20 @@ export function fetchGetToken(code: string) {
             if (data.code == 0) {
               store.dispatch('saveUserInfo', data.data);
             }
+            // } else if (data.code == 201) {
+            //   if (data.data.length == 0) {
+            //     leansAxios
+            //       .fetchPost('Mobile/User/userCenter', {
+            //         uId: token,
+            //       })
+            //       .then((res: any) => {
+            //         let data = res.data;
+            //         if (data.code == 0) {
+            //           store.dispatch('saveUserInfo', data.data);
+            //         }
+            //       });
+            //   }
+            // }
           });
       }
     })

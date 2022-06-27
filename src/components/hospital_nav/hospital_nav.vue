@@ -11,7 +11,7 @@
     <ul class="nav-ul" :class="{ isstore: hospitalIsStore == 0 }">
       <li @click="goToOnline">
         <div class="icon icon01"></div>
-        <p>线上网诊</p>
+        <p>线上{{ getDefaultMenuName.questionName }}</p>
       </li>
       <template v-for="(item, index) in hospitalSettingNav" :key="item.label">
         <li @click="goCustomPage(item.label)" v-if="hospitalIsStore == 1 && item.state == 1">
@@ -85,7 +85,7 @@ export default {
     const store = useStore();
     //快速导航配置内容
     const hospitalSettingNav = computed(() => store.state.hospitalSettingNav);
-
+    const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
     //坐诊巡诊,测土配方,挂号管理,人才培训对应的路由函数
     const { goToZuo, goToCeTu, goToRegistration, goToLive } = useHospitalNav();
 
@@ -114,7 +114,7 @@ export default {
       }
     }
 
-    return { hospitalSettingNav, goCustomPage };
+    return { hospitalSettingNav, goCustomPage, getDefaultMenuName };
   },
   data() {
     return {

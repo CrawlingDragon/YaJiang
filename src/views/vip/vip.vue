@@ -12,7 +12,7 @@
         </li>
       </ul>
       <div class="btn f20" @click="goToIntoHospital">
-        选择医院加入会员
+        选择{{ getDefaultMenuName.hospitalName }}加入会员
         <div class="free f14">免费</div>
       </div>
     </div>
@@ -21,11 +21,15 @@
 <script setup lang="ts">
 import Header from '@/components/header/header.vue';
 import { useRouter } from 'vue-router';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, computed } from 'vue';
 import { getVip } from '@/service/getVip';
 import { useTitles } from '@/common/js/useTitles';
+import { useStore } from 'vuex';
 // 设置title
 useTitles('会员权益');
+//vuex
+const store = useStore();
+const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
 
 interface VipReactive {
   title: string;

@@ -8,7 +8,7 @@
       <div class="small-title f18">{{ bar.hospitalColumnName }}</div>
       <van-grid :column-num="old ? 3 : 4" :border="false" style="">
         <van-grid-item v-for="item in bar.hospitalColumnMenu" @click="goToRouterPage(item.url)">
-          <div class="p f20" @click="goToHospital">{{ item.name }}</div>
+          <div class="p f20">{{ item.name }}</div>
         </van-grid-item>
         <!-- <van-grid-item @click="goToExpert">
           <div class="p f20">找专家</div>
@@ -145,6 +145,7 @@ export default {
       // 看视频只是单纯的看视频
       if (type) {
         //如果有type显示类型,type:0-内部模块；type：1-外部模块，小程序； type：2-外部模块，url链接
+
         if (type === '0') {
           goPage(url);
         } else if (type === '1') {
@@ -342,6 +343,9 @@ export default {
 }
 .login-out {
   color: $theme-color;
+}
+.nav-list {
+  border-bottom: 1px solid $border-color;
 }
 </style>
 <style lang="stylus" scoped>

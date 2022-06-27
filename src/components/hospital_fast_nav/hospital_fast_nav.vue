@@ -2,13 +2,13 @@
   <div class="hospital_fast_nav-container" v-show="showFlag">
     <div class="wrap">
       <div class="top">
-        <div class="kind f22">医院导航</div>
+        <div class="kind f22">{{ getDefaultMenuName.hospitalName }}导航</div>
         <van-icon name="cross" class="cross" @click="closeNav" />
       </div>
       <div class="nav-box">
         <div class="title f18">会员服务<span>专属会员服务，一站式解决作物问题</span></div>
         <van-grid class="nav-ul" :border="false" :gutter="10" :column-num="old ? 3 : 4">
-          <van-grid-item text="线上网诊" @click="goToOnline" />
+          <van-grid-item :text="'线上' + getDefaultMenuName.questionName" @click="goToOnline" />
           <template v-for="nav in hospitalSettingNav">
             <van-grid-item
               :text="nav.name"
@@ -39,10 +39,12 @@
         v-if="hospitalIsStore == 1 && hospitalIsMember == 0"
       >
         <!-- v-if="hospitalIsStore == 1 && hospitalIsMember == 0" -->
-        申请加入医院
+        申请加入{{ getDefaultMenuName.hospitalName }}
         <span class="free f14">免费</span>
       </div>
-      <div class="joined" v-if="joinTime">{{ joinTime }} 加入医院成为会员</div>
+      <div class="joined" v-if="joinTime">
+        {{ joinTime }} 加入{{ getDefaultMenuName.hospitalName }}成为会员
+      </div>
       <div class="know-vip f18" @click="goToVip" v-show="hospitalIsStore == 1">
         了解更多会员权益 >
       </div>
@@ -56,7 +58,7 @@
   </div>
 </template>
 <script>
-import { mapState, useStore } from 'vuex';
+import { mapState, useStore, mapGetters } from 'vuex';
 import { Dialog } from 'vant';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
@@ -119,6 +121,7 @@ export default {
       'hospitalIsMember',
       'hospitalLogo',
     ]),
+    ...mapGetters(['getDefaultMenuName']),
   },
   watch: {},
   mounted() {},
@@ -146,7 +149,7 @@ export default {
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: '抱歉坐诊巡诊是会员服务，请先申请加入医院再访问',
+            message: `抱歉坐诊巡诊是会员服务，请先申请加入${this.getDefaultMenuName.hospitalName}再访问`,
             cancelButtonText: '申请加入会员',
             confirmButtonText: '好的',
             cancelButtonColor: '#155BBB',
@@ -178,7 +181,7 @@ export default {
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: '抱歉测土配方是会员服务，请先申请加入医院再访问',
+            message: `抱歉测土配方是会员服务，请先申请加入${this.getDefaultMenuName.hospitalName}再访问'`,
             cancelButtonText: '申请加入会员',
             confirmButtonText: '好的',
             cancelButtonColor: '#155BBB',
@@ -214,7 +217,7 @@ export default {
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: '抱歉专家挂号是会员服务，请先申请加入医院再访问',
+            message: `抱歉专家挂号是会员服务，请先申请加入${this.getDefaultMenuName.hospitalName}再访问`,
             cancelButtonText: '申请加入会员',
             confirmButtonText: '好的',
             cancelButtonColor: '#155BBB',
@@ -248,7 +251,7 @@ export default {
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: '抱歉会员提问是会员服务，请先申请加入医院再访问',
+            message: `抱歉会员提问是会员服务，请先申请加入${this.getDefaultMenuName.hospitalName}再访问`,
             cancelButtonText: '申请加入会员',
             confirmButtonText: '好的',
             cancelButtonColor: '#155BBB',

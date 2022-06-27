@@ -9,7 +9,10 @@
         </p>
       </li>
     </ul>
-    <van-empty description="暂无医院就诊记录" v-if="noData"></van-empty>
+    <van-empty
+      :description="'暂无' + getDefaultMenuName.hospitalName + '就诊记录'"
+      v-if="noData"
+    ></van-empty>
   </div>
 </template>
 <script>
@@ -32,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState(['uId']),
-    ...mapGetters(['initMid']),
+    ...mapGetters(['initMid', 'getDefaultMenuName']),
   },
   watch: {},
   created() {},

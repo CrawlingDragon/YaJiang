@@ -9,9 +9,9 @@
     </div>
     <div class="hospital-box">
       <div class="title">
-        <div class="h1-title f22">推荐医院</div>
-        <div class="small-title">加入新型庄稼医院，免费享受会员服务</div>
-        <div class="look-bar f18" @click="goRouterSwitch('into_hospital')">找医院 ></div>
+        <div class="h1-title f22">推荐{{ getDefaultMenuName.hospitalName }}</div>
+        <div class="small-title">加入{{ getDefaultMenuName.hospitalName }}，免费享受会员服务</div>
+        <div class="look-bar f18" @click="goRouterSwitch('into_hospital')">更多 ></div>
         <!-- <div class="nowAddress" @click="goToArea">
           <div>{{ viewAddress }}</div>
           <div class="icon"></div>
@@ -43,7 +43,7 @@
     </div>
     <div class="online-box">
       <div class="title f22">
-        网诊
+        {{ getDefaultMenuName.questionName }}
         <div class="look-bar f18" @click="goRouterSwitch('index_online')">找答案 ></div>
       </div>
       <ul class="o-ul">
@@ -53,7 +53,7 @@
         <van-loading size="24px" v-if="!onlineArr" class="loading">加载中...</van-loading>
       </ul>
       <div class="look-bar2" @click="goRouterSwitch('index_online')" style="border-top: none">
-        <div class="btn f18">更多网诊 ></div>
+        <div class="btn f18">更多{{ getDefaultMenuName.questionName }} ></div>
       </div>
     </div>
     <div
@@ -115,7 +115,13 @@ export default {
 
   computed: {
     ...mapState(['uId', 'axiosAddress', 'userInfo']),
-    ...mapGetters(['viewAddress', 'viewSecondAddress', 'getterIndexMenu', 'initMid']),
+    ...mapGetters([
+      'viewAddress',
+      'viewSecondAddress',
+      'getterIndexMenu',
+      'initMid',
+      'getDefaultMenuName',
+    ]),
   },
   watch: {
     uId() {

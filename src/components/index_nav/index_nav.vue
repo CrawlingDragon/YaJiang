@@ -10,7 +10,12 @@
         <van-image class="icon" fit="cover" :src="item.image"></van-image>
         <p class="f20">{{ item.name }}</p>
       </router-link>
-      <a :href="item.url" class="item" target="_blank" v-if="item.type === 'outside'">
+      <a
+        :href="item.url"
+        class="item"
+        target="_blank"
+        v-if="item.type === 'outside' || item.type === 'app'"
+      >
         <van-image class="icon" fit="cover" :src="item.image"></van-image>
         <p class="f20">{{ item.name }}</p>
       </a>

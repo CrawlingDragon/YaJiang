@@ -1,7 +1,7 @@
 export const area = [
   {
     value: '2',
-    text: '北京',
+    text: '北京市',
     children: [
       {
         value: '52',
@@ -85,7 +85,7 @@ export const area = [
   },
   {
     value: '3',
-    text: '安徽',
+    text: '安徽省',
     children: [
       {
         value: '36',
@@ -623,7 +623,7 @@ export const area = [
   },
   {
     value: '4',
-    text: '福建',
+    text: '福建省',
     children: [
       {
         value: '53',
@@ -1023,7 +1023,7 @@ export const area = [
   },
   {
     value: '5',
-    text: '甘肃',
+    text: '甘肃省',
     children: [
       {
         value: '62',
@@ -1473,7 +1473,7 @@ export const area = [
   },
   {
     value: '6',
-    text: '广东',
+    text: '广东省',
     children: [
       {
         value: '76',
@@ -2361,7 +2361,7 @@ export const area = [
   },
   {
     value: '7',
-    text: '广西',
+    text: '广西壮族自治区',
     children: [
       {
         value: '97',
@@ -2899,7 +2899,7 @@ export const area = [
   },
   {
     value: '8',
-    text: '贵州',
+    text: '贵州省',
     children: [
       {
         value: '111',
@@ -3315,7 +3315,7 @@ export const area = [
   },
   {
     value: '9',
-    text: '海南',
+    text: '海南省',
     children: [
       {
         value: '120',
@@ -4423,7 +4423,7 @@ export const area = [
   },
   {
     value: '10',
-    text: '河北',
+    text: '河北省',
     children: [
       {
         value: '138',
@@ -5199,7 +5199,7 @@ export const area = [
   },
   {
     value: '11',
-    text: '河南',
+    text: '河南省',
     children: [
       {
         value: '149',
@@ -6021,7 +6021,7 @@ export const area = [
   },
   {
     value: '12',
-    text: '黑龙江',
+    text: '黑龙江省',
     children: [
       {
         value: '167',
@@ -6637,7 +6637,7 @@ export const area = [
   },
   {
     value: '13',
-    text: '湖北',
+    text: '湖北省',
     children: [
       {
         value: '180',
@@ -7497,7 +7497,7 @@ export const area = [
   },
   {
     value: '14',
-    text: '湖南',
+    text: '湖南省',
     children: [
       {
         value: '197',
@@ -8075,7 +8075,7 @@ export const area = [
   },
   {
     value: '15',
-    text: '吉林',
+    text: '吉林省',
     children: [
       {
         value: '211',
@@ -8391,7 +8391,7 @@ export const area = [
   },
   {
     value: '16',
-    text: '江苏',
+    text: '江苏省',
     children: [
       {
         value: '220',
@@ -8927,7 +8927,7 @@ export const area = [
   },
   {
     value: '17',
-    text: '江西',
+    text: '江西省',
     children: [
       {
         value: '233',
@@ -9415,7 +9415,7 @@ export const area = [
   },
   {
     value: '18',
-    text: '辽宁',
+    text: '辽宁省',
     children: [
       {
         value: '244',
@@ -9925,7 +9925,7 @@ export const area = [
   },
   {
     value: '19',
-    text: '内蒙古',
+    text: '内蒙古自治区',
     children: [
       {
         value: '258',
@@ -10411,7 +10411,7 @@ export const area = [
   },
   {
     value: '20',
-    text: '宁夏',
+    text: '宁夏回族自治区',
     children: [
       {
         value: '270',
@@ -10539,7 +10539,7 @@ export const area = [
   },
   {
     value: '21',
-    text: '青海',
+    text: '青海省',
     children: [
       {
         value: '275',
@@ -10765,7 +10765,7 @@ export const area = [
   },
   {
     value: '22',
-    text: '山东',
+    text: '山东省',
     children: [
       {
         value: '283',
@@ -11453,7 +11453,7 @@ export const area = [
   },
   {
     value: '23',
-    text: '山西',
+    text: '山西省',
     children: [
       {
         value: '300',
@@ -12005,7 +12005,7 @@ export const area = [
   },
   {
     value: '24',
-    text: '陕西',
+    text: '陕西省',
     children: [
       {
         value: '311',
@@ -12499,7 +12499,7 @@ export const area = [
   },
   {
     value: '25',
-    text: '上海',
+    text: '上海市',
     children: [
       {
         value: '321',
@@ -12591,7 +12591,7 @@ export const area = [
   },
   {
     value: '26',
-    text: '四川',
+    text: '四川省',
     children: [
       {
         value: '322',
@@ -13529,7 +13529,7 @@ export const area = [
   },
   {
     value: '27',
-    text: '天津',
+    text: '天津市',
     children: [
       {
         value: '343',
@@ -13617,7 +13617,7 @@ export const area = [
   },
   {
     value: '28',
-    text: '西藏',
+    text: '西藏自治区',
     children: [
       {
         value: '344',
@@ -13961,7 +13961,7 @@ export const area = [
   },
   {
     value: '29',
-    text: '新疆',
+    text: '新疆维吾尔自治区',
     children: [
       {
         value: '351',
@@ -14635,7 +14635,7 @@ export const area = [
   },
   {
     value: '30',
-    text: '云南',
+    text: '云南省',
     children: [
       {
         value: '367',
@@ -15253,7 +15253,7 @@ export const area = [
   },
   {
     value: '31',
-    text: '浙江',
+    text: '浙江省',
     children: [
       {
         value: '383',
@@ -15759,7 +15759,7 @@ export const area = [
   },
   {
     value: '32',
-    text: '重庆',
+    text: '重庆市',
     children: [
       {
         value: '394',

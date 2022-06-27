@@ -13,7 +13,7 @@
       <div class="right f20" @click.stop="goToEdit">编辑 ></div>
     </div>
     <div class="my-ul">
-      <van-cell title="加入的医院" to="/me_hospital" is-link>
+      <van-cell :title="'加入的' + getDefaultMenuName.hospitalName" to="/me_hospital" is-link>
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
           <!-- <div class="icon01"></div> -->
@@ -152,7 +152,7 @@ export default {
 
   computed: {
     ...mapState(['uId']),
-    ...mapGetters(['initMid']),
+    ...mapGetters(['initMid', 'getDefaultMenuName']),
   },
   watch: {
     uId(newVal) {

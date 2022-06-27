@@ -7,7 +7,7 @@
       </li>
       <div class="noData" v-if="noData">
         <div class="p1">暂无挂号记录</div>
-        <div class="p2">申请新型庄稼医院会员，挂号专家咨询</div>
+        <div class="p2">申请{{ getDefaultMenuName.hospitalName }}会员，挂号专家咨询</div>
       </div>
     </ul>
   </div>
@@ -15,7 +15,7 @@
 <script>
 import Header from '@/components/header/header';
 import RegistrationItem from '@/components/register_item/register_item.vue';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '../../common/js/useTitles';
 
 export default {
@@ -33,6 +33,7 @@ export default {
 
   computed: {
     ...mapState(['uId']),
+    ...mapGetters(['getDefaultMenuName']),
   },
   mounted() {
     this.getRegistration();
@@ -40,15 +41,13 @@ export default {
   methods: {
     getRegistration() {
       this.noData = false;
-      this.$axios
-        .fetchPost('/Mobile/User/getSubscribe', { uId: this.uId })
-        .then((res) => {
-          if (res.data.code == 0) {
-            this.list = res.data.data;
-          } else if (res.data.code == 201) {
-            this.noData = true;
-          }
-        });
+      this.$axios.fetchPost('/Mobile/User/getSubscribe', { uId: this.uId }).then((res) => {
+        if (res.data.code == 0) {
+          this.list = res.data.data;
+        } else if (res.data.code == 201) {
+          this.noData = true;
+        }
+      });
     },
   },
 };
