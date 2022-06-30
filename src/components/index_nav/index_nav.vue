@@ -49,7 +49,7 @@ const routerItem = computed<PropsItem[]>(() => store.getters.getterIndexMenu.top
   background: #ffffff;
   margin-bottom: 10px;
   flex-wrap: wrap;
-  padding: 18px 0 20px;
+  padding: 18px 0 0;
   &.threeLine {
     .item {
       width: 33.33%;
@@ -58,13 +58,14 @@ const routerItem = computed<PropsItem[]>(() => store.getters.getterIndexMenu.top
   .item {
     width: 25%;
     text-align: center;
+    margin-bottom: 20px;
     .icon {
       width: 36px;
       height: 36px;
       color: #343434;
       font-size: 14px;
       margin: 0 auto;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       &.i1 {
         background: url('./1.png') no-repeat center;
         background-size: cover;
@@ -88,6 +89,7 @@ const routerItem = computed<PropsItem[]>(() => store.getters.getterIndexMenu.top
     }
     p {
       color: #333333;
+      line-height: 1.2;
     }
   }
 }

@@ -91,8 +91,14 @@ import { fetchPost } from '../../http';
 export default {
   setup() {
     const store = useStore();
-    const title = computed(() => store.getters.getterGlobalTitle.name);
-    useTitles(title.value);
+    const getterGlobalTitle = computed(() => store.getters.getterGlobalTitle);
+
+    useTitles(getterGlobalTitle.value.name);
+
+    watch(getterGlobalTitle, (newVal) => {
+      useTitles(newVal.name);
+    });
+    return { name };
   },
   name: 'index',
   components: {
@@ -251,14 +257,14 @@ export default {
     }
     .e-ul {
       width: 100%;
-      column-count: auto;
-      padding-right: 12px;
+      // column-count: auto;
+      margin-right: 12px;
       margin: 0;
-      padding-left: 12px;
+      margin-left: 12px;
       padding-bottom: 0;
       li {
-        break-inside: auto;
-        height: 90px;
+        // break-inside: auto;
+        // height: 90px;
         padding: 0;
         margin-bottom: 16px;
       }
@@ -303,15 +309,25 @@ export default {
   }
   .e-ul {
     padding-top: 10px;
-    column-gap: 0;
-    column-count: 2;
     margin-left: 12px;
-    // border-bottom: 1px solid $border-color;
+    margin-right: 12px;
     padding-bottom: 5px;
+    // column-gap: 0;
+    // column-count: 2;
+
+    // border-bottom: 1px solid $border-color;
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     li {
-      break-inside: avoid;
-      padding-right: 12px;
-      padding-bottom: 10px;
+      width: 50%;
+      // break-inside: avoid;
+      // padding-right: 12px;
+      margin-bottom: 10px;
+      &:nth-child(odd) {
+        padding-right: 12px;
+      }
     }
   }
   .o-ul {

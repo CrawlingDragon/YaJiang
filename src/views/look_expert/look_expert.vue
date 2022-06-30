@@ -90,7 +90,7 @@ async function getExpertList() {
       margin-bottom: 10px;
       vertical-align: top;
       .recommend_expert-container {
-        min-height: 185px;
+        // min-height: 185px;
         :deep().time {
           display: none;
         }

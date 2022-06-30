@@ -10,9 +10,7 @@
         placeholder="请输入姓名"
         required
         :rules="[{ required: true, message: '请输入姓名' }]"
-        :readonly="nameReadonly"
       />
-
       <van-field
         v-model="card"
         name="card"
@@ -50,16 +48,16 @@
         name="address"
         v-model="address"
         label="地区选择"
-        placeholder="点击选择省市区"
+        placeholder="点击选择省,市,区,乡镇"
         @click="showArea = true"
-        :rules="[{ required: true, message: '点击选择省市区' }]"
+        :rules="[{ required: true, message: '点击选择省,市,区,乡镇' }]"
       />
       <van-popup v-model:show="showArea" position="bottom">
         <!-- <van-area :area-list="areaList" @confirm="onConfirm" @cancel="showArea = false" /> -->
         <van-cascader
           v-model="cascaderValue"
-          title="请选择所在地区"
-          :options="options"
+          title="点击选择省,市,区,乡镇"
+          :options="options.arr"
           @close="showArea = false"
           @finish="onFinish"
         />
@@ -68,9 +66,9 @@
         v-model="detailAddress"
         name="detailAddress"
         label="详细地址"
-        placeholder="请输入详细地址"
+        placeholder="请输入村名,如松茸村"
         required
-        :rules="[{ required: true, message: '请输入详细地址' }]"
+        :rules="[{ required: true, message: '请输入村名,如松茸村' }]"
       />
       <div class="title f18">作物情况</div>
       <div class="add-box" v-for="(item, index) in addList" :key="index">
@@ -147,14 +145,17 @@ export default {
     //根据region 返回地区选择的 配置项
     const options = computed(() => {
       let arr = [];
+      let cascaderValue = '';
       if (region.value.province == '') {
         // 如果省为空，配置项直接是默认配置
         arr = area;
+        cascaderValue = '';
       }
       area.forEach((element) => {
         if (element.text == region.value.province) {
           // arr唯一项 等于 对应的省内容
           arr[0] = element;
+          cascaderValue = element.value;
           if (region.value.city == '') {
             // 如果市为空，则退出循环
             return;
@@ -166,6 +167,7 @@ export default {
               arr[0].children = [];
               // 然后唯一项设置为对应的市内容
               arr[0].children[0] = item2;
+              cascaderValue = item2.value;
               if (region.value.town == '') {
                 // 如果区为空，则退出循环
                 return;
@@ -175,6 +177,7 @@ export default {
                 if (item3.text === region.value.town) {
                   arr[0].children[0].children = [];
                   arr[0].children[0].children[0] = item3;
+                  cascaderValue = item3.value;
                   if (region.value.street == '') {
                     // 如果县为空 就退出
                     return;
@@ -182,6 +185,7 @@ export default {
                   item3.children.forEach((item4) => {
                     arr[0].children[0].children[0].children = [];
                     arr[0].children[0].children[0].children[0] = item4;
+                    cascaderValue = item4.value;
                   });
                 }
               });
@@ -190,8 +194,11 @@ export default {
         }
       });
       // console.log('arr', arr);
-      return arr;
+      return { cascaderValue, arr };
     });
+
+    // 初始化地区选择的地址
+    cascaderValue.value = options.value.cascaderValue;
     //选择四级地址函数
     const onFinish = ({ selectedOptions }) => {
       showArea.value = false;
@@ -244,7 +251,6 @@ export default {
       choosedIndex: 0, //选中的作物 数组index
       hospitalTown: '',
       cardReadonly: false,
-      nameReadonly: false,
     };
   },
   computed: {
@@ -448,11 +454,7 @@ export default {
             } else {
               this.cardReadonly = false;
             }
-            if (data.importuser == 0) {
-              this.nameReadonly = false;
-            } else {
-              this.nameReadonly = true;
-            }
+
             this.card = data.idcard;
             // console.log('res.data.data', res.data.data);
             // this.card = '待完成';

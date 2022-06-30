@@ -442,10 +442,14 @@ const routes: RouteRecordRaw[] = [
     meta: { needLogin: true },
     component: () => import('../views/pick_code/pick_code.vue'),
   },
+  {
+    path: '/bank',
+    component: () => import('../views/bank/bank.vue'),
+  },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.DEV ? '' : '/app/'),
   routes: routes,
   scrollBehavior(to, from, savedPosition) {
     if (to.name === 'live' && savedPosition) {
@@ -468,7 +472,7 @@ router.beforeEach(async (to, from) => {
     await fetchGetToken(urlParamsCode);
   } else if (to.meta.needLogin && uId == '') {
     // meta.needLogin 判断页面是否需要登录，true则跳转到用户中心登录。且uId为空时
-    const url = window.location.origin + to.path;
+    const url = window.location.origin + '/app' + to.path;
     storage.set('redirect_uri', url);
     // 跳转到用户中心
     login('password', url);

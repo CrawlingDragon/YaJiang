@@ -6,7 +6,7 @@
       <van-list
         v-model:loading="loading"
         :finished="finished"
-        finished-text="没有更多了"
+        :finished-text="page === 1 ? '暂无数据' : '没有更多了'"
         @load="onLoad"
       >
         <li v-for="item in evaluate" :key="item.id">
@@ -94,19 +94,20 @@ function onLoad() {
 }
 async function getCommentList() {
   // 请求评分列表的接口
+  loading.value = true;
   const data = await getEvaluate({ uId: uId.value, page: page.value, pagesize: 10 });
   // console.log('data :>> ', data);
-  page.value += 1;
-  evaluate.value = evaluate.value.concat(data);
-  loading.value = false;
   // 201 表示没有更多了
   if (data?.code === 201) {
     finished.value = true;
+    return;
   }
+  setTimeout(() => {
+    loading.value = false;
+    evaluate.value = evaluate.value.concat(data);
+    page.value += 1;
+  }, 1000);
 }
-// onMounted(() => {
-//   getCommentList();
-// });
 </script>
 <style lang="scss">
 .old {

@@ -2,12 +2,10 @@
   <!-- 首页网珍 -->
   <div class="recommend_online-container">
     <div class="top" @click="goToExpert(list.authorid)">
-      <van-image round class="avator" :src="list.avatar"></van-image>
+      <van-image round class="avator" :src="list.avatar" fit="cover"></van-image>
       <div class="name">
         {{ list.author }}
-        <div class="time">
-          {{ list.addtime }} <span v-show="list.area">·</span> {{ list.area }}
-        </div>
+        <div class="time">{{ list.addtime }} <span v-show="list.area">·</span> {{ list.area }}</div>
       </div>
     </div>
     <!-- <div class="subsidy" v-if="list.isbenefit == 1"></div> -->

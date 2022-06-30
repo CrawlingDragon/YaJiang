@@ -32,13 +32,15 @@ import { getIntoHospital } from '@/service/getIntoHospital';
 import { useStore } from 'vuex';
 import { computed, ref, watch, onMounted } from 'vue';
 import { useTitles } from '@/common/js/useTitles';
-// title
-useTitles('进院');
 
 //vuex
 const store = useStore();
 const uId = computed(() => store.state.uId);
 const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
+
+// title
+const title = getDefaultMenuName.value.hospitalName;
+useTitles(title);
 
 //单个医院接口
 interface Hospital {

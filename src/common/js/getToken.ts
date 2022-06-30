@@ -13,7 +13,7 @@ export function loginOut() {
   //判断url是否为需要登录的页面，是就改写成index
   let url = deleteUrlCode();
   if (Router.currentRoute.value.meta.needLogin) {
-    url = window.location.origin;
+    url = window.location.origin + '/app';
   }
   // 清空uId
   store.commit('setUid', '');

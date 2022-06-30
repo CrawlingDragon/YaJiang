@@ -3,7 +3,7 @@
     <Header :indexHeader="false"></Header>
     <div class="person-box">
       <div class="name-bar">
-        <van-image class="avator" :src="expertData.avatar"></van-image>
+        <van-image class="avator" :src="expertData.avatar" fit="cover"></van-image>
         <div class="name f30">
           {{ expertData.name }}
           <span v-if="identity == 1 && id != aiExpertId" class="f16">
@@ -459,6 +459,20 @@ export default {
     }
   }
 }
+.title-bar {
+  border-bottom: 1px solid $border-color;
+}
+:deep().van-tabs__wrap {
+  border-bottom: 1px solid $border-color;
+}
+:deep().van-tab--active {
+  color: $theme-color;
+}
+.answer-ul {
+  li {
+    border-bottom: 1px solid $border-color;
+  }
+}
 </style>
 <style lang="stylus" scoped>
 .expert-container
@@ -482,6 +496,7 @@ export default {
         height 65px
         border-radius 5px
         overflow hidden
+        background #fff
       .name
         color #fff
         font-size 20px

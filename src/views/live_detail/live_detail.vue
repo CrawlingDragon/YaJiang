@@ -2,7 +2,7 @@
   <div class="video_detail-container">
     <Header :indexHeader="false"></Header>
     <div class="video-box">
-      <van-image :src="detail.image" class="video" fit="contain" radius="10"> </van-image>
+      <van-image :src="detail.image" class="video" fit="cover" radius="10"> </van-image>
       <a
         class="play-icon"
         v-if="detail.trainType === '1'"

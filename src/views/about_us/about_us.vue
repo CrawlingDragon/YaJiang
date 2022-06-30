@@ -35,7 +35,7 @@ onMounted(async () => {
       font-size: 14px;
       line-height: 1.2;
       margin-bottom: 30px;
-      text-indent: 2em;
+      // text-indent: 2em;
       &:last-child {
         margin-bottom: 0;
       }

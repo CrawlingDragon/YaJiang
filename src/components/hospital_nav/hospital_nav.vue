@@ -144,7 +144,7 @@ export default {
       if (this.hospitalIsMember == 0) {
         this.$dialog
           .confirm({
-            message: '抱歉会员提问是会员服务，请先申请加入医院再访问',
+            message: `抱歉会员提问是会员服务，请先申请加入${this.getDefaultMenuName.hospitalName}再访问`,
             cancelButtonText: '申请加入会员',
             confirmButtonText: '好的',
             cancelButtonColor: '#155BBB',
@@ -191,7 +191,7 @@ export default {
     isVip() {
       this.$dialog
         .confirm({
-          message: '您已是新型庄稼医院会员',
+          message: '您已是会员',
           cancelButtonText: '查看会员权益',
           confirmButtonText: '好的',
           cancelButtonColor: '#155BBB',
@@ -241,7 +241,9 @@ export default {
   background-size: cover;
   background-position: center center;
   position: relative;
-  height: 190px;
+  // height: 190px;
+  height: calc(100vw / 750) * 380;
+  max-height: 330;
   margin-bottom: 10px;
   z-index: 1;
   .bj-img {

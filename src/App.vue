@@ -31,7 +31,7 @@ const sizeComputed = computed(() => {
   return old.value ? 33 : '';
 });
 provide('size', sizeComputed);
-
+// console.log('import.meta.env :>> ', import.meta.env);
 onMounted(async () => {
   // 获取初始的总院mid，获取ai的id
   const data = await getDefaultSet();

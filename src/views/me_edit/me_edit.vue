@@ -18,7 +18,11 @@
       <li @click="clickName">
         <div class="left f20">名字</div>
         <div class="mid f20">{{ name }}</div>
-        <van-icon name="arrow" class="arrow" v-if="identity == 0 && ismember == 0" />
+        <van-icon
+          name="arrow"
+          class="arrow"
+          v-if="identity == 0 && ismember == 0 && importuser == 0"
+        />
       </li>
       <li @click="sexShow = true">
         <div class="left f20">性别</div>
@@ -26,7 +30,7 @@
         <van-icon name="arrow" class="arrow" />
       </li>
       <li @click="areaShow = true">
-        <div class="left f20">所在地1</div>
+        <div class="left f20">所在地</div>
         <div class="mid f20">{{ resideprovince }}{{ residecity }}{{ residedist }}</div>
         <van-icon name="arrow" class="arrow" />
       </li>
@@ -96,6 +100,7 @@ export default {
       residedist: '', // 区
       identity: 0, // 1是专家，不允许改名字，0是普通人
       ismember: 0, // 1是会员，不允许改名字，0可以修改
+      importuser: 0, //为1就不让修改名字
       pickCode: false,
     };
   },
@@ -196,6 +201,7 @@ export default {
             this.identity = data.identity;
             this.ismember = data.ismember;
             this.pickCode = data.pickQrcode;
+            this.importuser = data.importuser;
           }
         });
     },
@@ -219,7 +225,7 @@ export default {
         });
     },
     clickName() {
-      if (this.identity == 1 || this.ismember == 1) {
+      if (this.identity == 1 || this.ismember == 1 || this.importuser == 1) {
         return;
       }
       this.nameShow = true;
