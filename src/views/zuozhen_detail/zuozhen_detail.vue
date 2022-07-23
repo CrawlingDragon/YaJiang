@@ -12,17 +12,14 @@
         <div class="right">{{ zuozhen.fname }}</div>
       </li>
       <li>
-        <div class="left">坐诊日期</div>
+        <div class="left">日期</div>
         <div class="right">{{ zuozhen.addtime }}</div>
       </li>
       <li>
         <div class="left">病情描述</div>
         <div class="right">{{ zuozhen.content }}</div>
       </li>
-      <div
-        class="img-ul"
-        v-if="zuozhen.pic_urls_tiny && zuozhen.pic_urls_tiny.length != 0"
-      >
+      <div class="img-ul" v-if="zuozhen.pic_urls_tiny && zuozhen.pic_urls_tiny.length != 0">
         <div class="t1">病情图片</div>
         <div class="item">
           <van-image
@@ -36,20 +33,20 @@
       </div>
     </ul>
     <div class="bottom">
-      <div class="title f22">处方信息</div>
+      <div class="title f22">{{ getDefaultMenuName.chufangName }}信息</div>
       <div class="list">
-        <div class="left">处方专家</div>
+        <div class="left">{{ getDefaultMenuName.chufangName }}专家</div>
         <div class="right">{{ zuozhen.chufang_expert }}</div>
       </div>
       <div class="list">
-        <div class="left">看诊结果</div>
+        <div class="left">结果</div>
         <div class="right">{{ zuozhen.result }}</div>
       </div>
     </div>
     <div class="bottom">
       <div class="title f22">用药信息</div>
       <div class="list">
-        <div class="left">看诊结果</div>
+        <div class="left">结果</div>
         <div class="right">{{ zuozhen.result }}</div>
       </div>
     </div>
@@ -70,12 +67,14 @@
 import Header from '@/components/hospital_header/hospital_header';
 import { ImagePreview } from 'vant';
 import { useTitles } from '../../common/js/useTitles';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'zuozhenDetail',
   components: { Header, [ImagePreview.Component.name]: ImagePreview.Component },
   setup() {
-    useTitles('坐诊巡诊详情');
+    const title = useTitles('坐诊巡诊详情');
+    return { title };
   },
   data() {
     return {
@@ -87,6 +86,7 @@ export default {
     id() {
       return this.$route.query.id;
     },
+    ...mapGetters(['getDefaultMenuName']),
   },
   watch: {
     $route() {
@@ -102,6 +102,8 @@ export default {
         if (res.data.code == 0) {
           this.zuozhen = res.data.data;
           this.products = res.data.data.products;
+          this.type = res.data.data.type;
+          this.title = res.data.data.type + '详情';
         }
       });
     },

@@ -4,20 +4,23 @@
       header="indexHeader"
       :navHeader="'线上' + getDefaultMenuName.questionName"
       :mid="mid"
+      @updateData="updateData"
     ></Header>
-    <ul v-show="!noData">
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <li v-for="item in list" :key="item.id">
-          <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
-        </li>
-      </van-list>
-    </ul>
-    <van-empty description="暂无网诊" v-show="noData"></van-empty>
+    <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+      <ul v-show="!noData">
+        <van-list
+          v-model:loading="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <li v-for="item in list" :key="item.id">
+            <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
+          </li>
+        </van-list>
+      </ul>
+      <van-empty description="暂无数据" v-show="noData"></van-empty>
+    </van-pull-refresh>
   </div>
 </template>
 <script>
@@ -26,10 +29,12 @@ import OnlineItem from '@/components/online_item/online_item';
 import { mapState, mapGetters } from 'vuex';
 import { ImagePreview } from 'vant';
 import { useTitles } from '@/common/js/useTitles';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
 
 export default {
   setup() {
     const title = useTitles('线上网诊');
+    useTargetScroll();
     return { title };
   },
   name: 'hospitalOnline',
@@ -47,6 +52,7 @@ export default {
       finished: false,
       page: 0,
       noData: false,
+      refreshLoading: false,
     };
   },
   created() {},
@@ -55,11 +61,18 @@ export default {
     ...mapGetters(['getDefaultMenuName']),
   },
 
-  watch: {},
+  watch: {
+    mid() {
+      this.resetData();
+    },
+  },
   mounted() {
     this.title = this.hospitalName;
   },
   methods: {
+    updateData() {
+      this.resetData();
+    },
     onLoad() {
       this.getList();
     },
@@ -92,6 +105,19 @@ export default {
             this.finished = true;
           }
         });
+    },
+    resetData() {
+      this.page = 0;
+      this.noData = false;
+      this.list = [];
+      this.getList();
+    },
+    onRefresh() {
+      // 下拉舒心
+      setTimeout(() => {
+        this.resetData();
+        this.refreshLoading = false;
+      }, 1000);
     },
   },
 };

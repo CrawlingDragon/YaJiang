@@ -7,7 +7,12 @@
       </div>
       <div class="tabbar" v-if="indexHeader">
         <div class="item f22" :class="{ active: tabbarActive == 0 }" @click="goToIndex">推荐</div>
-        <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">
+        <div
+          class="item f22"
+          :class="{ active: tabbarActive == 1 }"
+          @click="goToOnline"
+          @dblclick="updateFetch"
+        >
           {{ getDefaultMenuName.questionName }}
         </div>
       </div>
@@ -70,6 +75,10 @@ export default {
   },
   mounted() {},
   methods: {
+    updateFetch() {
+      //点击网诊，或者找答案 tab栏目，提交数据更新
+      this.$emit('updateFetchData');
+    },
     clickLogo() {
       this.$emit('clickLogoImg');
       this.$router.push({ path: '/index' }).catch((err) => err);
@@ -85,7 +94,7 @@ export default {
     },
     goToOnline() {
       // 路由  网诊
-      this.$router.push({ path: '/index_online' }).catch((err) => err);
+      this.$router.push({ path: '/index_online' });
       this.fastNavShowFlag = false;
     },
     goToIndex() {

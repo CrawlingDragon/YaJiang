@@ -1,6 +1,6 @@
 <template>
   <div class="expert_registration-container">
-    <Header navHeader="专家挂号"></Header>
+    <Header :navHeader="'专家' + expertText.guahaoName"></Header>
     <div class="registration-box">
       <div class="title">
         <div class="left"></div>
@@ -17,18 +17,12 @@
             <div class="p1 f18" v-if="item.data.am.realname == '无号源'" @click="clickNo">
               无号源
             </div>
-            <div
-              class="now f17"
-              v-if="item.data.am.realname == '即将放号'"
-              @click="rightNow"
-            >
+            <div class="now f17" v-if="item.data.am.realname == '即将放号'" @click="rightNow">
               {{ item.data.am.realname }}
             </div>
             <div
               class="number f18"
-              v-if="
-                item.data.am.realname != '无号源' && item.data.am.realname != '即将放号'
-              "
+              v-if="item.data.am.realname != '无号源' && item.data.am.realname != '即将放号'"
               @click="registration(item.data.am, '上午')"
             >
               总{{ item.data.am.nums }} 剩{{ item.data.am.surplus }}
@@ -41,18 +35,12 @@
             <div class="p1 f18" v-if="item.data.pm.realname == '无号源'" @click="clickNo">
               无号源
             </div>
-            <div
-              class="now f17"
-              v-if="item.data.pm.realname == '即将放号'"
-              @click="rightNow"
-            >
+            <div class="now f17" v-if="item.data.pm.realname == '即将放号'" @click="rightNow">
               {{ item.data.pm.realname }}
             </div>
             <div
               class="number f18"
-              v-if="
-                item.data.pm.realname != '无号源' && item.data.pm.realname != '即将放号'
-              "
+              v-if="item.data.pm.realname != '无号源' && item.data.pm.realname != '即将放号'"
               @click="registration(item.data.pm, '下午')"
             >
               总{{ item.data.pm.nums }} 剩{{ item.data.pm.surplus }}
@@ -68,12 +56,19 @@
 </template>
 <script>
 import Header from '@/components/hospital_header/hospital_header';
-import { mapState } from 'vuex';
+import { mapState, useStore } from 'vuex';
 import { Dialog } from 'vant';
+import { computed } from 'vue';
 import { useTitles } from '../../common/js/useTitles';
 export default {
   setup() {
-    useTitles('专家挂号');
+    const store = useStore();
+    // 专家挂号+后台配置文案
+    const expertText = computed(() => store.getters.getDefaultMenuName);
+    useTitles('专家' + expertText.value.guahaoName);
+    return {
+      expertText,
+    };
   },
   name: 'expertRegistration',
   components: { Header, [Dialog.Component.name]: Dialog.Component },
@@ -98,22 +93,20 @@ export default {
     },
     getList() {
       // 获取挂号-医院排版
-      this.$axios
-        .fetchPost('Mobile/Mpublic/getSubscribeData', { mId: this.mid })
-        .then((res) => {
-          if (res.data.code == 0) {
-            this.list = res.data.data;
-          }
-        });
+      this.$axios.fetchPost('Mobile/Mpublic/getSubscribeData', { mId: this.mid }).then((res) => {
+        if (res.data.code == 0) {
+          this.list = res.data.data;
+        }
+      });
     },
     registration(item, halfDay) {
       if (item.surplus == 0) {
         this.$toast('抱歉,该时间段没有专家号');
         return;
       }
-      let title = `确定挂${this.timeFormat(parseInt(item.ymd) * 1000)}${halfDay}${
-        item.realname
-      }的号吗?`;
+      let title = `确定${this.expertText.guahaoName}${this.timeFormat(
+        parseInt(item.ymd) * 1000
+      )}${halfDay}${item.realname}的号吗?`;
 
       let obj = {
         mId: this.mid,
@@ -141,9 +134,9 @@ export default {
               this.getList();
               this.$dialog
                 .confirm({
-                  title: '挂号成功',
+                  title: this.expertText.guahaoName + '成功',
                   message: res.data.message,
-                  cancelButtonText: '挂号记录',
+                  cancelButtonText: this.expertText.guahaoName + '记录',
                   cancelButtonColor: '#155BBB',
                   confirmButtonText: '关闭',
                   confirmButtonColor: '#999',

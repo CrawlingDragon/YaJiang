@@ -27,6 +27,7 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [vue()],
     base: mode === 'development' ? '' : '/app/',
+    // base: '/app',
     resolve: {
       alias: { '@': path.resolve(__dirname, './src') },
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],

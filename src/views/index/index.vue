@@ -435,7 +435,7 @@ export default {
     img
       display block
       width 100%
-      height 100%
+      height auto
   .online-box
     background #fff
     margin-top 10px

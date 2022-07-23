@@ -1,26 +1,29 @@
 <template>
   <div class="zuozhen_list-container">
-    <Header header="indexHeader" navHeader="坐诊巡诊" :mid="mid"></Header>
+    <Header header="indexHeader" :navHeader="zuozhenXunzhen" :mid="mid"></Header>
     <ul>
       <li v-for="item in list" :key="item.id" @click="goToDetail(item.id)">
         <p class="p1 f20">{{ item.title }}</p>
         <p class="p2 f18">{{ item.showtime }}</p>
       </li>
     </ul>
-    <van-empty
-      :description="'暂无' + getDefaultMenuName.hospitalName + '就诊记录'"
-      v-if="noData"
-    ></van-empty>
+    <van-empty :description="'暂无记录'" v-if="noData"></van-empty>
   </div>
 </template>
 <script>
 import Header from '@/components/hospital_header/hospital_header';
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, useStore } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
+import { computed } from 'vue';
 
 export default {
   setup() {
-    useTitles('坐诊巡诊');
+    const store = useStore();
+    const zuozhenXunzhen = computed(() => store.getters.getDefaultMenuName.zuozhenXunzhen);
+    useTitles(zuozhenXunzhen.value);
+    return {
+      zuozhenXunzhen,
+    };
   },
   name: 'zuozhenList',
   components: { Header },

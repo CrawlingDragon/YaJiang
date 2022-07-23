@@ -42,7 +42,7 @@
     </div>
     <div class="introduce-info">
       <div class="title f22">介绍</div>
-      <div class="text f18">{{ intro.introduce }}</div>
+      <div class="text f18" v-html="intro.introduce"></div>
       <!-- <van-image class="img"></van-image>
       <div class="p1">医院门头</div>
       <van-image class="img"></van-image>
@@ -88,6 +88,10 @@ export default {
   // },
   computed: {
     ...mapState(['uId', 'mid', 'hospitalName']),
+    // introduce() {
+    //   let r = this.intro.introduce + '';
+    //   return r.replace(/\n/g, '<br/>');
+    // },
   },
   watch: {},
   mounted() {

@@ -20,21 +20,31 @@
           <div class="icon01 icon"></div>
         </template>
       </van-cell>
-      <van-cell title="挂号记录" to="/me_registration" is-link v-if="registration.state === 1">
+      <van-cell
+        :title="registration.name"
+        to="/me_registration"
+        is-link
+        v-if="registration.state === 1"
+      >
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
           <div class="icon02 icon" fit="scale-down"></div>
         </template>
       </van-cell>
 
-      <van-cell title="土壤检测" :to="{ path: '/whole_cetu_list' }" is-link v-if="cetu.state === 1">
+      <van-cell
+        :title="cetu.name"
+        :to="{ path: '/whole_cetu_list' }"
+        is-link
+        v-if="cetu.state === 1"
+      >
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
           <!-- <div class="icon04"></div> -->
           <div class="icon04 icon" fit="scale-down"></div>
         </template>
       </van-cell>
-      <van-cell title="坐诊巡诊" to="/whole_zuozhen_list" is-link v-if="zuozhen.state === 1">
+      <van-cell :title="zuozhen.name" to="/whole_zuozhen_list" is-link v-if="zuozhen.state === 1">
         <!-- 使用 right-icon 插槽来自定义右侧图标 -->
         <template #icon>
           <div class="icon05 icon" fit="scale-down"></div>

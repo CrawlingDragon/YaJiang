@@ -72,6 +72,7 @@ export default {
 
     //快速导航配置内容
     const hospitalSettingNav = computed(() => store.state.hospitalSettingNav);
+
     //坐诊巡诊,测土配方,挂号管理,人才培训对应的路由函数
     const { goToZuo, goToCeTu, goToRegistration, goToLive } = useHospitalNav();
 

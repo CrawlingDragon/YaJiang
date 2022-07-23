@@ -2,9 +2,7 @@
   <!-- 挂号记录item -->
   <div class="register_item">
     <div class="top">
-      <div class="left f16">
-        {{ list.subtime }} {{ list.apm }} 第{{ list.position }}号
-      </div>
+      <div class="left f16">{{ list.subtime }} {{ list.apm }} 第{{ list.position }}号</div>
       <div class="right f16" :class="{ waitLook: list.status == '待就诊' }">
         {{ list.status }}
       </div>
@@ -17,30 +15,30 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="left f15">挂号时间: {{ list.addtime }}</div>
+      <div class="left f15">{{ settingRegistrationName }}时间: {{ list.addtime }}</div>
       <div class="right f15">NO:{{ list.order_number }}</div>
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: 'Register_item',
-  components: {},
-  props: {
-    list: {
-      type: Object,
-      default: function () {
-        return {};
-      },
+
+<script setup lang="ts">
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+const store = useStore();
+const settingRegistrationName = computed(() => store.getters.getDefaultMenuName.guahaoName);
+
+const props = defineProps({
+  list: {
+    type: Object,
+    default: function () {
+      return {};
     },
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
-  methods: {},
+});
+</script>
+<script lang="ts">
+export default {
+  name: 'Register_item',
 };
 </script>
 <style lang="scss" scoped>

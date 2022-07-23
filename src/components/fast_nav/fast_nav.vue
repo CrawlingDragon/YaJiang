@@ -143,9 +143,9 @@ export default {
       // 专家，直播，基地，坐诊，巡诊，测土，培训视频，注意判断初始mid
       // 培训有直播，回放功能
       // 看视频只是单纯的看视频
+      // debugger;
       if (type) {
         //如果有type显示类型,type:0-内部模块；type：1-外部模块，小程序； type：2-外部模块，url链接
-
         if (type === '0') {
           goPage(url);
         } else if (type === '1') {
@@ -398,9 +398,14 @@ export default {
       line-height 26px
       margin 0 auto
       display block
+      overflow hidden
+
     :deep().van-grid-item__content
       padding-top 7px
       padding-bottom 7px
+      overflow hidden
+      // word-break break-all
+      // white-space nowrap
   .btns
     background #fff
     text-align center

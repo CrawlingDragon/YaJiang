@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     ...mapState(['mid', 'uId']),
-    ...mapGetters(['initMid']),
+    // ...mapGetters(['initMid']),
   },
   watch: {},
   mounted() {
@@ -53,7 +53,6 @@ export default {
       this.$axios
         .fetchPost('Mobile/Treatment/getTestingsoil', {
           uId: this.uId,
-          mId: this.initMid,
         })
         .then((res) => {
           if (res.data.code == 0) {

@@ -1,7 +1,13 @@
 <template>
   <div class="me_answer-container">
     <Header :header="'xx'"></Header>
-    <van-tabs v-model="active" class="tabs" @scroll="scroll" swipeable>
+    <van-tabs
+      v-model:active="activeValue"
+      class="tabs"
+      swipeable
+      @clickTab="tabClickFn"
+      @dblclick="tabDblclickFn"
+    >
       <van-tab title="我问的" class="tab">
         <div class="wrap">
           <van-list
@@ -59,17 +65,20 @@ import Header from '@/components/hospital_header/hospital_header.vue';
 import OnlineItem from '@/components/online_item/online_item.vue';
 import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
 var Before_scollH = 0;
 export default {
   setup() {
     useTitles('问答管理');
+    const { scrollTop } = useTargetScroll();
+    return { scrollTop };
   },
   name: 'meAnswer',
   components: { Header, OnlineItem },
   props: {},
   data() {
     return {
-      active: 0,
+      activeValue: 0,
       ask: [],
       answer: [],
       information: [],
@@ -88,6 +97,7 @@ export default {
       page3: 0,
       scollType: '',
       num: 0,
+      name: 0,
     };
   },
   computed: {
@@ -108,9 +118,9 @@ export default {
     window.addEventListener('scroll', this.scrollHandler);
     this.getUserInfo();
   },
-  unmounted() {
-    window.removeEventListener('scroll', this.scrollHandler);
-  },
+  // unmounted() {
+  //   window.removeEventListener('scroll', this.scrollHandler);
+  // },
   methods: {
     scrollHandler() {
       var After_scollH =
@@ -122,9 +132,31 @@ export default {
       this.scollType = differH > 0 ? 'down' : 'up';
       Before_scollH = After_scollH;
     },
-    scroll() {
-      // console.log('val :>> ', val);
-      // val
+    // scroll() {
+    //   // console.log('val :>> ', val);
+    //   // val
+    // },
+    tabClickFn(obj) {
+      //单击tab切换，获取对应tab
+      this.name = obj.name;
+    },
+    tabDblclickFn() {
+      // 双击tab切换，更新数据
+      let active = this.name;
+      switch (active) {
+        case 0:
+          this.page1 = 0;
+          this.myAsk();
+          break;
+          this.page2 = 0;
+          this.myAnswer();
+        case 1:
+          break;
+          this.page3 = 0;
+          this.myInformation();
+        case 2:
+          break;
+      }
     },
     onLoad1() {
       this.loading1 = true;

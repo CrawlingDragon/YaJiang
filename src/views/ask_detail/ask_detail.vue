@@ -171,6 +171,7 @@ import { login } from '@/common/js/getToken';
 import { useTitles } from '@/common/js/useTitles.ts';
 import RatePopup from '@/components/rate_popup/rate_popup.vue';
 import { ref } from 'vue';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
 export default {
   setup() {
     useTitles('问答详情');
@@ -184,7 +185,8 @@ export default {
       ratePopupRef.value?.open();
     }
 
-    return { ratePopupRef, openRatePopup, pid };
+    const { scrollTop } = useTargetScroll();
+    return { ratePopupRef, openRatePopup, pid, scrollTop };
   },
   name: 'askDetail',
   components: { Header, RatePopup },
@@ -199,18 +201,22 @@ export default {
       roteValue: 1,
       messageRote: '',
       detail: '',
-
       author: '',
     };
   },
   computed: {
     ...mapState(['uId']),
   },
-  created() {},
+  activated() {
+    let tid = this.$route.query.tid;
+    if (tid !== this.tid) {
+      this.tid = tid;
+      this.resetData();
+    }
+  },
   watch: {
-    $route() {
-      this.tid = this.$route.query.tid;
-      this.getDetail();
+    uId() {
+      this.resetData();
     },
   },
   mounted() {
@@ -218,6 +224,10 @@ export default {
   },
   methods: {
     ...mapMutations(['setMid']),
+    resetData() {
+      this.scrollTop = 0;
+      this.getDetail();
+    },
     getDetail() {
       // 解答详情
       this.$axios.fetchPost('Mobile/Wen/detail', { tId: this.tid, uId: this.uId }).then((res) => {

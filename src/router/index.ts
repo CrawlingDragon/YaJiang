@@ -26,6 +26,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/index_online',
     name: 'indexOnline',
+    meta: { savedPosition: 0 },
     component: () => import('../views/index_online/index_online.vue'),
     children: [
       {
@@ -297,7 +298,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/me_answer',
     name: 'meAnswer',
-    meta: { needLogin: true },
+    // meta: { needLogin: true },
     component: () => import('../views/me_answer/me_answer.vue'),
   },
   {
@@ -450,9 +451,17 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.DEV ? '' : '/app/'),
+  // history: createWebHistory('/app/'),
   routes: routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (to.name === 'live' && savedPosition) {
+  scrollBehavior(to, from, savedPosition: any) {
+    if (
+      to.name === 'live' ||
+      to.name === 'indexOnline' ||
+      to.name === 'hospitalOnline' ||
+      to.name === 'expert' ||
+      to.name === 'askDetail' ||
+      to.name === 'me_answer'
+    ) {
       return savedPosition;
     } else {
       return { left: 0, top: 0 };
@@ -469,10 +478,17 @@ router.beforeEach(async (to, from) => {
   //登录成功返回时，有code参数，用code请求token
   if (urlParamsCode && uId == '') {
     // 去请求token
-    await fetchGetToken(urlParamsCode);
+
+    let r = await fetchGetToken(urlParamsCode);
   } else if (to.meta.needLogin && uId == '') {
     // meta.needLogin 判断页面是否需要登录，true则跳转到用户中心登录。且uId为空时
-    const url = window.location.origin + '/app' + to.path;
+    // const url = window.location.origin + (import.meta.env.DEV ? '' : '/app') + to.path;
+    const url = encodeURIComponent(
+      window.location.origin +
+        (import.meta.env.MODE === 'development' ? '' : '/app') +
+        decodeURIComponent(to.fullPath)
+    );
+
     storage.set('redirect_uri', url);
     // 跳转到用户中心
     login('password', url);

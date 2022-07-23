@@ -80,7 +80,7 @@ export default {
     // 加载数据函数
     async function getList() {
       //根据from == index，全局就使用全局mid，否则使用医院mid
-      let afterMid = from.value !== 'index' && mid.value != '' ? mid.value : initMid.value;
+      let afterMid = from.value !== 'index' && mid.value != '' ? mid.value : '';
       loading.value = true;
       // 请求到具体数据
       const data = await getTrainList(afterMid, page.value);

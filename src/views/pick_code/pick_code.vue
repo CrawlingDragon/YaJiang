@@ -13,11 +13,22 @@
 import Header from '@/components/header/header.vue';
 import { useTitles } from '../../common/js/useTitles';
 import { useStore } from 'vuex';
-import { computed } from 'vue';
-
+import { computed, onMounted, ref } from 'vue';
+import { post } from '@/http';
 useTitles('我的采摘码');
 const store = useStore();
-const userInfo = computed(() => store.state.userInfo);
+const uId = computed(() => store.state.uId);
+const userInfo = ref({});
+
+const getUserInfo = () => {
+  return post('Mobile/User/userCenter', {
+    uId: uId.value,
+  });
+};
+onMounted(async () => {
+  const data = await getUserInfo();
+  userInfo.value = data;
+});
 </script>
 <script lang="ts">
 export default {

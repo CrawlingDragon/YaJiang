@@ -4,6 +4,7 @@ export function useCustomRouter() {
   // 对数据发送的导航，进行二次加工
   function goPage(url: string) {
     // 需要处理的 路由 数组
+    // debugger;
     const needManageRouterArr = ['/expert', '/live', '/expert?from=ai'];
     const result = needManageRouterArr.includes(url);
     if (result) {

@@ -6,8 +6,10 @@
         <RegistrationItem :list="item"></RegistrationItem>
       </li>
       <div class="noData" v-if="noData">
-        <div class="p1">暂无挂号记录</div>
-        <div class="p2">申请{{ getDefaultMenuName.hospitalName }}会员，挂号专家咨询</div>
+        <div class="p1">暂无记录</div>
+        <div class="p2">
+          申请{{ getDefaultMenuName.hospitalName }}会员，{{ settingRegistrationName }}专家咨询
+        </div>
       </div>
     </ul>
   </div>
@@ -15,12 +17,18 @@
 <script>
 import Header from '@/components/header/header';
 import RegistrationItem from '@/components/register_item/register_item.vue';
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, useStore } from 'vuex';
 import { useTitles } from '../../common/js/useTitles';
+import { computed } from 'vue';
 
 export default {
   setup() {
-    useTitles('挂号记录');
+    const store = useStore();
+    const settingRegistrationName = computed(() => store.getters.getDefaultMenuName.guahaoName);
+    useTitles(settingRegistrationName.value + '记录');
+    return {
+      settingRegistrationName,
+    };
   },
   name: 'meRegistration',
   components: { Header, RegistrationItem },

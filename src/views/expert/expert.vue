@@ -79,16 +79,19 @@
       </p>
     </div>
     <van-tabs
-      v-model="active"
+      v-model:active="actives"
       sticky
       class="tabs"
       color="#0D90FF"
       :offset-top="num"
       :class="{ aiTab: id == aiExpertId }"
-      @scroll="scroll"
+      @dblclick="updateData"
+      @clickTab="fn"
     >
       <van-tab>
-        <template #title> 解答 {{ expertData.posts }} </template>
+        <template #title>
+          解答 <span>{{ expertData.posts }} </span>
+        </template>
         <van-empty description="暂无解答" v-if="noData" />
         <ul class="answer-ul" v-else>
           <van-list
@@ -151,9 +154,14 @@ import { ImagePreview } from 'vant';
 import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 import { login } from '@/common/js/getToken';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
+import { ref } from 'vue';
 export default {
   setup() {
     useTitles('专家');
+    const actives = ref(0);
+    const scrollTop = useTargetScroll();
+    return { scrollTop, actives };
   },
   name: 'expert',
   components: {
@@ -164,7 +172,6 @@ export default {
   props: {},
   data() {
     return {
-      active: 0,
       identity: 0, //是否是专家
       expertid: '',
       expertData: '',
@@ -189,12 +196,11 @@ export default {
       num: 0,
       // 判断是否是自己
       isSelf: 0,
+      id: this.$route.query.id,
+      name: '', //tab切换卡的name，用于双击传递值
     };
   },
   computed: {
-    id() {
-      return this.$route.query.id;
-    },
     from() {
       return this.$route.query.from;
     },
@@ -202,18 +208,15 @@ export default {
     ...mapGetters(['aiExpertId', 'getDefaultMenuName']),
   },
   created() {},
+  activated() {
+    let id = this.$route.query.id;
+    if (id !== this.id) {
+      this.scrollTop = 0;
+      this.id = id;
+      this.resetData();
+    }
+  },
   watch: {
-    '$route.query.id'() {
-      // this.from = this.$route.query.from;
-      // this.id = newVal.query.id;
-      this.page = 0;
-      this.page2 = 0;
-      this.page3 = 0;
-      this.askedList = []; // 解答列表
-      this.askMeList = []; // 提问立标
-      this.hospitalList = []; // 计入的医院列表
-      this.getExpertData(this.id);
-    },
     scollType(newVal) {
       if (newVal == 'down') {
         this.num = 0;
@@ -230,7 +233,39 @@ export default {
     window.removeEventListener('scroll', this.scrollHandler);
   },
   methods: {
-    scroll() {
+    fn(el) {
+      this.name = el.name;
+    },
+    updateData() {
+      console.log('this.name', this.name);
+      switch (this.name) {
+        case 0: // 双击解答，重置数据
+          alert(1);
+          this.page = 0;
+          this.askedList = []; // 解答列表
+          this.getIAsked();
+          break;
+        case 1: // 双击提问，重置数据
+          this.page2 = 0;
+          this.askMeList = []; // 提问立标
+          this.getAskMe();
+          break;
+        case 2: // 双击加入的医院，重置数据
+          this.page3 = 0;
+          this.hospitalList = []; // 计入的医院列表
+          this.getHospitalList();
+          break;
+      }
+    },
+    resetData() {
+      this.actives = 0;
+      this.page = 0;
+      this.page2 = 0;
+      this.page3 = 0;
+      this.askedList = []; // 解答列表
+      this.askMeList = []; // 提问立标
+      this.hospitalList = []; // 计入的医院列表
+      this.getExpertData(this.id);
       // console.log('this.scollType :>> ', this.scollType);
     },
     onLoad() {

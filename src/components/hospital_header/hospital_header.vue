@@ -3,7 +3,7 @@
   <div class="header-container">
     <div class="wrap van-hairline--top van-hairline--bottom">
       <div class="left-bar" v-if="header == 'indexHeader'">
-        <p class="p1 f22">{{ navHeader }}</p>
+        <p class="p1 f22" @dblclick="updateData">{{ navHeader }}</p>
         <van-icon name="wap-nav" class="hospital-icon" @click="showNavFast" :size="size" />
       </div>
       <div class="left-bar" v-if="header == 'logoHeader'">
@@ -78,6 +78,9 @@ export default {
   },
   mounted() {},
   methods: {
+    updateData() {
+      this.$emit('updateData');
+    },
     rightIcon() {
       this.flag = true;
       this.$emit('rightIcon');

@@ -13,7 +13,7 @@ export function loginOut() {
   //判断url是否为需要登录的页面，是就改写成index
   let url = deleteUrlCode();
   if (Router.currentRoute.value.meta.needLogin) {
-    url = window.location.origin + '/app';
+    url = window.location.origin + (import.meta.env.DEV ? '' : '/app');
   }
   // 清空uId
   store.commit('setUid', '');
@@ -52,52 +52,60 @@ export function login(login_type = 'password', url = deleteUrlCode()) {
 
 export function fetchGetToken(code: string) {
   // 获取token
-  const url = storage.get('redirect_uri');
-  Axios.post(`${import.meta.env.VITE_APP_USER_CENTER_CODE_URL}token`, {
-    client_id: 'thy',
-    grant_type: 'authorization_code',
-    code: code,
-    scope: '',
-    redirect_uri: url,
-  })
-    .then((res) => {
-      // console.log('res', res);
-      if (res.data.code === 500) {
-        // 置空uid，和尝试退出登录
-        store.commit('setuId', '');
-        loginOut();
-        Toast('获取token失败,请重新登录');
-      } else if (res.status === 200) {
-        // 保存uId
-        store.commit('setuId', res.data.access_token);
-
-        let token = res.data.access_token;
-        // 请求接口，获取对应token的用户信息，并保存
-        leansAxios
-          .fetchPost('Mobile/User/userCenter', {
-            uId: res.data.access_token,
-          })
-          .then((res: any) => {
-            let data = res.data;
-            if (data.code == 0) {
-              store.dispatch('saveUserInfo', data.data);
-            }
-            // } else if (data.code == 201) {
-            //   if (data.data.length == 0) {
-            //     leansAxios
-            //       .fetchPost('Mobile/User/userCenter', {
-            //         uId: token,
-            //       })
-            //       .then((res: any) => {
-            //         let data = res.data;
-            //         if (data.code == 0) {
-            //           store.dispatch('saveUserInfo', data.data);
-            //         }
-            //       });
-            //   }
-            // }
-          });
-      }
+  return new Promise((resolve) => {
+    const url = storage.get('redirect_uri');
+    Axios.post(`${import.meta.env.VITE_APP_USER_CENTER_CODE_URL}token`, {
+      client_id: 'thy',
+      grant_type: 'authorization_code',
+      code: code,
+      scope: '',
+      // 当url有参数时，传过去的url需要deCode,但是在post请求时，参数url需要反decode，如下
+      redirect_uri: decodeURIComponent(url),
     })
-    .catch((e) => console.log('e', e));
+      .then((res) => {
+        // console.log('res', res);
+        if (res.data.code === 500) {
+          // 置空uid，和尝试退出登录
+          store.commit('setuId', '');
+          loginOut();
+          Toast('获取token失败,请重新登录');
+        } else if (res.status === 200) {
+          // 保存uId
+          store.commit('setuId', res.data.access_token);
+
+          let token = res.data.access_token;
+          // 请求接口，获取对应token的用户信息，并保存
+          leansAxios
+            .fetchPost('Mobile/User/userCenter', {
+              uId: res.data.access_token,
+            })
+            .then((res: any) => {
+              let data = res.data;
+
+              if (data.code == 0) {
+                resolve(data.data);
+                store.dispatch('saveUserInfo', data.data);
+              }
+              // } else if (data.code == 201) {
+              //   if (data.data.length == 0) {
+              //     leansAxios
+              //       .fetchPost('Mobile/User/userCenter', {
+              //         uId: token,
+              //       })
+              //       .then((res: any) => {
+              //         let data = res.data;
+              //         if (data.code == 0) {
+              //           store.dispatch('saveUserInfo', data.data);
+              //         }
+              //       });
+              //   }
+              // }
+            });
+        }
+      })
+      .catch((e) => {
+        console.log('e', e);
+        Toast(e);
+      });
+  });
 }

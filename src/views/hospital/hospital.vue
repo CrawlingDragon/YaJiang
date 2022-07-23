@@ -133,7 +133,7 @@ export default {
             this.setHospitalIsStore(data.mpublic.isstore);
             this.setHospitalName(data.mpublic.name);
             this.setHospitalLogo(data.mpublic.logo);
-            console.log('data.mpublic.logo', data.mpublic.logo);
+            // console.log('data.mpublic.logo', data.mpublic.logo);
             if (data.list_wen.length == 0) {
               this.wenListNoData = true;
             }
