@@ -37,6 +37,7 @@ interface GlobalState {
     aiExpertId: number;
     defaultCrop: { name: string; num: string };
     region: {};
+    zuowuState: 0;
   }; //默认配置
   hospitalSettingNav: { name: string; state: number; label: string }[];
 
@@ -44,7 +45,7 @@ interface GlobalState {
 }
 const app = createStore<GlobalState>({
   state: {
-    uId: storage.get('uId', ''), // 从缓存中获取uId
+    uId: storage.session.get('uId', ''), // 从缓存中获取uId
     userInfo: storage.get('userInfo', {}),
     mid: window.localStorage.getItem('mid'), //医院mid
     joinTime: window.localStorage.getItem('joinTime'), //用户加入医院的时间
@@ -81,6 +82,7 @@ const app = createStore<GlobalState>({
         name: '',
       },
       region: {},
+      zuowuState: 0,
     },
     hospitalSettingNav: [{ name: '', state: 0, label: '' }], // 医院快速导航和医院首页的导航配置项
   },
@@ -144,6 +146,9 @@ const app = createStore<GlobalState>({
       //默认地区，用于申请会员的默认地区选择
       return state.defaultSet.region;
     },
+    getterDefaultZuowuState(state) {
+      return state.defaultSet.zuowuState;
+    },
   },
   mutations: {
     setHospitalSettingNav(state, data) {
@@ -155,7 +160,7 @@ const app = createStore<GlobalState>({
     },
     setDefaultSetting(state, setting) {
       // 设置默认配置，默认的总院mid，ai的id，默认作物的名称和id
-      const { aiExpert, defalutCrop, defalutCropName, mid, region } = setting;
+      const { aiExpert, defalutCrop, defalutCropName, mid, region, zuowuState } = setting;
       let obj = {
         initMid: mid,
         aiExpertId: aiExpert,
@@ -164,6 +169,7 @@ const app = createStore<GlobalState>({
           name: defalutCropName,
         },
         region,
+        zuowuState,
       };
       state.defaultSet = obj;
     },
@@ -194,7 +200,7 @@ const app = createStore<GlobalState>({
     },
     setuId(state, data) {
       state.uId = data;
-      storage.set('uId', data);
+      storage.session.set('uId', data);
     },
     setMid(state, mid) {
       state.mid = mid;

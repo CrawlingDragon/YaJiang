@@ -10,10 +10,9 @@ const ERR_OK = 0;
 
 axiosRetry(axios, { retry: 5 });
 axios.defaults.timeout = 8000;
-axios.defaults.headers.post['Content-Type'] =
-  'application/x-www-form-urlencoded;charset=utf-8';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 //配置接口地址
-axios.defaults.baseURL = import.meta.env.VITE_APP_API;
+axios.defaults.baseURL = import.meta.env.VITE_APP_API + '/api_app/';
 
 //post 传参序列化，（添加请求拦截器）
 axios.interceptors.request.use(
@@ -38,12 +37,13 @@ axios.interceptors.response.use(
   (res) => {
     //处理响应数据
     let needLogin = router.currentRoute.value.meta.needLogin;
+    // console.log('res', res);
     if (res.data.code == 530 && needLogin) {
       // uId过期操作
       Toast('用户token过期,请重新登录');
       setTimeout(() => {
         store.dispatch('cleanUserInfo');
-        login();
+        login('clearToken');
       }, 400);
     }
     if (res.data.success) {

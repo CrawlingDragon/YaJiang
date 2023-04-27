@@ -93,11 +93,12 @@
 <script>
 import { mapState, mapMutations, mapActions, useStore, mapGetters } from 'vuex';
 import { Dialog } from 'vant';
-import { computed, ref, onMounted, toRefs } from 'vue';
+import { computed, ref, onMounted, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCustomRouter } from '@/common/js/useCustomRouter';
 import { loginOut, login } from '@/common/js/getToken';
 import { inject } from 'vue';
+
 export default {
   props: {
     showFlag: {
@@ -178,6 +179,14 @@ export default {
   computed: {
     ...mapState(['uId']),
     ...mapGetters(['initMid', 'aiExpertId']),
+  },
+
+  mounted() {
+    let from = this.$route.query.from;
+    if (from == 'weChatMobileLogin') {
+      this.showFlag = true;
+    }
+    // console.log('from', from);
   },
   methods: {
     ...mapActions(['cleanUserInfo']),

@@ -7,8 +7,14 @@ import store from '../../store';
 import leansAxios from '@/http';
 import storage from 'good-storage';
 import { Toast } from 'vant';
+import wx from 'weixin-js-sdk';
 
 export function loginOut() {
+  // debugger;
+  // console.log('router', Router.currentRoute.value.name);
+  let routerName = Router.currentRoute.value.name;
+  let logo: any = store.state.settingMenu?.h5title?.icon;
+
   //退出登录
   //判断url是否为需要登录的页面，是就改写成index
   let url = deleteUrlCode();
@@ -19,8 +25,20 @@ export function loginOut() {
   store.commit('setUid', '');
   //退出登录的地址
   window.location.href = `${
-    import.meta.env.VITE_APP_USER_CENTER_CODE_URL
-  }sso_logout?redirect_url=${url}&state=123`;
+    import.meta.env.VITE_APP_API
+  }/sso/sso_logout?redirect_url=${url}&state=123`;
+  // wx.miniProgram.getEnv(function (res: any) {
+  //   // 如果uid为空，且在微信环境，就去微信登录
+  //   console.log('getEnv', res.miniprogram);
+
+  //   let url =
+  //     routerName === 'me'
+  //       ? '/pages/login/login?fromPage=me&clearToken=true&logo=' + logo
+  //       : '/pages/login/login?clearToken=true&logo=' + logo;
+  //   wx.miniProgram.reLaunch({
+  //     url: url,
+  //   });
+  // });
 }
 
 //处理链接，删除其中的code参数，然后返回其他部分
@@ -36,26 +54,49 @@ export function deleteUrlCode() {
     str += '&' + r.join('=');
   }
   let arr = window.location.href.split('?');
-  let result = arr[0] + '?' + str.substring(1);
+  let result = arr[0] + (arr.length === 1 ? '' : '?') + str.substring(1);
+  // debugger;
   // result = encodeURIComponent(result);
   storage.set('redirect_uri', result);
   return result;
 }
 
 // 去登录函数
-export function login(login_type = 'password', url = deleteUrlCode()) {
+export function login(
+  login_type = 'password',
+  url = deleteUrlCode(),
+  to?: string,
+  clearToken?: string
+) {
+  let logo: any = store.state.settingMenu?.h5title?.icon;
+  let clearTokenQuery = clearToken == '' ? '' : '&clearToken=true';
+
+  let wxUrl =
+    to === 'me'
+      ? '/pages/login/login?fromPage=me&clearToken=true&logo=' + logo + clearTokenQuery
+      : '/pages/login/login?clearToken=true&logo=' + logo + clearTokenQuery;
+
+  wx.miniProgram.getEnv(function (res: any) {
+    // 如果uid为空，且在微信环境，就去微信登录
+    console.log('getEnv', res.miniprogram);
+    console.log('wxUrl', wxUrl);
+    wx.miniProgram.reLaunch({
+      url: wxUrl,
+    });
+  });
+
   //deleteUrlCode函数
   window.location.href = `${
-    import.meta.env.VITE_APP_USER_CENTER_CODE_URL
-  }authorize?login_type=${login_type}&response_type=code&client_id=thy&redirect_uri=${url}`;
+    import.meta.env.VITE_APP_API
+  }/sso/authorize?login_type=${login_type}&response_type=code&client_id=yaj&redirect_uri=${url}`;
 }
 
 export function fetchGetToken(code: string) {
   // 获取token
   return new Promise((resolve) => {
     const url = storage.get('redirect_uri');
-    Axios.post(`${import.meta.env.VITE_APP_USER_CENTER_CODE_URL}token`, {
-      client_id: 'thy',
+    Axios.post(`${import.meta.env.VITE_APP_API}/sso/token`, {
+      client_id: 'yaj',
       grant_type: 'authorization_code',
       code: code,
       scope: '',
@@ -63,7 +104,6 @@ export function fetchGetToken(code: string) {
       redirect_uri: decodeURIComponent(url),
     })
       .then((res) => {
-        // console.log('res', res);
         if (res.data.code === 500) {
           // 置空uid，和尝试退出登录
           store.commit('setuId', '');

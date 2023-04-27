@@ -24,6 +24,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/index/index.vue'),
   },
   {
+    path: '/login_wx',
+    component: () => import('../views/login_wx/login_wx.vue'),
+  },
+  {
     path: '/index_online',
     name: 'indexOnline',
     meta: { savedPosition: 0 },
@@ -298,7 +302,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/me_answer',
     name: 'meAnswer',
-    // meta: { needLogin: true },
+    meta: { needLogin: true },
     component: () => import('../views/me_answer/me_answer.vue'),
   },
   {
@@ -460,7 +464,7 @@ const router = createRouter({
       to.name === 'hospitalOnline' ||
       to.name === 'expert' ||
       to.name === 'askDetail' ||
-      to.name === 'me_answer'
+      to.name === 'meAnswer'
     ) {
       return savedPosition;
     } else {
@@ -474,9 +478,13 @@ router.beforeEach(async (to, from) => {
   //http://sso.nzsoso.com/sso_logout?redirect_url=http://localhost:8082/index&state=123
   // 接口返回500的时候，就是token/uId 过期的操作
   const urlParamsCode = getUrlQuery('code');
+  const token = getUrlQuery('token');
   let uId = store.state.uId;
+
   //登录成功返回时，有code参数，用code请求token
-  if (urlParamsCode && uId == '') {
+  if (token) {
+    store.commit('setuId', token);
+  } else if (urlParamsCode && uId == '') {
     // 去请求token
 
     let r = await fetchGetToken(urlParamsCode);
@@ -488,10 +496,13 @@ router.beforeEach(async (to, from) => {
         (import.meta.env.MODE === 'development' ? '' : '/app') +
         decodeURIComponent(to.fullPath)
     );
-
+    // alert(
+    //   window.location.origin + (import.meta.env.MODE === 'development' ? '' : '/app') + to.fullPath
+    // );
     storage.set('redirect_uri', url);
     // 跳转到用户中心
-    login('password', url);
+    console.log('to', to);
+    login('password', url, to?.name);
   }
 });
 

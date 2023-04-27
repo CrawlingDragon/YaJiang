@@ -13,8 +13,8 @@ interface User {
 }
 export function saveUid(user: User) {
   const { uid } = user;
-  storage.set('uId', uid);
-  const item = storage.get('uId');
+  storage.session.set('uId', uid);
+  const item = storage.session.get('uId');
   return item;
 }
 export function saveUserInfo(user: User) {

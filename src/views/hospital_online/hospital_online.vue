@@ -30,6 +30,7 @@ import { mapState, mapGetters } from 'vuex';
 import { ImagePreview } from 'vant';
 import { useTitles } from '@/common/js/useTitles';
 import { useTargetScroll } from '@/common/js/useTargetScroll';
+import { onActivated } from 'vue';
 
 export default {
   setup() {
@@ -53,6 +54,7 @@ export default {
       page: 0,
       noData: false,
       refreshLoading: false,
+      hospitalMid: 0, //临时保存医院的mid
     };
   },
   created() {},
@@ -60,14 +62,17 @@ export default {
     ...mapState(['mid', 'hospitalName']),
     ...mapGetters(['getDefaultMenuName']),
   },
-
   watch: {
-    mid() {
+    hospitalMid(newVal, oldVal) {
+      //用临时医院mid，代替 vuex mid ，来watch
       this.resetData();
     },
   },
   mounted() {
     this.title = this.hospitalName;
+  },
+  activated() {
+    this.hospitalMid = this.mid;
   },
   methods: {
     updateData() {

@@ -144,7 +144,7 @@ export default {
       setting.zuozhen = inside.zuozhen;
       setting.scheme = inside.scheme;
       setting.outside = outside;
-      console.log('setting', setting);
+      // console.log('setting', setting);
     });
     return {
       ...toRefs(setting),

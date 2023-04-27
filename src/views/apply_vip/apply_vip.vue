@@ -70,33 +70,42 @@
         required
         :rules="[{ required: true, message: '请输入村名,如松茸村' }]"
       />
-      <div class="title f18">作物情况</div>
-      <div class="add-box" v-for="(item, index) in addList" :key="index">
-        <van-field
-          v-model="item.name"
-          name="item.name"
-          label="作物名"
-          placeholder="请选择"
-          readonly
-          :rules="[{ required: item.required, message: '作物必填' }]"
-          @click="goToChooseCrop(index)"
-        />
-        <van-field v-model="item.mushu" name="数量" label="数量" placeholder="请选择" type="number">
-          <template #button>
-            <select name="" id="" class="select" v-model="item.unit">
-              <option value="亩">亩</option>
-              <option value="尾">尾</option>
-              <option value="箱">箱</option>
-              <option value="头">头</option>
-              <option value="羽">羽</option>
-              <option value="只">只</option>
-              <option value="棒">棒</option>
-            </select>
-          </template>
-        </van-field>
-        <div class="close" @click="removeItem(index)">x</div>
-      </div>
-      <div class="add-btn f18" @click="add"><span>+</span>添加作物</div>
+      <template v-if="cropState === 1">
+        <div class="title f18" v-if="cropState === 1">作物情况</div>
+
+        <div class="add-box" v-for="(item, index) in addList" :key="index">
+          <van-field
+            v-model="item.name"
+            name="item.name"
+            label="作物名"
+            placeholder="请选择"
+            readonly
+            :rules="[{ required: item.required, message: '作物必填' }]"
+            @click="goToChooseCrop(index)"
+          />
+          <van-field
+            v-model="item.mushu"
+            name="数量"
+            label="数量"
+            placeholder="请选择"
+            type="number"
+          >
+            <template #button>
+              <select name="" id="" class="select" v-model="item.unit">
+                <option value="亩">亩</option>
+                <option value="尾">尾</option>
+                <option value="箱">箱</option>
+                <option value="头">头</option>
+                <option value="羽">羽</option>
+                <option value="只">只</option>
+                <option value="棒">棒</option>
+              </select>
+            </template>
+          </van-field>
+          <div class="close" @click="removeItem(index)">x</div>
+        </div>
+        <div class="add-btn f18" @click="add"><span>+</span>添加作物</div>
+      </template>
       <div style="margin: 16px">
         <van-button round block type="info" native-type="submit" class="subBtn f20">
           提交会员申请
@@ -209,6 +218,8 @@ export default {
       residecommunity.value = selectedOptions[3] ? selectedOptions[3].text : '';
     };
 
+    // 是否显示作物选项
+    const cropState = computed(() => store.getters.getterDefaultZuowuState);
     return {
       province,
       city,
@@ -220,6 +231,7 @@ export default {
       showArea,
       cascaderValue,
       region,
+      cropState,
     };
   },
   data() {
@@ -283,11 +295,9 @@ export default {
   },
 
   mounted() {
-    this.getUserInfo();
-    this.getHospitalTown();
-    this.addList[0].name = this.getterDefaultCrop.name;
-    this.addList[0].fid = this.getterDefaultCrop.num;
+    this.initData();
   },
+
   watch: {
     addList: {
       handler(newVal) {
@@ -307,6 +317,13 @@ export default {
     },
   },
   methods: {
+    initData() {
+      //用于初始化整个页面的数据，包括个人信息，默认作物
+      this.getUserInfo();
+      this.getHospitalTown();
+      this.addList[0].name = this.getterDefaultCrop.name;
+      this.addList[0].fid = this.getterDefaultCrop.num;
+    },
     validator(val) {
       if (val == '') {
         return true;
@@ -399,7 +416,7 @@ export default {
           town: this.town,
           residecommunity: this.residecommunity, //第四级地址
           address: this.detailAddress,
-          zuowu: this.addList,
+          zuowu: this.zuowuState === 1 ? this.addList : [],
         })
         .then((res) => {
           if (res.data.code == 0) {
@@ -409,11 +426,12 @@ export default {
             this.address = '';
             this.detailAddress = '';
             this.addList = [{ fid: '', name: '', mushu: '', unit: '亩' }];
-            this.$toast(res.data.message);
+            this.initData();
             this.$router.push({
               path: '/apply_vip_succeed',
             });
           }
+          this.$toast(res.data.message);
         });
     },
     // validatorPhone(val) {

@@ -6,6 +6,7 @@ export function useTargetScroll() {
   function scrollHandler() {
     scrollTop.value =
       document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+    // console.log('scrolling :>> ', scrollTop.value);
   }
   onMounted(() => {
     window.addEventListener('scroll', scrollHandler);
@@ -13,9 +14,10 @@ export function useTargetScroll() {
   });
 
   onActivated(() => {
+    // console.log('onActivated :>> ', scrollTop.value);
     if (scrollTop.value >= 0) {
+      // debugger;
       window.scrollTo(0, scrollTop.value);
-      // console.log('onActivated :>> ', scrollTop.value);
       scrollTop.value = 0;
       window.addEventListener('scroll', scrollHandler);
     }

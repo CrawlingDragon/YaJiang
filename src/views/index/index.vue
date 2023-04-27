@@ -17,7 +17,6 @@
           <div class="icon"></div>
         </div> -->
       </div>
-
       <ul class="h-ul">
         <li v-for="item in hospitalArr" :key="item.id">
           <RecommendHospital :list="item"></RecommendHospital>

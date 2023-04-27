@@ -22,7 +22,7 @@
     <div class="btn-box">
       <div class="btn f22" @click="openRatePopup">我要评价</div>
     </div>
-    <RatePopup :author="'为农服务平台'" ref="ratePopupRef" @emitSub="comment"></RatePopup>
+    <RatePopup :author="name" ref="ratePopupRef" @emitSub="comment"></RatePopup>
   </div>
 </template>
 <script setup lang="ts">
@@ -44,6 +44,8 @@ useTitles('投诉与评价');
 
 // 评分 popup
 const ratePopupRef = ref<InstanceType<typeof RatePopup> | null>(null);
+// 评分对象
+const name = computed(() => store.getters.getterGlobalTitle.name);
 
 // 利用组件ref，打开弹窗
 function openRatePopup() {

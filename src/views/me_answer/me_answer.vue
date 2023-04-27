@@ -4,7 +4,7 @@
     <van-tabs
       v-model:active="activeValue"
       class="tabs"
-      swipeable
+      sticky
       @clickTab="tabClickFn"
       @dblclick="tabDblclickFn"
     >
@@ -113,25 +113,24 @@ export default {
       }
     },
   },
-  created() {},
   mounted() {
-    window.addEventListener('scroll', this.scrollHandler);
+    // window.addEventListener('scroll', this.scrollHandler);
     this.getUserInfo();
   },
   // unmounted() {
   //   window.removeEventListener('scroll', this.scrollHandler);
   // },
   methods: {
-    scrollHandler() {
-      var After_scollH =
-        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-      var differH = After_scollH - Before_scollH;
-      if (differH == 0) {
-        return false;
-      }
-      this.scollType = differH > 0 ? 'down' : 'up';
-      Before_scollH = After_scollH;
-    },
+    // scrollHandler() {
+    //   var After_scollH =
+    //     window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    //   var differH = After_scollH - Before_scollH;
+    //   if (differH == 0) {
+    //     return false;
+    //   }
+    //   this.scollType = differH > 0 ? 'down' : 'up';
+    //   Before_scollH = After_scollH;
+    // },
     // scroll() {
     //   // console.log('val :>> ', val);
     //   // val
@@ -146,15 +145,18 @@ export default {
       switch (active) {
         case 0:
           this.page1 = 0;
+          this.ask = [];
           this.myAsk();
           break;
-          this.page2 = 0;
-          this.myAnswer();
         case 1:
+          this.page2 = 0;
+          this.answer = [];
+          this.myAnswer();
           break;
-          this.page3 = 0;
-          this.myInformation();
         case 2:
+          this.page3 = 0;
+          this.information = [];
+          this.myInformation();
           break;
       }
     },
@@ -258,16 +260,18 @@ export default {
   .me_answer-container {
     .tabs {
       :deep().van-tabs__wrap {
-        top: -55px;
-        height: 55px;
+        top: 0px;
+        height: 54px;
       }
     }
   }
 }
 .me_answer-container {
   .tabs {
+    // height: 1000px;
+    // height: 100%;
+    // overflow: hidden;
     .tab {
-      margin-top: 10px;
       .wrap {
         width: 100%;
         height: 100%;
@@ -282,9 +286,10 @@ export default {
       }
     }
     :deep().van-tabs__wrap {
-      position: absolute;
-      z-index: 1111;
-      top: -44px;
+      position: fixed;
+      z-index: 1111111;
+      height: 39px;
+      top: 0px;
       width: 256px;
     }
     :deep().van-tabs__line {

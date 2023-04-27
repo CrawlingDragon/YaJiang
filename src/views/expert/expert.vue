@@ -240,7 +240,6 @@ export default {
       console.log('this.name', this.name);
       switch (this.name) {
         case 0: // 双击解答，重置数据
-          alert(1);
           this.page = 0;
           this.askedList = []; // 解答列表
           this.getIAsked();

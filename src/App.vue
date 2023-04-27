@@ -13,15 +13,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, provide, onMounted, watch, reactive } from 'vue';
+import { computed, provide, onMounted, watch, reactive, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import GoTop from '@/components/goTop/goTop.vue';
 import SwitchOld from '@/components/switchOld/switchOld.vue';
 import { getIndexSettingMenu, getHeadFastNav, getDefaultSet } from '@/service/base';
 import { getHospitalFastNav } from '@/service/base';
+import leansAxios from '@/http';
 
 const store = useStore();
 const old = computed(() => store.state.old);
+const uId = computed(() => store.state.uId);
 const getterGlobalTitle = computed(() => store.getters.getterGlobalTitle);
 const headerFastBar = reactive({
   bar: {},
@@ -53,6 +55,21 @@ watch(getterGlobalTitle, (newVal) => {
   //根据接口请求，设置网站.ico
   let icon: any = document.querySelector('link[rel="icon"]');
   icon.href = newVal.icon;
+});
+
+watchEffect(() => {
+  if (uId.value !== '') {
+    leansAxios
+      .fetchPost('Mobile/User/userCenter', {
+        uId: uId.value,
+      })
+      .then((res: any) => {
+        let data = res.data;
+        if (data.code == 0) {
+          store.dispatch('saveUserInfo', data.data);
+        }
+      });
+  }
 });
 </script>
 
