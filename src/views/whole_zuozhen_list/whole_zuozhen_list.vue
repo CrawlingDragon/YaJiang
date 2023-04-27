@@ -9,19 +9,21 @@
         </p>
       </li>
     </ul>
-    <van-empty description="暂无医院就诊记录" v-if="noData"></van-empty>
+    <van-empty :description="'暂无记录'" v-if="noData"></van-empty>
   </div>
 </template>
 <script>
 import Header from '@/components/header/header';
-import { mapState } from 'vuex';
+import { mapState, mapGetters, useStore } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
+import { computed } from 'vue';
 export default {
   setup() {
-    useTitles('我的坐诊巡诊');
+    const store = useStore();
+    const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName.zuozhenXunzhen);
+    useTitles(getDefaultMenuName.value);
   },
   name: 'wholeZuoZhenList',
-
   components: { Header },
   props: {},
   data() {
@@ -31,7 +33,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['uId', 'initMid']),
+    ...mapState(['uId']),
+    ...mapGetters(['getDefaultMenuName']),
   },
   watch: {},
   created() {},
@@ -40,11 +43,11 @@ export default {
   },
   methods: {
     getOnlineList() {
+      console.log('getWenzhen');
       this.noData = false;
       this.$axios
         .fetchPost('/Mobile/Treatment/getWenzhen', {
           uId: this.uId,
-          mId: this.initMid,
         })
         .then((res) => {
           if (res.data.code == 0) {

@@ -4,7 +4,10 @@
     <div class="left">
       <div class="t f22 l-h">{{ list.title }}</div>
       <div class="time f18">
-        <span v-show="index">{{ list.mpublic_name }}</span> {{ list.inputtime }}
+        <span v-show="index" v-if="list.mpublic_name">
+          {{ list.mpublic_name }}
+        </span>
+        <div class="time f18">{{ list.inputtime }}</div>
       </div>
     </div>
     <van-image
@@ -69,9 +72,20 @@ export default {
     .time {
       font-size: 12px;
       color: $f-color-three;
+      display: flex;
+      justify-content: start;
       span {
+        flex: 1;
         float: left;
-        margin-right: 15px;
+        margin-right: 10px;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        white-space: nowrap;
+      }
+      .time {
+        width: auto;
       }
     }
   }

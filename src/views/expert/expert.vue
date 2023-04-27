@@ -3,7 +3,7 @@
     <Header :indexHeader="false"></Header>
     <div class="person-box">
       <div class="name-bar">
-        <van-image class="avator" :src="expertData.avatar"></van-image>
+        <van-image class="avator" :src="expertData.avatar" fit="cover"></van-image>
         <div class="name f30">
           {{ expertData.name }}
           <span v-if="identity == 1 && id != aiExpertId" class="f16">
@@ -67,9 +67,7 @@
     </div>
     <div
       class="person-info"
-      v-if="
-        expertData.identity == 1 && (expertData.skill != '' || expertData.introduce != '')
-      "
+      v-if="expertData.identity == 1 && (expertData.skill != '' || expertData.introduce != '')"
     >
       <div class="title-bar f17" @click="goToPersondetail">
         个人简介
@@ -81,16 +79,19 @@
       </p>
     </div>
     <van-tabs
-      v-model="active"
+      v-model:active="actives"
       sticky
       class="tabs"
       color="#0D90FF"
       :offset-top="num"
       :class="{ aiTab: id == aiExpertId }"
-      @scroll="scroll"
+      @dblclick="updateData"
+      @clickTab="fn"
     >
       <van-tab>
-        <template #title> 解答 {{ expertData.posts }} </template>
+        <template #title>
+          解答 <span>{{ expertData.posts }} </span>
+        </template>
         <van-empty description="暂无解答" v-if="noData" />
         <ul class="answer-ul" v-else>
           <van-list
@@ -124,8 +125,10 @@
         </ul>
       </van-tab>
       <van-tab sticky v-if="id != aiExpertId">
-        <template #title> 加入的医院 {{ expertData.join }} </template>
-        <van-empty description="暂未加入医院" v-if="noData3" />
+        <template #title>
+          加入的{{ getDefaultMenuName.hospitalName }} {{ expertData.join }}
+        </template>
+        <van-empty :description="'暂未加入' + getDefaultMenuName.hospitalName" v-if="noData3" />
         <ul class="hospital-ul" v-show="id != aiExpertId" v-else>
           <van-list
             v-model:loading="loading3"
@@ -148,12 +151,17 @@ import Header from '@/components/header/header';
 import OnlineItem from '@/components/online_item/online_item';
 import RecommendHospital from '@/components/recommend_hospital/recommend_hospital';
 import { ImagePreview } from 'vant';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 import { login } from '@/common/js/getToken';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
+import { ref } from 'vue';
 export default {
   setup() {
     useTitles('专家');
+    const actives = ref(0);
+    const scrollTop = useTargetScroll();
+    return { scrollTop, actives };
   },
   name: 'expert',
   components: {
@@ -164,7 +172,6 @@ export default {
   props: {},
   data() {
     return {
-      active: 0,
       identity: 0, //是否是专家
       expertid: '',
       expertData: '',
@@ -189,30 +196,27 @@ export default {
       num: 0,
       // 判断是否是自己
       isSelf: 0,
+      id: this.$route.query.id,
+      name: '', //tab切换卡的name，用于双击传递值
     };
   },
   computed: {
-    id() {
-      return this.$route.query.id;
-    },
     from() {
       return this.$route.query.from;
     },
-    ...mapState(['uId', 'aiExpertId']),
+    ...mapState(['uId']),
+    ...mapGetters(['aiExpertId', 'getDefaultMenuName']),
   },
   created() {},
+  activated() {
+    let id = this.$route.query.id;
+    if (id !== this.id) {
+      this.scrollTop = 0;
+      this.id = id;
+      this.resetData();
+    }
+  },
   watch: {
-    '$route.query.id'() {
-      // this.from = this.$route.query.from;
-      // this.id = newVal.query.id;
-      this.page = 0;
-      this.page2 = 0;
-      this.page3 = 0;
-      this.askedList = []; // 解答列表
-      this.askMeList = []; // 提问立标
-      this.hospitalList = []; // 计入的医院列表
-      this.getExpertData(this.id);
-    },
     scollType(newVal) {
       if (newVal == 'down') {
         this.num = 0;
@@ -229,7 +233,38 @@ export default {
     window.removeEventListener('scroll', this.scrollHandler);
   },
   methods: {
-    scroll() {
+    fn(el) {
+      this.name = el.name;
+    },
+    updateData() {
+      console.log('this.name', this.name);
+      switch (this.name) {
+        case 0: // 双击解答，重置数据
+          this.page = 0;
+          this.askedList = []; // 解答列表
+          this.getIAsked();
+          break;
+        case 1: // 双击提问，重置数据
+          this.page2 = 0;
+          this.askMeList = []; // 提问立标
+          this.getAskMe();
+          break;
+        case 2: // 双击加入的医院，重置数据
+          this.page3 = 0;
+          this.hospitalList = []; // 计入的医院列表
+          this.getHospitalList();
+          break;
+      }
+    },
+    resetData() {
+      this.actives = 0;
+      this.page = 0;
+      this.page2 = 0;
+      this.page3 = 0;
+      this.askedList = []; // 解答列表
+      this.askMeList = []; // 提问立标
+      this.hospitalList = []; // 计入的医院列表
+      this.getExpertData(this.id);
       // console.log('this.scollType :>> ', this.scollType);
     },
     onLoad() {
@@ -409,9 +444,7 @@ export default {
     },
     scrollHandler() {
       var After_scollH =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
+        window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
       var differH = After_scollH - Before_scollH;
       if (differH == 0) {
         return false;
@@ -460,6 +493,20 @@ export default {
     }
   }
 }
+.title-bar {
+  border-bottom: 1px solid $border-color;
+}
+:deep().van-tabs__wrap {
+  border-bottom: 1px solid $border-color;
+}
+:deep().van-tab--active {
+  color: $theme-color;
+}
+.answer-ul {
+  li {
+    border-bottom: 1px solid $border-color;
+  }
+}
 </style>
 <style lang="stylus" scoped>
 .expert-container
@@ -483,6 +530,7 @@ export default {
         height 65px
         border-radius 5px
         overflow hidden
+        background #fff
       .name
         color #fff
         font-size 20px

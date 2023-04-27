@@ -6,18 +6,27 @@
         <RecommendHospital :list="item"></RecommendHospital>
       </li>
     </ul>
-    <div class="title f18" v-show="!noData && initShow">已加入{{ total }}家医院</div>
-    <van-empty description="您还没有加入过医院" v-if="noData"></van-empty>
+    <div class="title f18" v-show="!noData && initShow">
+      已加入{{ total }}家{{ getDefaultMenuName.hospitalName }}
+    </div>
+    <van-empty
+      :description="'您还没有加入过' + getDefaultMenuName.hospitalName"
+      v-if="noData"
+    ></van-empty>
   </div>
 </template>
 <script>
 import Header from '@/components/header/header';
 import RecommendHospital from '@/components/recommend_hospital/recommend_hospital';
-import { mapState } from 'vuex';
+import { mapState, mapGetters, useStore } from 'vuex';
 import { useTitles } from '../../common/js/useTitles';
+import { computed } from 'vue';
 export default {
   setup() {
-    useTitles('我加入的医院');
+    const store = useStore();
+    const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
+    const text = '我加入的' + getDefaultMenuName.value.hospitalName;
+    useTitles(text);
   },
   name: 'meHospital',
   components: { Header, RecommendHospital },
@@ -33,6 +42,7 @@ export default {
   },
   computed: {
     ...mapState(['uId']),
+    ...mapGetters(['getDefaultMenuName']),
   },
   created() {},
   watch: {},

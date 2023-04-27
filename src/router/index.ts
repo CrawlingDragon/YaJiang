@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw, RouterScrollBehavior } from 'vue-router';
 import store from '../store';
 import { getUrlQuery } from '../common/js/util';
 import { fetchGetToken, login } from '../common/js/getToken';
@@ -24,8 +24,13 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/index/index.vue'),
   },
   {
+    path: '/login_wx',
+    component: () => import('../views/login_wx/login_wx.vue'),
+  },
+  {
     path: '/index_online',
     name: 'indexOnline',
+    meta: { savedPosition: 0 },
     component: () => import('../views/index_online/index_online.vue'),
     children: [
       {
@@ -213,6 +218,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/live/live.vue'),
   },
   {
+    path: '/live_detail/:tId',
+    name: 'live_detail',
+    component: () => import('../views/live_detail/live_detail.vue'),
+  },
+  {
     path: '/live_list',
     name: 'liveList',
     component: () => import('../views/live_list/live_list.vue'),
@@ -386,8 +396,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/cropManagement',
         name: 'cropManagement',
-        component: () =>
-          import('../views/base_center/crop_management/crop_management.vue'),
+        component: () => import('../views/base_center/crop_management/crop_management.vue'),
       },
       {
         path: '/cropRecord',
@@ -416,10 +425,12 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/preview_list',
+    meta: { needLogin: true },
     component: () => import('../views/preview_list/preview_list.vue'),
   },
   {
     path: '/preview',
+    meta: { needLogin: true },
     component: () => import('../views/solution/preview/preview.vue'),
   },
   {
@@ -431,13 +442,34 @@ const routes: RouteRecordRaw[] = [
     name: 'not_found',
     component: () => import('../views/not_found/not_found.vue'),
   },
+  {
+    path: '/pick_code',
+    meta: { needLogin: true },
+    component: () => import('../views/pick_code/pick_code.vue'),
+  },
+  {
+    path: '/bank',
+    component: () => import('../views/bank/bank.vue'),
+  },
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.DEV ? '' : '/app/'),
+  // history: createWebHistory('/app/'),
   routes: routes,
-  scrollBehavior() {
-    return { left: 0, top: 0 };
+  scrollBehavior(to, from, savedPosition: any) {
+    if (
+      to.name === 'live' ||
+      to.name === 'indexOnline' ||
+      to.name === 'hospitalOnline' ||
+      to.name === 'expert' ||
+      to.name === 'askDetail' ||
+      to.name === 'meAnswer'
+    ) {
+      return savedPosition;
+    } else {
+      return { left: 0, top: 0 };
+    }
   },
 });
 
@@ -446,17 +478,31 @@ router.beforeEach(async (to, from) => {
   //http://sso.nzsoso.com/sso_logout?redirect_url=http://localhost:8082/index&state=123
   // 接口返回500的时候，就是token/uId 过期的操作
   const urlParamsCode = getUrlQuery('code');
+  const token = getUrlQuery('token');
   let uId = store.state.uId;
+
   //登录成功返回时，有code参数，用code请求token
-  if (urlParamsCode && uId == '') {
+  if (token) {
+    store.commit('setuId', token);
+  } else if (urlParamsCode && uId == '') {
     // 去请求token
-    await fetchGetToken(urlParamsCode);
+
+    let r = await fetchGetToken(urlParamsCode);
   } else if (to.meta.needLogin && uId == '') {
     // meta.needLogin 判断页面是否需要登录，true则跳转到用户中心登录。且uId为空时
-    const url = window.location.origin + to.path;
+    // const url = window.location.origin + (import.meta.env.DEV ? '' : '/app') + to.path;
+    const url = encodeURIComponent(
+      window.location.origin +
+        (import.meta.env.MODE === 'development' ? '' : '/app') +
+        decodeURIComponent(to.fullPath)
+    );
+    // alert(
+    //   window.location.origin + (import.meta.env.MODE === 'development' ? '' : '/app') + to.fullPath
+    // );
     storage.set('redirect_uri', url);
     // 跳转到用户中心
-    login(url);
+    console.log('to', to);
+    login('password', url, to?.name);
   }
 });
 

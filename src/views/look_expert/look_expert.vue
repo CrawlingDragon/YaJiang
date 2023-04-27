@@ -26,10 +26,10 @@ import { useTitles } from '@/common/js/useTitles';
 useTitles('专家');
 // store
 const store = useStore();
-const initMid = computed(() => store.state.initMid);
+const initMid = computed(() => store.getters.initMid);
 
 //请求专家列表
-const list = ref([]);
+const list = ref<{ id: string }[]>([]);
 const loading = ref(false);
 const finished = ref(false);
 const page = ref(1);
@@ -90,7 +90,7 @@ async function getExpertList() {
       margin-bottom: 10px;
       vertical-align: top;
       .recommend_expert-container {
-        min-height: 185px;
+        // min-height: 185px;
         :deep().time {
           display: none;
         }

@@ -1,1 +1,0 @@
-import{a as t,u as s,o as r,e as a,h as n}from"./index.3518e5b0.js";import{_ as c}from"./plugin-vue_export-helper.21dcd24c.js";const u={setup(){const o=t(),e=s();r(()=>{console.log("tuich"),o.dispatch("cleanUserInfo"),e.push({path:"/index"})})}};function p(o,e,i,_,d,f){return a(),n("div")}var m=c(u,[["render",p]]);export{m as default};

@@ -4,7 +4,9 @@
     <van-icon name="checked" class="icon" :size="size" />
     <p class="p1 f24">会员申请已提交</p>
     <p class="p2 f18">我们会发短信告知你审核结果<br />请耐心等待</p>
-    <div class="index-btn f16" @click="goToHospitalIndex">返回医院首页</div>
+    <div class="index-btn f16" @click="goToHospitalIndex">
+      返回{{ getDefaultMenuName.hospitalName }}首页
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -17,7 +19,7 @@ useTitles('会员申请');
 const store = useStore();
 const router = useRouter();
 // name: 'applyVipSucceed',
-const hospitalName = computed(() => store.state.hospitalName);
+const getDefaultMenuName = computed(() => store.getters.getDefaultMenuName);
 const old = computed(() => store.state.old);
 const size = computed(() => (old.value ? 80 : ''));
 

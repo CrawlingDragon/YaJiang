@@ -112,7 +112,8 @@ export function askGeo() {
       // console.log("已经定位", axiosAddressComputed.value);
       var geolocation = new BMapGL.Geolocation();
       geolocation.getCurrentPosition(function (r) {
-        // console.log("this.getStatus()", this.getStatus());
+        // console.log('this.getStatus()', this.getStatus());
+        console.log('r.address', r.address);
         if (this.getStatus() == 0) {
           let axiosAddress =
             r.address.province +

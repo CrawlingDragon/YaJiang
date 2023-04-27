@@ -1,22 +1,38 @@
 <template>
   <div class="nav-box" :class="{ threeLine: routerItem.length % 3 === 0 }">
-    <template v-for="item in routerItem" :key="item.path">
-      <router-link :to="item.path" class="item">
+    <template v-for="item in routerItem" :key="item.url">
+      <router-link
+        :to="item.url === '/live' ? 'live?from=index' : item.url"
+        class="item"
+        v-if="item.type === 'inside'"
+      >
         <!-- <div class="icon" :class="item.icon"></div> -->
-        <van-image class="icon" fit="cover" src="item.icon"></van-image>
-        <p class="f20">{{ item.title }}</p>
+        <van-image class="icon" fit="cover" :src="item.image"></van-image>
+        <p class="f20">{{ item.name }}</p>
       </router-link>
+      <a
+        :href="item.url"
+        class="item"
+        target="_blank"
+        v-if="item.type === 'outside' || item.type === 'app'"
+      >
+        <van-image class="icon" fit="cover" :src="item.image"></van-image>
+        <p class="f20">{{ item.name }}</p>
+      </a>
     </template>
   </div>
 </template>
 <script lang="ts" setup>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+const store = useStore();
 interface PropsItem {
-  path: string;
-  icon: string;
-  title: string;
+  url: string;
+  image: string;
+  name: string;
+  type: string;
 }
-
-const props = defineProps<{ routerItem: PropsItem[] }>();
+const routerItem = computed<PropsItem[]>(() => store.getters.getterIndexMenu.topMenu);
 </script>
 <style lang="scss">
 .old {
@@ -33,7 +49,7 @@ const props = defineProps<{ routerItem: PropsItem[] }>();
   background: #ffffff;
   margin-bottom: 10px;
   flex-wrap: wrap;
-  padding: 18px 0 20px;
+  padding: 18px 0 0;
   &.threeLine {
     .item {
       width: 33.33%;
@@ -42,13 +58,14 @@ const props = defineProps<{ routerItem: PropsItem[] }>();
   .item {
     width: 25%;
     text-align: center;
+    margin-bottom: 20px;
     .icon {
       width: 36px;
       height: 36px;
       color: #343434;
       font-size: 14px;
       margin: 0 auto;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       &.i1 {
         background: url('./1.png') no-repeat center;
         background-size: cover;
@@ -72,6 +89,7 @@ const props = defineProps<{ routerItem: PropsItem[] }>();
     }
     p {
       color: #333333;
+      line-height: 1.2;
     }
   }
 }

@@ -1,20 +1,22 @@
 <template>
   <div class="index_online-container" ref="online">
-    <Header :tabbarActive="1"></Header>
-    <div class="online-box">
-      <ul class="o-ul" ref="ul">
-        <van-list
-          v-model:loading="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
-        >
-          <li v-for="item in onlineArr" :key="item.tid">
-            <OnlineItem :list="item" @preImage="previewImg"></OnlineItem>
-          </li>
-        </van-list>
-      </ul>
-    </div>
+    <Header :tabbarActive="1" @updateFetchData="updateFetchData"></Header>
+    <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+      <div class="online-box">
+        <ul class="o-ul" ref="ul">
+          <van-list
+            v-model:loading="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <li v-for="item in onlineArr" :key="item.tid">
+              <OnlineItem :list="item" @preImage="previewImg"></OnlineItem>
+            </li>
+          </van-list>
+        </ul>
+      </div>
+    </van-pull-refresh>
     <Foot></Foot>
   </div>
 </template>
@@ -28,14 +30,20 @@ import { ImagePreview } from 'vant';
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
 import { OnlineItemTs } from './onlineItem';
+import { useRoute } from 'vue-router';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
+
+// route
+const route = useRoute();
+const routeName = computed(() => route.name);
 
 // title
-useTitles('网诊');
+useTitles('问答');
 
 // vuex
 const store = useStore();
 const uId = computed(() => store.state.uId);
-const initMid = computed(() => store.state.initMid);
+const initMid = computed(() => store.getters.initMid);
 
 // ref
 const onlineArr = ref<OnlineItemTs[]>([]);
@@ -43,9 +51,14 @@ const page = ref<number>(0);
 const loading = ref<boolean>(false);
 const finished = ref<boolean>(false);
 
+// 保存在上一次组件的位置，重新进入的时候，回到上一次的位置
+useTargetScroll();
+
+//上滑加载更多
 function onLoad() {
   getIndexData();
 }
+
 function getIndexData() {
   // 获取首页数据
   page.value += 1;
@@ -67,6 +80,19 @@ function getIndexData() {
   });
 }
 
+function updateFetchData() {
+  // 双击头部的网诊 tab，重置，刷新数据
+  if (routeName.value === 'indexOnline') {
+    onlineArr.value = [];
+    page.value = 0;
+    loading.value = false;
+    finished.value = false;
+    setTimeout(() => {
+      getIndexData();
+    }, 100);
+  }
+}
+
 // 图片预览
 const VanImagePreview = ImagePreview.Component;
 interface Item {
@@ -81,6 +107,22 @@ function previewImg(item: Item) {
     closeable: true,
   });
 }
+
+//下拉刷新 控制model
+const refreshLoading = ref(false);
+// 下拉刷新
+function onRefresh() {
+  // 1s后请求最新数据，然后把 refreshLoading重置为false
+  setTimeout(() => {
+    updateFetchData();
+    refreshLoading.value = false;
+  }, 1000);
+}
+</script>
+<script lang="ts">
+export default {
+  name: 'indexOnline',
+};
 </script>
 <style lang="scss" scoped>
 .index_online-container {

@@ -7,10 +7,7 @@
         <div class="name f22 l-h">{{ list.realname }}</div>
         <div class="title f20 l-h">{{ list.groupname }}</div>
         <div class="address" v-if="list.company">{{ list.company }}</div>
-        <div
-          class="address time"
-          v-if="list.addtime && routeName != 'index' && routeName != '/'"
-        >
+        <div class="address time" v-if="list.addtime && routeName != 'index' && routeName != '/'">
           {{ list.addtime }}
         </div>
       </div>
@@ -19,9 +16,7 @@
       <div class="item" v-for="item in skillArr" :key="item">{{ item }}</div>
     </div>
     <div class="join">
-      <div class="answer-number" v-show="list.cnt_answer != 0">
-        {{ list.cnt_answer }}次解答
-      </div>
+      <div class="answer-number" v-show="list.cnt_answer != 0">{{ list.cnt_answer }}次解答</div>
       <div
         class="join-number"
         v-show="!isSelfExpert"
@@ -30,12 +25,13 @@
           noBorder: list.cnt_answer == 0 || list.cnt_joinhospital == 0,
         }"
       >
-        {{ list.cnt_joinhospital }}家加入医院
+        {{ list.cnt_joinhospital }}家加入{{ getDefaultMenuName.hospitalName }}
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'Recommend_expert',
   components: {},
@@ -57,6 +53,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['getDefaultMenuName']),
     skillArr() {
       if (!this.list.skill) {
         return [];
@@ -125,6 +122,7 @@ export default {
   background #F5F5F5
   padding 10px 7px 14px 10px
   border-radius 8px
+  height 155px
   .top
     display flex
     padding-bottom 5px
@@ -140,11 +138,11 @@ export default {
       .name
         font-size 14px
         color #333333
-        line-height 16px
+        line-height 1.12
         margin-bottom 9px
       .title
         font-size 12px
-        line-height 14px
+        line-height 1.12
         margin-bottom 5px
         color #363A44
         overflow hidden
@@ -152,15 +150,17 @@ export default {
         white-space nowrap
       .address
         font-size 12px
-        line-height 14px
+        line-height 1.12
         margin-bottom 5px
         color #363A44
-        line-height 16px
+        //line-height 16px
         overflow hidden
         text-overflow ellipsis
-        display -webkit-box
-        -webkit-line-clamp 2
-        -webkit-box-orient vertical
+        word-break break-all
+        white-space nowrap
+        // display -webkit-box
+        // -webkit-line-clamp 2
+        // -webkit-box-orient vertical
   .kind
     font-size 0
     max-height 45px

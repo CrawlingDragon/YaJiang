@@ -31,14 +31,14 @@
               {{ it.content }}
             </div>
             <div class="pharmacy" v-if="it.druginfo.length !== 0">
-              <div class="pharmacy-title">用肥用药：</div>
+              <div class="pharmacy-title">用药推荐：</div>
               <div class="pharmacy-item" v-for="drug in it.druginfo" :key="drug.specid">
                 <van-image class="img" :src="drug.thumb" fit="fill"></van-image>
                 <div class="pharmacy-text">
                   <div class="p1 f20">{{ drug.name }}</div>
                   <div class="p2 f17">用法用量说明：{{ drug.quantity }}</div>
                 </div>
-                <a :href="drug.url" class="bug f20">购买</a>
+                <a :href="drug.url" class="bug f20" v-if="false">购买</a>
               </div>
             </div>
           </div>

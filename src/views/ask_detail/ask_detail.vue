@@ -17,12 +17,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="subsidy"
-        v-if="detail.isbenefit == 1"
-        @click="benefit"
-        v-show="false"
-      ></div>
+      <div class="subsidy" v-if="detail.isbenefit == 1" @click="benefit" v-show="false"></div>
       <div class="text f20">{{ detail.content }}</div>
       <div class="img-list">
         <div
@@ -82,13 +77,8 @@
           <div class="lookat-yinongbao">{{ item.add_wenlist_tips }}</div>
           <div
             class="rote f18"
-            @click="showPopupRote(item)"
-            v-if="
-              detail.isself == 1 &&
-              item.isself == 0 &&
-              item.score == '' &&
-              item.isexpert != 0
-            "
+            @click="openRatePopup(item)"
+            v-if="detail.isself == 1 && item.isself == 0 && item.score == '' && item.isexpert != 0"
           >
             <div class="icon"></div>
             评分
@@ -152,9 +142,7 @@
       class="rotes"
       v-if="false"
     >
-      <div class="sub subText f18" :class="{ content: true }" @click="subRemark">
-        发表
-      </div>
+      <div class="sub subText f18" :class="{ content: true }" @click="subRemark">发表</div>
       <div class="title f18">评价 {{ author }}</div>
       <van-rate v-model="roteValue" color="#ff6600" size="27px" />
       <span v-if="roteValue == 1" class="rote-text f18">解答非常差</span>
@@ -172,7 +160,7 @@
         class="message f18"
       />
     </van-popup>
-    <RatePopup :author="author" />
+    <RatePopup :author="author" ref="ratePopupRef" @emitSub="comment" />
   </div>
 </template>
 <script>
@@ -182,9 +170,23 @@ import { ImagePreview } from 'vant';
 import { login } from '@/common/js/getToken';
 import { useTitles } from '@/common/js/useTitles.ts';
 import RatePopup from '@/components/rate_popup/rate_popup.vue';
+import { ref } from 'vue';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
 export default {
   setup() {
     useTitles('问答详情');
+
+    const ratePopupRef = ref(null);
+
+    const pid = ref('');
+    // 利用组件ref，打开弹窗
+    function openRatePopup(item) {
+      pid.value = item.pid;
+      ratePopupRef.value?.open();
+    }
+
+    const { scrollTop } = useTargetScroll();
+    return { ratePopupRef, openRatePopup, pid, scrollTop };
   },
   name: 'askDetail',
   components: { Header, RatePopup },
@@ -199,18 +201,22 @@ export default {
       roteValue: 1,
       messageRote: '',
       detail: '',
-      pid: '',
       author: '',
     };
   },
   computed: {
     ...mapState(['uId']),
   },
-  created() {},
+  activated() {
+    let tid = this.$route.query.tid;
+    if (tid !== this.tid) {
+      this.tid = tid;
+      this.resetData();
+    }
+  },
   watch: {
-    $route() {
-      this.tid = this.$route.query.tid;
-      this.getDetail();
+    uId() {
+      this.resetData();
     },
   },
   mounted() {
@@ -218,15 +224,17 @@ export default {
   },
   methods: {
     ...mapMutations(['setMid']),
+    resetData() {
+      this.scrollTop = 0;
+      this.getDetail();
+    },
     getDetail() {
       // 解答详情
-      this.$axios
-        .fetchPost('Mobile/Wen/detail', { tId: this.tid, uId: this.uId })
-        .then((res) => {
-          if (res.data.code == 0) {
-            this.detail = res.data.data;
-          }
-        });
+      this.$axios.fetchPost('Mobile/Wen/detail', { tId: this.tid, uId: this.uId }).then((res) => {
+        if (res.data.code == 0) {
+          this.detail = res.data.data;
+        }
+      });
     },
     showPopup() {
       if (this.uId == '') {
@@ -254,20 +262,21 @@ export default {
           this.$toast(res.data.message);
         });
     },
-    showPopupRote(item) {
-      this.author = item.name;
-      this.pid = item.pid;
-      this.showRote = true;
+
+    comment(subObj) {
+      // 评价组件返回的 评分内容和star值
+      const { roteMessage, roteValue } = subObj;
+      this.subRemark(roteMessage, roteValue);
     },
-    subRemark() {
+    subRemark(roteMessage, roteValue) {
       // 发表评级
       this.$axios
         .fetchPost('Mobile/User/pushAppraises', {
           uId: this.uId, // 用户id
           tId: this.tid, //问题id
           pId: this.pid, // 问题pid
-          score: this.roteValue, //星级
-          comment: this.messageRote, //回答内容
+          score: roteValue, //星级
+          comment: roteMessage, //回答内容
         })
         .then((res) => {
           if (res.data.code == 0) {

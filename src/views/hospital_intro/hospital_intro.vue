@@ -4,13 +4,13 @@
     <div class="basic-info-box">
       <div class="title f22">基本信息</div>
       <div class="item">
-        <div class="left">医院名称：</div>
+        <div class="left">名称：</div>
         <div class="text">
           {{ intro.name }}
         </div>
       </div>
       <div class="item">
-        <div class="left">医院属性：</div>
+        <div class="left">属性：</div>
         <div class="text">{{ intro.level }}</div>
       </div>
       <div class="item">
@@ -18,7 +18,7 @@
         <div class="text">{{ intro.zuowu }}</div>
       </div>
       <div class="item">
-        <div class="left">医院地址：</div>
+        <div class="left">地址：</div>
         <div class="text">{{ intro.address }}</div>
       </div>
       <div class="item num-item">
@@ -28,7 +28,7 @@
           {{ intro.isstore == 1 ? '处方' : '网诊' }} {{ intro.rnum }}</span
         >
       </div>
-      <div class="title2 f20" v-if="mpublic.length != 0">直属下级医院</div>
+      <div class="title2 f20" v-if="mpublic.length != 0">直属下级</div>
       <ul class="lower-level-ul" v-if="mpublic.length != 0">
         <li
           v-for="item in intro.mpublic"
@@ -41,8 +41,8 @@
       </ul>
     </div>
     <div class="introduce-info">
-      <div class="title f22">医院介绍</div>
-      <div class="text f18">{{ intro.introduce }}</div>
+      <div class="title f22">介绍</div>
+      <div class="text f18" v-html="intro.introduce"></div>
       <!-- <van-image class="img"></van-image>
       <div class="p1">医院门头</div>
       <van-image class="img"></van-image>
@@ -57,12 +57,8 @@
       申请加入医院
       <div class="free f14">免费</div>
     </div>
-    <div class="joined f22" v-if="intro.ismember == 1">
-      {{ intro.addtime }} 加入医院成为会员
-    </div>
-    <div class="look-more f18" @click="goToVip" v-show="intro.isstore == 1">
-      了解更多会员权益 >
-    </div>
+    <div class="joined f22" v-if="intro.ismember == 1">{{ intro.addtime }} 加入医院成为会员</div>
+    <div class="look-more f18" @click="goToVip" v-show="intro.isstore == 1">了解更多会员权益 ></div>
   </div>
 </template>
 <script>
@@ -92,6 +88,10 @@ export default {
   // },
   computed: {
     ...mapState(['uId', 'mid', 'hospitalName']),
+    // introduce() {
+    //   let r = this.intro.introduce + '';
+    //   return r.replace(/\n/g, '<br/>');
+    // },
   },
   watch: {},
   mounted() {

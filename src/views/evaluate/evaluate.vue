@@ -6,7 +6,7 @@
       <van-list
         v-model:loading="loading"
         :finished="finished"
-        finished-text="没有更多了"
+        :finished-text="page === 1 ? '暂无数据' : '没有更多了'"
         @load="onLoad"
       >
         <li v-for="item in evaluate" :key="item.id">
@@ -22,7 +22,7 @@
     <div class="btn-box">
       <div class="btn f22" @click="openRatePopup">我要评价</div>
     </div>
-    <RatePopup :author="'为农服务平台'" ref="ratePopupRef" @emitSub="comment"></RatePopup>
+    <RatePopup :author="name" ref="ratePopupRef" @emitSub="comment"></RatePopup>
   </div>
 </template>
 <script setup lang="ts">
@@ -44,6 +44,8 @@ useTitles('投诉与评价');
 
 // 评分 popup
 const ratePopupRef = ref<InstanceType<typeof RatePopup> | null>(null);
+// 评分对象
+const name = computed(() => store.getters.getterGlobalTitle.name);
 
 // 利用组件ref，打开弹窗
 function openRatePopup() {
@@ -94,19 +96,20 @@ function onLoad() {
 }
 async function getCommentList() {
   // 请求评分列表的接口
+  loading.value = true;
   const data = await getEvaluate({ uId: uId.value, page: page.value, pagesize: 10 });
   // console.log('data :>> ', data);
-  page.value += 1;
-  evaluate.value = evaluate.value.concat(data);
-  loading.value = false;
   // 201 表示没有更多了
   if (data?.code === 201) {
     finished.value = true;
+    return;
   }
+  setTimeout(() => {
+    loading.value = false;
+    evaluate.value = evaluate.value.concat(data);
+    page.value += 1;
+  }, 1000);
 }
-// onMounted(() => {
-//   getCommentList();
-// });
 </script>
 <style lang="scss">
 .old {
@@ -190,6 +193,7 @@ async function getCommentList() {
 }
 .btn-box {
   width: 100%;
+  max-width: 640px;
   height: 64px;
   background: #ffffff;
   position: fixed;

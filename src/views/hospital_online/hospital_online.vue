@@ -1,31 +1,41 @@
 <template>
   <div class="hospital_online-container">
-    <Header header="indexHeader" navHeader="线上网诊" :mid="mid"></Header>
-    <ul v-show="!noData">
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <li v-for="item in list" :key="item.id">
-          <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
-        </li>
-      </van-list>
-    </ul>
-    <van-empty description="暂无网诊" v-show="noData"></van-empty>
+    <Header
+      header="indexHeader"
+      :navHeader="'线上' + getDefaultMenuName.questionName"
+      :mid="mid"
+      @updateData="updateData"
+    ></Header>
+    <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+      <ul v-show="!noData">
+        <van-list
+          v-model:loading="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <li v-for="item in list" :key="item.id">
+            <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
+          </li>
+        </van-list>
+      </ul>
+      <van-empty description="暂无数据" v-show="noData"></van-empty>
+    </van-pull-refresh>
   </div>
 </template>
 <script>
 import Header from '@/components/hospital_header/hospital_header';
 import OnlineItem from '@/components/online_item/online_item';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { ImagePreview } from 'vant';
 import { useTitles } from '@/common/js/useTitles';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
+import { onActivated } from 'vue';
 
 export default {
   setup() {
     const title = useTitles('线上网诊');
+    useTargetScroll();
     return { title };
   },
   name: 'hospitalOnline',
@@ -43,18 +53,31 @@ export default {
       finished: false,
       page: 0,
       noData: false,
+      refreshLoading: false,
+      hospitalMid: 0, //临时保存医院的mid
     };
   },
   created() {},
   computed: {
     ...mapState(['mid', 'hospitalName']),
+    ...mapGetters(['getDefaultMenuName']),
   },
-
-  watch: {},
+  watch: {
+    hospitalMid(newVal, oldVal) {
+      //用临时医院mid，代替 vuex mid ，来watch
+      this.resetData();
+    },
+  },
   mounted() {
     this.title = this.hospitalName;
   },
+  activated() {
+    this.hospitalMid = this.mid;
+  },
   methods: {
+    updateData() {
+      this.resetData();
+    },
     onLoad() {
       this.getList();
     },
@@ -87,6 +110,19 @@ export default {
             this.finished = true;
           }
         });
+    },
+    resetData() {
+      this.page = 0;
+      this.noData = false;
+      this.list = [];
+      this.getList();
+    },
+    onRefresh() {
+      // 下拉舒心
+      setTimeout(() => {
+        this.resetData();
+        this.refreshLoading = false;
+      }, 1000);
     },
   },
 };

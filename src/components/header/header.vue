@@ -6,16 +6,24 @@
         <van-icon name="search" :size="size" />
       </div>
       <div class="tabbar" v-if="indexHeader">
-        <div class="item f22" :class="{ active: tabbarActive == 0 }" @click="goToIndex">
-          推荐
-        </div>
-        <div class="item f22" :class="{ active: tabbarActive == 1 }" @click="goToOnline">
-          网诊
+        <div class="item f22" :class="{ active: tabbarActive == 0 }" @click="goToIndex">推荐</div>
+        <div
+          class="item f22"
+          :class="{ active: tabbarActive == 1 }"
+          @click="goToOnline"
+          @dblclick="updateFetch"
+        >
+          {{ getDefaultMenuName.questionName }}
         </div>
       </div>
       <div class="no_index_header f22" v-if="!indexHeader" @click="clickLogo">
-        <van-image :src="logoUrl" class="logo" fit="scale-down"></van-image>
-        为农服务平台
+        <van-image
+          :src="headerBottomBar.icon"
+          class="logo"
+          fit="scale-down"
+          radius="10%"
+        ></van-image>
+        {{ headerBottomBar.name }}
       </div>
       <div class="right-nav van-hairline--left">
         <div class="index-icon" @click.stop="goToIndex">
@@ -29,9 +37,8 @@
 </template>
 <script>
 import fastNav from '@/components/fast_nav/fast_nav.vue';
-import logoUrl from '../../assets/logo.png';
-import { mapState } from 'vuex';
-import { inject } from 'vue';
+import { mapState, useStore, mapGetters } from 'vuex';
+import { inject, computed } from 'vue';
 export default {
   name: 'headers',
   components: { fastNav },
@@ -46,8 +53,10 @@ export default {
     },
   },
   setup() {
+    const store = useStore();
+    const headerBottomBar = computed(() => store.getters.getterGlobalTitle);
     const size = inject('size');
-    return { size };
+    return { size, headerBottomBar };
   },
   data() {
     return {
@@ -56,10 +65,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['uId', 'initMid']),
-    logoUrl() {
-      return logoUrl;
-    },
+    ...mapState(['uId']),
+    ...mapGetters(['initMid', 'getDefaultMenuName']),
   },
   watch: {
     $route() {
@@ -68,6 +75,10 @@ export default {
   },
   mounted() {},
   methods: {
+    updateFetch() {
+      //点击网诊，或者找答案 tab栏目，提交数据更新
+      this.$emit('updateFetchData');
+    },
     clickLogo() {
       this.$emit('clickLogoImg');
       this.$router.push({ path: '/index' }).catch((err) => err);
@@ -83,7 +94,7 @@ export default {
     },
     goToOnline() {
       // 路由  网诊
-      this.$router.push({ path: '/index_online' }).catch((err) => err);
+      this.$router.push({ path: '/index_online' });
       this.fastNavShowFlag = false;
     },
     goToIndex() {
@@ -224,7 +235,7 @@ export default {
       height: 20px;
       margin-left: 12px;
       margin-right: 10px;
-      border-radius: 100%;
+      border-radius: 10px;
       border: 1px solid $border-color;
     }
   }

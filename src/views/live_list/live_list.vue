@@ -64,6 +64,7 @@ export default {
     padding-right: 12px;
     margin-bottom: 20px;
     font-size: 14px;
+    cursor: pointer;
   }
   :deep()img {
     max-width: 100%;

@@ -8,18 +8,28 @@ interface User {
   resideprovince?: string;
   residecity?: string;
   residedist?: string;
+
+  realname: string;
 }
 export function saveUid(user: User) {
   const { uid } = user;
-  storage.set('uId', uid);
-  const item = storage.get('uId');
+  storage.session.set('uId', uid);
+  const item = storage.session.get('uId');
   return item;
 }
 export function saveUserInfo(user: User) {
-  const { username, uid, avatar, status, resideprovince, residecity, residedist } = user;
+  const {
+    username,
+    uid,
+    avatar,
+    status,
+    resideprovince,
+    residecity,
+    residedist,
+
+    realname,
+  } = user;
   const location =
-    resideprovince +
-    (residecity ? ',' + residecity : '') +
-    (residedist ? ',' + residedist : '');
-  return { username, uid, avatar, status, location };
+    resideprovince + (residecity ? ',' + residecity : '') + (residedist ? ',' + residedist : '');
+  return { username, uid, avatar, status, location, realname };
 }

@@ -19,7 +19,7 @@
 <script>
 import Header from '@/components/header/header';
 // import HeaderHospital from "@/components/hospital_header/hospital_header";
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
 
 export default {
@@ -38,7 +38,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['mid', 'uId', 'initMid']),
+    ...mapState(['mid', 'uId']),
+    // ...mapGetters(['initMid']),
   },
   watch: {},
   mounted() {
@@ -52,7 +53,6 @@ export default {
       this.$axios
         .fetchPost('Mobile/Treatment/getTestingsoil', {
           uId: this.uId,
-          mId: this.initMid,
         })
         .then((res) => {
           if (res.data.code == 0) {
@@ -64,13 +64,11 @@ export default {
     },
     getMeList() {
       // 获取测土配方列表  个人
-      this.$axios
-        .fetchPost('/Mobile/Treatment/getTestingsoil', { uId: this.uId })
-        .then((res) => {
-          if (res.data.code == 0) {
-            this.list = res.data.data;
-          }
-        });
+      this.$axios.fetchPost('/Mobile/Treatment/getTestingsoil', { uId: this.uId }).then((res) => {
+        if (res.data.code == 0) {
+          this.list = res.data.data;
+        }
+      });
     },
     goToDetail(id) {
       this.$router.push({

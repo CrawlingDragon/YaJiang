@@ -2,40 +2,74 @@
   <div :class="{ old: old }" class="app-box">
     <router-view v-slot="{ Component }">
       <keep-alive
-        exclude="Login,mLogin,findPassword,sign,lookExpert,live,messageDetail"
-        include="searchOnline,applyVip,index,area,intoHospital,indexOnline"
+        exclude="Login,mLogin,findPassword,sign,lookExpert,messageDetail,hospitalFastNav"
+        include="searchOnline,applyVip,index,area,intoHospital,indexOnline,live,hospitalOnline,expert,askDetail,meAnswer"
       >
         <component :is="Component" />
       </keep-alive>
     </router-view>
-    <SwitchOld></SwitchOld>
+    <SwitchOld v-if="false"></SwitchOld>
     <GoTop />
   </div>
 </template>
 <script setup lang="ts">
-import { computed, provide, onMounted, ref } from 'vue';
+import { computed, provide, onMounted, watch, reactive, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import GoTop from '@/components/goTop/goTop.vue';
 import SwitchOld from '@/components/switchOld/switchOld.vue';
-import { getAi } from '@/service/getAi';
-import { getInitMid } from '@/service/getInitMid';
+import { getIndexSettingMenu, getHeadFastNav, getDefaultSet } from '@/service/base';
+import { getHospitalFastNav } from '@/service/base';
+import leansAxios from '@/http';
+
 const store = useStore();
 const old = computed(() => store.state.old);
-
+const uId = computed(() => store.state.uId);
+const getterGlobalTitle = computed(() => store.getters.getterGlobalTitle);
+const headerFastBar = reactive({
+  bar: {},
+});
 // 适老板的图标的size
 const sizeComputed = computed(() => {
   return old.value ? 33 : '';
 });
 provide('size', sizeComputed);
-
+// console.log('import.meta.env :>> ', import.meta.env);
 onMounted(async () => {
-  // 获取ai的id
-  const data = await getAi();
-  store.commit('setAiExpertId', data);
+  // 获取初始的总院mid，获取ai的id
+  const data = await getDefaultSet();
+  store.commit('setDefaultSetting', data);
+  // 获取首页的配置项
+  const result = await getIndexSettingMenu();
+  store.commit('setSettingMenu', result);
 
-  // 获取初始的总院mid
-  const { mid: initMid } = await getInitMid();
-  store.commit('setInitMid', initMid);
+  // 获取医院的快速导航配置
+  const hospitalNav = await getHospitalFastNav();
+  store.commit('setHospitalSettingNav', hospitalNav);
+
+  // 获取头部快速导航的栏目
+  headerFastBar.bar = await getHeadFastNav();
+});
+provide('headerFastBar', headerFastBar);
+
+watch(getterGlobalTitle, (newVal) => {
+  //根据接口请求，设置网站.ico
+  let icon: any = document.querySelector('link[rel="icon"]');
+  icon.href = newVal.icon;
+});
+
+watchEffect(() => {
+  if (uId.value !== '') {
+    leansAxios
+      .fetchPost('Mobile/User/userCenter', {
+        uId: uId.value,
+      })
+      .then((res: any) => {
+        let data = res.data;
+        if (data.code == 0) {
+          store.dispatch('saveUserInfo', data.data);
+        }
+      });
+  }
 });
 </script>
 

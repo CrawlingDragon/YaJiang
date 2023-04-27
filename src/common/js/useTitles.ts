@@ -1,10 +1,11 @@
-import { onActivated, Ref } from 'vue';
+import { onActivated } from 'vue';
 import { useTitle } from '@vueuse/core';
-const title = useTitle();
-export function useTitles(propTitle: string): Ref {
-  title.value = propTitle;
+
+export function useTitles(propTitle: string): any {
+  let title = useTitle(propTitle);
   onActivated(() => {
-    title.value = propTitle;
+    title = useTitle(propTitle);
   });
+
   return title;
 }

@@ -8,11 +8,7 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <li
-          v-for="item in list"
-          :key="item.id"
-          @click="goToMessageDetail(item.id, item.catid)"
-        >
+        <li v-for="item in list" :key="item.id" @click="goToMessageDetail(item.id, item.catid)">
           <MessageItem :list="item" :index="true"></MessageItem>
         </li>
       </van-list>
@@ -31,7 +27,7 @@ import { useTitles } from '@/common/js/useTitles';
 import { getMessage } from '@/service/getMessage';
 
 const store = useStore();
-const initMid = computed(() => store.state.initMid);
+const initMid = computed(() => store.getters.initMid);
 
 const route = useRouter();
 useTitles('资讯');
@@ -55,9 +51,11 @@ async function getList() {
     finished.value = true;
     return;
   }
-  loading.value = false;
-  list.value = list.value.concat(data);
-  page.value += 1;
+  setTimeout(() => {
+    loading.value = false;
+    list.value = list.value.concat(data);
+    page.value += 1;
+  }, 1000);
 }
 
 function goToMessageDetail(id: string, catId: string): void {

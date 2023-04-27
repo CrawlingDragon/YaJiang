@@ -19,6 +19,7 @@
         <template #input>
           <van-uploader
             v-model="uploader"
+            :before-read="beforeRead"
             :after-read="afterRead"
             :before-delete="deleteItem"
             accept="image/*"
@@ -45,15 +46,9 @@
         <div class="left">咨询专家</div>
         <div class="right">{{ expert }}</div>
       </div>
-      <Loacl
-        :propMid="from ? mid : initMid"
-        ref="localRef"
-        v-model:address="address"
-      ></Loacl>
+      <Local :propMid="from ? mid : initMid" ref="localRef" v-model:address="address"></Local>
       <div class="sub">
-        <van-button round block type="info" native-type="submit" class="btn f20">
-          提交
-        </van-button>
+        <van-button round block type="info" native-type="submit" class="btn f20"> 提交 </van-button>
       </div>
     </van-form>
     <router-view v-slot="{ Component }">
@@ -69,23 +64,23 @@
 import Header from '@/components/header/header';
 import HospitalHeader from '@/components/hospital_header/hospital_header';
 import Foot from '@/components/foot/foot';
-import Loacl from '@/components/local/local.vue';
+import Local from '@/components/local/local.vue';
 import { useTitles } from '@/common/js/useTitles';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Compressor from 'compressorjs';
-import { onActivated } from 'vue';
+import { onActivated, onMounted } from 'vue';
 export default {
   setup() {
     useTitles('提问');
   },
   name: 'ask',
-  components: { Header, Foot, HospitalHeader, Loacl },
-  props: {},
+  components: { Header, Foot, HospitalHeader, Local },
+
   data() {
     return {
       address: '定位中···',
       message: '',
-      crop: '雷笋',
+      crop: '请选择',
       fid: '',
       uploader: [],
       imgList: [],
@@ -95,10 +90,16 @@ export default {
       userInfo: '',
       locationTime: 'first',
       submitBoolean: true,
+      uploading: false,
     };
   },
+  mounted() {
+    this.crop = this.getterDefaultCrop.name ? this.getterDefaultCrop.name : '请选择';
+    this.fid = this.getterDefaultCrop.num;
+  },
   computed: {
-    ...mapState(['uId', 'mid', 'initMid', 'hospitalName']),
+    ...mapState(['uId', 'mid', 'hospitalName']),
+    ...mapGetters(['initMid', 'getterDefaultCrop']),
     from() {
       return this.$route.query.from;
     },
@@ -140,38 +141,67 @@ export default {
       this.crop = crop.name;
       this.fid = crop.fid;
     },
-    // beforeRead(file) {
-    //   // 上传图片之前，压缩图片
-    //   return new Promise(resolve => {
-    //     let img = exifImg(file).then(res => {
-    //       return res;
-    //     });
-    //     resolve(img);
-    //   });
-    // },
-    afterRead(file, detail) {
-      // 图片上传
-      let that = this;
-      new Compressor(file.file, {
-        quality: 0.4,
-        success(result) {
-          let formData = new FormData();
-          // console.log("result", result);
-          formData.append('urls[]', result, result.name);
-          that.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
-            // console.log("res :>> ", res);
-            if (res.data.code == 0) {
-              that.imgList.push(res.data.data);
-              that.imgListTiny.push(res.data.data_tiny);
-              // this.uploader.push({url:res.data.data,name:'img'})
-            } else {
-              that.$toast(res.data.message);
-              let index = detail.index;
-              that.uploader.splice(index, 1);
-            }
-          });
-        },
+    beforeRead(file) {
+      // 上传图片之前，压缩图片
+      return new Promise((resolve) => {
+        new Compressor(file, {
+          quality: 0.2,
+          success(result) {
+            resolve(result);
+          },
+          error(err) {
+            console.log(err.message);
+          },
+        });
       });
+    },
+    afterRead(file) {
+      // console.log('after-file', file);
+      file.status = 'uploading';
+      file.message = '上传中...';
+      let formData = new FormData();
+      // console.log('result', result);
+      formData.append('urls[]', file.file, file.name);
+      this.uploading = true;
+      this.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
+        if (res.data.code == 0) {
+          this.imgList.push(res.data.data);
+          this.imgListTiny.push(res.data.data_tiny);
+          file.status = 'done';
+          file.message = '上传成功';
+          // that.uploader.push({ url: res.data.data, name: 'img' });
+        } else {
+          file.status = 'failed';
+          file.message = '上传失败';
+          this.$toast(res.data.message);
+          // let index = detail.index;
+          // this.uploader.splice(index, 1);
+        }
+        this.uploading = false;
+      });
+
+      // 图片上传
+      // let that = this;
+      // new Compressor(file.file, {
+      //   quality: 0.4,
+      //   success(result) {
+      //     let formData = new FormData();
+      //     console.log('result', result);
+      //     formData.append('urls[]', result, result.name);
+      //     that.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
+      //       // alert(res.data.message);
+      //       if (res.data.code == 0) {
+      //         that.imgList.push(res.data.data);
+      //         that.imgListTiny.push(res.data.data_tiny);
+      //         // this.uploader.push({url:res.data.data,name:'img'})
+      //       } else {
+      //         that.$toast(res.data.message);
+      //         let index = detail.index;
+      //         that.uploader.splice(index, 1);
+      //       }
+      //     });
+      //   },
+      // });
     },
     deleteItem(file, val) {
       let index = val.index;
@@ -191,12 +221,19 @@ export default {
         location: this.address === '抱歉未定位到' ? '定位失败' : this.address,
       };
       if (this.submitBoolean) {
+        // 判断是否在上传图片
+        if (this.uploading) {
+          this.$toast('图片上传中，稍后尝试');
+          return;
+        }
         this.submitBoolean = false;
         this.$axios.fetchPost('Mobile/Wen/addWenQuestion', obj).then((res) => {
           this.$toast(res.data.message);
           if (res.data.code == 0) {
             setTimeout(() => {
-              this.$router.go(-1);
+              this.$router.push({
+                path: '/index_online',
+              });
               this.submitBoolean = true;
             }, 1000);
           } else {
@@ -330,7 +367,8 @@ export default {
     }
   }
 }
-:deep().van-field__control {
-  font-size: 14px;
+:deep().van-uploader__preview-image {
+  width: 70px;
+  height: 70px;
 }
 </style>

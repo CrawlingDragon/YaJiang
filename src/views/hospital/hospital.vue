@@ -1,6 +1,9 @@
 <template>
   <div class="hospital-container">
-    <HospitalHeader header="indexHeader" navHeader="医院主页"></HospitalHeader>
+    <HospitalHeader
+      header="indexHeader"
+      :navHeader="getDefaultMenuName.hospitalName + '主页'"
+    ></HospitalHeader>
     <HospitalNav
       :isistore="mpublic.isistore"
       :ismember="mpublic.ismember"
@@ -23,7 +26,7 @@
       <div class="btn f18">查看更多 ></div>
     </div>
     <div class="expert-list" v-show="expertList.length != 0">
-      <div class="title f22">医院专家</div>
+      <div class="title f22">{{ getDefaultMenuName.hospitalName }}专家</div>
       <ul class="expert-ul clearfix">
         <li v-for="item in expertList" :key="item.expertid">
           <RecommendExpert :list="item" :isSelfExpert="true"></RecommendExpert>
@@ -34,7 +37,7 @@
       <div class="btn f18">查看更多 ></div>
     </div>
     <div class="online-list">
-      <div class="title f22">网诊</div>
+      <div class="title f22">{{ getDefaultMenuName.questionName }}</div>
       <ul class="ul-online" v-show="wenList.length != 0">
         <li v-for="item in wenList" :key="item.tid">
           <OnlineItem :list="item" @preImage="preverImg"></OnlineItem>
@@ -42,7 +45,7 @@
       </ul>
     </div>
     <van-empty
-      description="暂时还没有网诊"
+      :description="'暂时还没有' + getDefaultMenuName.questionName"
       v-show="wenList.length == 0 && wenListNoData"
     ></van-empty>
     <div class="look-more" @click="lookMoreHospital" v-show="wenList.length != 0">
@@ -56,7 +59,7 @@ import HospitalNav from '@/components/hospital_nav/hospital_nav.vue';
 import MessageItem from '@/components/message_item/message_item.vue';
 import RecommendExpert from '@/components/recommend_expert/recommend_expert.vue';
 import OnlineItem from '@/components/online_item/online_item.vue';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import { ImagePreview } from 'vant';
 import { useTitles } from '@/common/js/useTitles';
 export default {
@@ -88,6 +91,7 @@ export default {
   created() {},
   computed: {
     ...mapState(['uId', 'mid', 'isMember', 'ucuid', 'hospitalName']),
+    ...mapGetters(['getDefaultMenuName']),
   },
   watch: {},
   mounted() {
@@ -129,6 +133,7 @@ export default {
             this.setHospitalIsStore(data.mpublic.isstore);
             this.setHospitalName(data.mpublic.name);
             this.setHospitalLogo(data.mpublic.logo);
+            // console.log('data.mpublic.logo', data.mpublic.logo);
             if (data.list_wen.length == 0) {
               this.wenListNoData = true;
             }

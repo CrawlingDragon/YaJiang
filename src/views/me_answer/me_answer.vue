@@ -1,7 +1,13 @@
 <template>
   <div class="me_answer-container">
     <Header :header="'xx'"></Header>
-    <van-tabs v-model="active" class="tabs" @scroll="scroll" swipeable>
+    <van-tabs
+      v-model:active="activeValue"
+      class="tabs"
+      sticky
+      @clickTab="tabClickFn"
+      @dblclick="tabDblclickFn"
+    >
       <van-tab title="我问的" class="tab">
         <div class="wrap">
           <van-list
@@ -57,19 +63,22 @@
 <script>
 import Header from '@/components/hospital_header/hospital_header.vue';
 import OnlineItem from '@/components/online_item/online_item.vue';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { useTitles } from '@/common/js/useTitles';
+import { useTargetScroll } from '@/common/js/useTargetScroll';
 var Before_scollH = 0;
 export default {
   setup() {
     useTitles('问答管理');
+    const { scrollTop } = useTargetScroll();
+    return { scrollTop };
   },
   name: 'meAnswer',
   components: { Header, OnlineItem },
   props: {},
   data() {
     return {
-      active: 0,
+      activeValue: 0,
       ask: [],
       answer: [],
       information: [],
@@ -88,10 +97,12 @@ export default {
       page3: 0,
       scollType: '',
       num: 0,
+      name: 0,
     };
   },
   computed: {
-    ...mapState(['uId', 'mid', 'initMid']),
+    ...mapState(['uId', 'mid']),
+    ...mapGetters(['initMid']),
   },
   watch: {
     scollType(newVal) {
@@ -102,30 +113,52 @@ export default {
       }
     },
   },
-  created() {},
   mounted() {
-    window.addEventListener('scroll', this.scrollHandler);
+    // window.addEventListener('scroll', this.scrollHandler);
     this.getUserInfo();
   },
-  unmounted() {
-    window.removeEventListener('scroll', this.scrollHandler);
-  },
+  // unmounted() {
+  //   window.removeEventListener('scroll', this.scrollHandler);
+  // },
   methods: {
-    scrollHandler() {
-      var After_scollH =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      var differH = After_scollH - Before_scollH;
-      if (differH == 0) {
-        return false;
-      }
-      this.scollType = differH > 0 ? 'down' : 'up';
-      Before_scollH = After_scollH;
+    // scrollHandler() {
+    //   var After_scollH =
+    //     window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    //   var differH = After_scollH - Before_scollH;
+    //   if (differH == 0) {
+    //     return false;
+    //   }
+    //   this.scollType = differH > 0 ? 'down' : 'up';
+    //   Before_scollH = After_scollH;
+    // },
+    // scroll() {
+    //   // console.log('val :>> ', val);
+    //   // val
+    // },
+    tabClickFn(obj) {
+      //单击tab切换，获取对应tab
+      this.name = obj.name;
     },
-    scroll() {
-      // console.log('val :>> ', val);
-      // val
+    tabDblclickFn() {
+      // 双击tab切换，更新数据
+      let active = this.name;
+      switch (active) {
+        case 0:
+          this.page1 = 0;
+          this.ask = [];
+          this.myAsk();
+          break;
+        case 1:
+          this.page2 = 0;
+          this.answer = [];
+          this.myAnswer();
+          break;
+        case 2:
+          this.page3 = 0;
+          this.information = [];
+          this.myInformation();
+          break;
+      }
     },
     onLoad1() {
       this.loading1 = true;
@@ -227,16 +260,18 @@ export default {
   .me_answer-container {
     .tabs {
       :deep().van-tabs__wrap {
-        top: -55px;
-        height: 55px;
+        top: 0px;
+        height: 54px;
       }
     }
   }
 }
 .me_answer-container {
   .tabs {
+    // height: 1000px;
+    // height: 100%;
+    // overflow: hidden;
     .tab {
-      margin-top: 10px;
       .wrap {
         width: 100%;
         height: 100%;
@@ -251,9 +286,10 @@ export default {
       }
     }
     :deep().van-tabs__wrap {
-      position: absolute;
-      z-index: 1111;
-      top: -44px;
+      position: fixed;
+      z-index: 1111111;
+      height: 39px;
+      top: 0px;
       width: 256px;
     }
     :deep().van-tabs__line {

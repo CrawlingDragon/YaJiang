@@ -5,26 +5,23 @@
       <Swiper />
     </div>
     <div class="nav-wrap">
-      <IndexNav :routerItem="[]" />
+      <IndexNav />
     </div>
     <div class="hospital-box">
       <div class="title">
-        <div class="h1-title f22">推荐医院</div>
-        <div class="small-title">加入新型庄稼医院，免费享受会员服务</div>
-        <div class="look-bar f18" @click="goRouterSwitch('into_hospital')">找医院 ></div>
+        <div class="h1-title f22">推荐{{ getDefaultMenuName.hospitalName }}</div>
+        <div class="small-title">加入{{ getDefaultMenuName.hospitalName }}，免费享受会员服务</div>
+        <div class="look-bar f18" @click="goRouterSwitch('into_hospital')">更多 ></div>
         <!-- <div class="nowAddress" @click="goToArea">
           <div>{{ viewAddress }}</div>
           <div class="icon"></div>
         </div> -->
       </div>
-
       <ul class="h-ul">
         <li v-for="item in hospitalArr" :key="item.id">
           <RecommendHospital :list="item"></RecommendHospital>
         </li>
-        <van-loading size="24px" class="loading" v-if="!hospitalArr"
-          >加载中...</van-loading
-        >
+        <van-loading size="24px" class="loading" v-if="!hospitalArr">加载中...</van-loading>
       </ul>
     </div>
     <div class="vip-box" @click="goRouterSwitch('vip')">
@@ -45,7 +42,7 @@
     </div>
     <div class="online-box">
       <div class="title f22">
-        网诊
+        {{ getDefaultMenuName.questionName }}
         <div class="look-bar f18" @click="goRouterSwitch('index_online')">找答案 ></div>
       </div>
       <ul class="o-ul">
@@ -54,17 +51,22 @@
         </li>
         <van-loading size="24px" v-if="!onlineArr" class="loading">加载中...</van-loading>
       </ul>
-      <div
-        class="look-bar2"
-        @click="goRouterSwitch('index_online')"
-        style="border-top: none"
-      >
-        <div class="btn f18">更多网诊 ></div>
+      <div class="look-bar2" @click="goRouterSwitch('index_online')" style="border-top: none">
+        <div class="btn f18">更多{{ getDefaultMenuName.questionName }} ></div>
       </div>
     </div>
-    <div class="help-bar">
-      <p class="f18">本服务由临安区太湖源镇人民政府提供</p>
-      <p class="f18">服务咨询热线: <a href="tel:0571-87661693">0571-87661693</a></p>
+    <div
+      class="help-bar"
+      v-if="getterIndexMenu.bottomContent.content1 || getterIndexMenu.bottomContent.content2"
+    >
+      <p class="f18">{{ getterIndexMenu.bottomContent.content1 }}</p>
+      <p class="f18">
+        {{ getterIndexMenu.bottomContent.content2
+        }}<a :href="`tel:${getterIndexMenu.bottomContent.content3}`">{{
+          getterIndexMenu.bottomContent.content3
+        }}</a>
+        <!-- 服务咨询热线: <a href="tel:0571-87661693">0571-87661693</a> -->
+      </p>
     </div>
     <Foot></Foot>
   </div>
@@ -79,15 +81,23 @@ import Foot from '@/components/foot/foot.vue';
 import Swiper from '@/components/swiper/swiper.vue';
 import IndexNav from '@/components/index_nav/index_nav.vue';
 import { ImagePreview } from 'vant';
-import { mapState, mapGetters, mapMutations } from 'vuex';
-import { onMounted, ref, watch, onActivated } from 'vue';
+import { mapState, mapGetters, mapMutations, useStore } from 'vuex';
+import { onMounted, ref, watch, onActivated, computed } from 'vue';
 import { inToHospitalLocal } from '@/common/js/into_hospital_local';
 import { useTitles } from '@/common/js/useTitles';
 import { fetchPost } from '../../http';
 
 export default {
   setup() {
-    useTitles('首页');
+    const store = useStore();
+    const getterGlobalTitle = computed(() => store.getters.getterGlobalTitle);
+
+    useTitles(getterGlobalTitle.value.name);
+
+    watch(getterGlobalTitle, (newVal) => {
+      useTitles(newVal.name);
+    });
+    return { name };
   },
   name: 'index',
   components: {
@@ -105,13 +115,18 @@ export default {
       hospitalArr: '',
       expertArr: '',
       onlineArr: '',
-      scrollInit: false,
     };
   },
 
   computed: {
-    ...mapState(['initMid', 'uId', 'axiosAddress', 'userInfo']),
-    ...mapGetters(['viewAddress', 'viewSecondAddress']),
+    ...mapState(['uId', 'axiosAddress', 'userInfo']),
+    ...mapGetters([
+      'viewAddress',
+      'viewSecondAddress',
+      'getterIndexMenu',
+      'initMid',
+      'getDefaultMenuName',
+    ]),
   },
   watch: {
     uId() {
@@ -144,14 +159,13 @@ export default {
             this.hospitalArr = res.data.data.list_mpublic;
             this.expertArr = res.data.data.list_expert;
             this.onlineArr = res.data.data.list_wen;
-            this.scrollInit = true;
           }
         });
     },
-    goToLive() {
-      this.setMid(this.initMid);
-      this.$router.push({ path: '/live', query: { from: 'index' } });
-    },
+    // goToLive() {
+    //   this.setMid(this.initMid);
+    //   this.$router.push({ path: '/live', query: { from: 'index' } });
+    // },
     preverImg(item) {
       //网诊的图片预览
       ImagePreview({
@@ -242,14 +256,14 @@ export default {
     }
     .e-ul {
       width: 100%;
-      column-count: auto;
-      padding-right: 12px;
+      // column-count: auto;
+      margin-right: 12px;
       margin: 0;
-      padding-left: 12px;
+      margin-left: 12px;
       padding-bottom: 0;
       li {
-        break-inside: auto;
-        height: 90px;
+        // break-inside: auto;
+        // height: 90px;
         padding: 0;
         margin-bottom: 16px;
       }
@@ -294,15 +308,25 @@ export default {
   }
   .e-ul {
     padding-top: 10px;
-    column-gap: 0;
-    column-count: 2;
     margin-left: 12px;
-    // border-bottom: 1px solid $border-color;
+    margin-right: 12px;
     padding-bottom: 5px;
+    // column-gap: 0;
+    // column-count: 2;
+
+    // border-bottom: 1px solid $border-color;
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     li {
-      break-inside: avoid;
-      padding-right: 12px;
-      padding-bottom: 10px;
+      width: 50%;
+      // break-inside: avoid;
+      // padding-right: 12px;
+      margin-bottom: 10px;
+      &:nth-child(odd) {
+        padding-right: 12px;
+      }
     }
   }
   .o-ul {
@@ -410,7 +434,7 @@ export default {
     img
       display block
       width 100%
-      height 100%
+      height auto
   .online-box
     background #fff
     margin-top 10px

@@ -18,7 +18,11 @@
       <li @click="clickName">
         <div class="left f20">名字</div>
         <div class="mid f20">{{ name }}</div>
-        <van-icon name="arrow" class="arrow" v-if="identity == 0 && ismember == 0" />
+        <van-icon
+          name="arrow"
+          class="arrow"
+          v-if="identity == 0 && ismember == 0 && importuser == 0"
+        />
       </li>
       <li @click="sexShow = true">
         <div class="left f20">性别</div>
@@ -30,13 +34,15 @@
         <div class="mid f20">{{ resideprovince }}{{ residecity }}{{ residedist }}</div>
         <van-icon name="arrow" class="arrow" />
       </li>
+      <li v-if="pickCode" @click="goPickCodePage" style="justify-content: space-between">
+        <div class="left f20">我的采摘码</div>
+        <div class="mid f20">
+          <div class="code-image"></div>
+        </div>
+        <van-icon name="arrow" class="arrow" />
+      </li>
     </ul>
-    <van-dialog
-      v-model:show="nameShow"
-      title="修改名字"
-      show-cancel-button
-      @confirm="confirmName"
-    >
+    <van-dialog v-model:show="nameShow" title="修改名字" show-cancel-button @confirm="confirmName">
       <!-- 修改用户名 -->
       <van-field v-model="names" placeholder="请输入用户名" class="name" maxlength="10" />
     </van-dialog>
@@ -54,17 +60,24 @@
 </template>
 <script>
 import Header from '@/components/header/header';
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState, mapGetters } from 'vuex';
 import areaList from '@/common/js/area.js';
 import { useTitles } from '@/common/js/useTitles';
 import Compressor from 'compressorjs';
+import { useRouter } from 'vue-router';
 export default {
-  setup() {
-    useTitles('编辑资料');
-  },
   name: 'meEdit',
   components: { Header },
-  props: {},
+  setup() {
+    useTitles('编辑资料');
+    const router = useRouter();
+    function goPickCodePage() {
+      router.push({ path: '/pick_code' });
+    }
+    return {
+      goPickCodePage,
+    };
+  },
   data() {
     return {
       updated: false,
@@ -87,9 +100,11 @@ export default {
       residedist: '', // 区
       identity: 0, // 1是专家，不允许改名字，0是普通人
       ismember: 0, // 1是会员，不允许改名字，0可以修改
+      importuser: 0, //为1就不让修改名字
+      pickCode: false,
     };
   },
-  computed: { ...mapState(['uId', 'mid', 'initMid']) },
+  computed: { ...mapState(['uId', 'mid']), ...mapGetters(['initMid']) },
   watch: {
     name(newVal, oldVal) {
       if (oldVal == '') {
@@ -185,6 +200,8 @@ export default {
             this.residedist = data.residedist;
             this.identity = data.identity;
             this.ismember = data.ismember;
+            this.pickCode = data.pickQrcode;
+            this.importuser = data.importuser;
           }
         });
     },
@@ -208,7 +225,7 @@ export default {
         });
     },
     clickName() {
-      if (this.identity == 1 || this.ismember == 1) {
+      if (this.identity == 1 || this.ismember == 1 || this.importuser == 1) {
         return;
       }
       this.nameShow = true;
@@ -261,6 +278,7 @@ export default {
       align-items: center;
       height: 50px;
       border-bottom: 1px solid $border-color;
+      padding-right: 12px;
       &:last-child {
         border: none;
       }
@@ -273,15 +291,26 @@ export default {
         flex: 1;
         color: #333333;
         font-size: 16px;
+        display: flex;
+        // justify-content: end;
+        justify-content: flex-end;
+        margin-right: 4px;
+        min-width: 0;
+        // background: pink;
+
         .avator {
           width: 40px;
           height: 40px;
           margin-top: 5px;
         }
+        .code-image {
+          width: 20px;
+          height: 20px;
+          background: url('./code-image.png') no-repeat center;
+          background-size: cover;
+        }
       }
       .arrow {
-        margin-right: 12px;
-        margin-left: 4px;
         color: #969799;
         min-width: 1em;
         height: 24px;
@@ -293,7 +322,7 @@ export default {
   .name {
     width: 90%;
     margin: 10px auto;
-    border: 1px solid #e5e5e5;
+    border: 1px solid $border-color;
     height: 35px;
     line-height: 35px;
     padding: 0 12px;
