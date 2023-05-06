@@ -35,3 +35,4 @@ export { getTrainList, getTrainInfo } from './getTrainList';
 export { getHospitalFastNav } from './getHospitalFastNav';
 export { getMeSetting } from './getMeSetting';
 export { getAboutUs } from './getAboutUs';
+export { getCollectMoney, getSetCollectMoney, getCollectMoneyDetail } from './getCollectMoney';

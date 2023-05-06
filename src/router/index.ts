@@ -451,6 +451,29 @@ const routes: RouteRecordRaw[] = [
     path: '/bank',
     component: () => import('../views/bank/bank.vue'),
   },
+  {
+    //支付页
+    path: '/pay',
+    component: () => import('../views/pay/pay.vue'),
+  },
+  {
+    //收款码
+    path: '/collect_money',
+    meta: { needLogin: true },
+    component: () => import('../views/collect_money/collect_money.vue'),
+  },
+  {
+    //收款码
+    path: '/collect_money_detail',
+    meta: { needLogin: true },
+    component: () => import('../views/collect_money_detail/collect_money_detail.vue'),
+  },
+  {
+    //收款码申请资料详情
+    path: '/collect_apply_detail',
+    meta: { needLogin: true },
+    component: () => import('../views/collect_apply_detail/collect_apply_detail.vue'),
+  },
 ];
 
 const router = createRouter({
@@ -474,7 +497,8 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-  if (to.name === from.name) return; //如果路由跳转是相同的，就取消
+  if (to.name === from.name && to.name != undefined) return;
+  //如果路由跳转是相同的，就取消
   //http://sso.nzsoso.com/sso_logout?redirect_url=http://localhost:8082/index&state=123
   // 接口返回500的时候，就是token/uId 过期的操作
   const urlParamsCode = getUrlQuery('code');
@@ -483,10 +507,11 @@ router.beforeEach(async (to, from) => {
 
   //登录成功返回时，有code参数，用code请求token
   if (token) {
+    console.log('urlParamsCode', urlParamsCode);
     store.commit('setuId', token);
   } else if (urlParamsCode && uId == '') {
     // 去请求token
-
+    console.log('urlParamsCode', urlParamsCode);
     let r = await fetchGetToken(urlParamsCode);
   } else if (to.meta.needLogin && uId == '') {
     // meta.needLogin 判断页面是否需要登录，true则跳转到用户中心登录。且uId为空时
