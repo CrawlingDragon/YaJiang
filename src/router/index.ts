@@ -474,6 +474,56 @@ const routes: RouteRecordRaw[] = [
     meta: { needLogin: true },
     component: () => import('../views/collect_apply_detail/collect_apply_detail.vue'),
   },
+  {
+    //申请收款码
+    path: '/collect_apply',
+    meta: { needLogin: true },
+    component: () => import('../views/collect_apply/collect_apply.vue'),
+    children: [
+      {
+        //申请收款码第一步
+        path: '/collect_apply_one',
+        meta: { needLogin: true },
+        component: () => import('../views/collect_apply_one/collect_apply_one.vue'),
+      },
+      {
+        //申请收款码第二步
+        path: '/collect_apply_two',
+        meta: { needLogin: true },
+        component: () => import('../views/collect_apply_two/collect_apply_two.vue'),
+      },
+      {
+        //申请收款码第三步
+        path: '/collect_apply_three',
+        meta: { needLogin: true },
+        component: () => import('../views/collect_apply_three/collect_apply_three.vue'),
+      },
+      {
+        //申请收款码第四步
+        path: '/collect_apply_four',
+        meta: { needLogin: true },
+        component: () => import('../views/collect_apply_four/collect_apply_four.vue'),
+      },
+      {
+        //申请收款码第四步
+        path: '/collect_apply_five',
+        meta: { needLogin: true },
+        component: () => import('../views/collect_apply_five/collect_apply_five.vue'),
+      },
+    ],
+  },
+  {
+    //申请收款码 结果
+    path: '/collect_apply_result',
+    meta: { needLogin: true },
+    component: () => import('../views/collect_apply_result/collect_apply_result.vue'),
+  },
+  {
+    //农行商户资金结算三方协议
+    path: '/farm_capital_deal',
+    meta: { needLogin: true },
+    component: () => import('../views/farm_capital_deal/farm_capital_deal.vue'),
+  },
 ];
 
 const router = createRouter({

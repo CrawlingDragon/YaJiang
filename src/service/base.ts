@@ -36,3 +36,5 @@ export { getHospitalFastNav } from './getHospitalFastNav';
 export { getMeSetting } from './getMeSetting';
 export { getAboutUs } from './getAboutUs';
 export { getCollectMoney, getSetCollectMoney, getCollectMoneyDetail } from './getCollectMoney';
+export { getFarmThreeDeal } from './getFarmThreeDeal';
+export { applyStatus, applyOneStep } from './getCollectApply';
