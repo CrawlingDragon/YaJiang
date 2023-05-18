@@ -524,6 +524,14 @@ const routes: RouteRecordRaw[] = [
     meta: { needLogin: true },
     component: () => import('../views/farm_capital_deal/farm_capital_deal.vue'),
   },
+  {
+    path: '/complaint_index',
+    component: () => import('../views/complaint/complaint_index.vue'),
+  },
+  {
+    path: '/complaint_success',
+    component: () => import('../views/complaint/complaint_success.vue'),
+  },
 ];
 
 const router = createRouter({
@@ -568,8 +576,8 @@ router.beforeEach(async (to, from) => {
     // const url = window.location.origin + (import.meta.env.DEV ? '' : '/app') + to.path;
     const url = encodeURIComponent(
       window.location.origin +
-        (import.meta.env.MODE === 'development' ? '' : '/app') +
-        decodeURIComponent(to.fullPath)
+      (import.meta.env.MODE === 'development' ? '' : '/app') +
+      decodeURIComponent(to.fullPath)
     );
     // alert(
     //   window.location.origin + (import.meta.env.MODE === 'development' ? '' : '/app') + to.fullPath
