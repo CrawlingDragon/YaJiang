@@ -542,6 +542,14 @@ const routes: RouteRecordRaw[] = [
     // meta: { needLogin: true },
     component: () => import('../views/booth_detail/booth_detail.vue'),
   },
+  {
+    path: '/complaint_index',
+    component: () => import('../views/complaint/complaint_index.vue'),
+  },
+  {
+    path: '/complaint_success',
+    component: () => import('../views/complaint/complaint_success.vue'),
+  },
 ];
 
 const router = createRouter({

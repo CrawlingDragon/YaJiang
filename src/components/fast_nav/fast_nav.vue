@@ -34,10 +34,7 @@
     <div class="nav-list" v-if="bar.platformColumnState === 1">
       <div class="small-title f18">{{ bar.platformColumnName }}</div>
       <van-grid :column-num="old ? 3 : 4" :border="false">
-        <van-grid-item
-          @click="goToRouterPage(item.url, item.type)"
-          v-for="item in bar.platformColumnMenu"
-        >
+        <van-grid-item @click="goToPageIsLogin(item)" v-for="item in bar.platformColumnMenu">
           <div class="p f20">{{ item.name }}</div>
         </van-grid-item>
         <!-- <van-grid-item @click="goToDiseases">
@@ -64,27 +61,14 @@
       <div class="btn2 f20" @click="goToLogin('sign')">注册</div>
     </div>
     <div class="logined" v-else>
-      <van-image
-        width="35"
-        height="35"
-        round
-        :src="avatar"
-        class="avator"
-        fit="cover"
-        @click="goToRouterPage('/me')"
-      />
+      <van-image width="35" height="35" round :src="avatar" class="avator" fit="cover" @click="goToRouterPage('/me')" />
       <p class="name f20" @click="goToRouterPage('/me')">{{ userName }}</p>
       <div class="login-out f16" @click="loginOutFn">退出登录</div>
     </div>
     <div class="index-btn" @click="goToRouterPage('/')">
       <div class="btn-content">
         <!-- <div class="logo"></div> -->
-        <van-image
-          class="logo"
-          fit="scale-down"
-          :src="headerBottomBar.icon"
-          radius="10%"
-        ></van-image>
+        <van-image class="logo" fit="scale-down" :src="headerBottomBar.icon" radius="10%"></van-image>
         <div class="name f18">{{ headerBottomBar.name }}</div>
       </div>
     </div>
@@ -161,6 +145,21 @@ export default {
       emit('update:showFlag', false);
     }
 
+    // 快速导航添加登录判断
+    function goToPageIsLogin(item) {
+      // 判断是否需要登录1要登录，0不需要登录
+      if (item?.is_login == 1) {
+        if (uId.value) {
+          goToRouterPage(item.url, item.type)
+        } else {
+          // 去登录
+          login();
+        }
+      } else {
+        goToRouterPage(item.url, item.type)
+      }
+    }
+
     return {
       userName,
       avatar,
@@ -172,6 +171,7 @@ export default {
       old,
       headerBottomBar,
       goToRouterPage,
+      goToPageIsLogin,
       ...toRefs(headerFastBar), // {bar}
     };
   },
@@ -285,6 +285,7 @@ export default {
     .title {
       height: 55px;
       line-height: 55px;
+
       .van-icon {
         width: 71px;
         height: 100%;
@@ -293,9 +294,11 @@ export default {
         color: $f-color-second;
       }
     }
+
     .login-out {
       color: $theme-color;
     }
+
     .btns {
       .btn1 {
         height: 49px;
@@ -303,6 +306,7 @@ export default {
         color: $theme-color;
         border: 1px solid $border-color;
       }
+
       .btn2 {
         height: 49px;
         line-height: 49px;
@@ -319,6 +323,7 @@ export default {
   left: 0;
   right: 0;
   text-align: center;
+
   .btn-content {
     display: inline-flex;
     justify-content: center;
@@ -333,6 +338,7 @@ export default {
     border: 1px solid $border-color;
     color: $theme-color;
   }
+
   .logo {
     width: 20px;
     height: 20px;
@@ -342,17 +348,21 @@ export default {
     border: 1px solid $border-color;
   }
 }
+
 .btn1 {
   color: $theme-color;
   border: 1px solid $border-color;
 }
+
 .btn2 {
   background: $theme-color;
   border: 1px solid $border-color;
 }
+
 .login-out {
   color: $theme-color;
 }
+
 .nav-list {
   border-bottom: 1px solid $border-color;
 }
