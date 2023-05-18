@@ -12,21 +12,22 @@
             id="money"
             class="money"
             ref="moneyInout"
+            @input="handleInput"
           />
         </div>
       </div>
       <div class="item">
         <div class="label">品种</div>
         <van-radio-group v-model="checkedKind" class="radio-group">
-          <van-radio name="1" checkedColor="#155BBB">鲜品松茸</van-radio>
-          <van-radio name="2" checkedColor="#155BBB">干片松茸</van-radio>
+          <van-radio :name="1" checkedColor="#155BBB">鲜品松茸</van-radio>
+          <van-radio :name="0" checkedColor="#155BBB">干片松茸</van-radio>
         </van-radio-group>
       </div>
       <div class="item item2">
         <div class="label">重量</div>
-        <van-radio-group v-model="checkedWeight" class="radio-group2">
-          <van-radio name="auto" class="r1" checkedColor="#155BBB">自动计算重量</van-radio>
-          <van-radio name="manual" checkedColor="#155BBB">
+        <van-radio-group v-model="is_auto" class="radio-group2">
+          <van-radio :name="1" class="r1" checkedColor="#155BBB">自动计算重量</van-radio>
+          <van-radio :name="0" checkedColor="#155BBB">
             <div class="weight-number">
               输入重量
               <van-field
@@ -54,18 +55,15 @@
   </van-popup>
 </template>
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { Toast } from 'vant';
 import { getSetCollectMoney } from '@/service/base';
-import { useStore } from 'vuex';
-
-const store = useStore();
 
 const show = ref(false);
-const money = ref();
-const checkedKind = ref('1');
-const checkedWeight = ref('auto');
-const weightValue = ref('');
+const money = ref<string | number>('');
+const checkedKind = ref(1);
+const is_auto = ref(1);
+const weightValue = ref();
 const disabled = ref(true);
 
 const props = defineProps({
@@ -73,18 +71,48 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  money: {
+    type: Number,
+    default: 0,
+  },
+  type_id: {
+    type: Number,
+    default: 0,
+  },
+  is_auto: { type: Number, default: 0 },
+  weight: { type: Number, default: 0 },
 });
 
-const uId = computed(() => store.state.uId);
 const kind = computed(() => {
-  return checkedKind.value === '1' ? '鲜品松茸' : '干片松茸';
+  return checkedKind.value === 1 ? '鲜品松茸' : '干片松茸';
 });
 const weight = computed(() => {
-  return checkedWeight.value === 'auto' ? 'auto' : weightValue.value;
+  return is_auto.value === 1 ? 1 : weightValue.value;
 });
 
 const emits = defineEmits(['setMoneyEmit']);
+onMounted(() => {
+  if (props.money != 0) {
+    money.value = props.money;
+  }
 
+  checkedKind.value = props.type_id;
+  is_auto.value = props.is_auto;
+  weightValue.value = props.weight;
+});
+// 金额只能输入数字和正数
+const handleInput = (e: any) => {
+  let value = e.target.value;
+  // 只允许输入数字和小数点
+  value = value.replace(/[^\d.]/g, '');
+  // 只保留小数点后两位
+  value = value.replace(/^(\-)*(\d+)\.(\d{0,2}).*$/, '$1$2.$3');
+  // 不允许为负数
+  if (value < 0) {
+    value = '';
+  }
+  money.value = value;
+};
 // 切换松茸种类=>确定按钮
 const weightInput = ref();
 const moneyInout = ref();
@@ -96,7 +124,7 @@ const switchKindBtnFn = async () => {
     moneyInout.value.focus();
     return;
   }
-  if (checkedWeight.value === 'manual' && weightValue.value == '') {
+  if (is_auto.value === 0 && weightValue.value == '') {
     Toast('重量不能为空!');
     weightInput.value.focus();
     return;
@@ -106,11 +134,11 @@ const switchKindBtnFn = async () => {
     message: '修改中...',
   });
   let r = await getSetCollectMoney(
-    uId.value,
     props.codeId,
     checkedKind.value,
     money.value,
-    weightValue.value
+    weightValue.value,
+    is_auto.value
   );
   console.log('r', r);
   t.clear();
@@ -124,20 +152,22 @@ const switchKindBtnFn = async () => {
     kind: kind.value,
     weight: r.weight,
     code_images: r.code_images,
+    is_auto: is_auto.value,
   });
   show.value = false;
 };
 //重置设置金额的数据
 const resetData = () => {
   money.value = '';
-  checkedKind.value = '1';
-  checkedWeight.value = 'auto';
+  checkedKind.value = 1;
+  is_auto.value = 1;
   weightValue.value = '';
   disabled.value = true;
 };
-watch([money, weightValue, checkedWeight], ([n1, o1], [n2, o2]) => {
+watch([money, weightValue, is_auto], ([n1, o1], [n2, o2]) => {
+  // console.log('money', money.value);
   if (money.value != '') {
-    if (checkedWeight.value === 'manual') {
+    if (is_auto.value === 0) {
       if (weightValue.value != '') {
         disabled.value = false;
       } else {

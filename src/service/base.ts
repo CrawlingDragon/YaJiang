@@ -35,6 +35,21 @@ export { getTrainList, getTrainInfo } from './getTrainList';
 export { getHospitalFastNav } from './getHospitalFastNav';
 export { getMeSetting } from './getMeSetting';
 export { getAboutUs } from './getAboutUs';
-export { getCollectMoney, getSetCollectMoney, getCollectMoneyDetail } from './getCollectMoney';
+export {
+  getCollectMoney,
+  getSetCollectMoney,
+  getCollectMoneyDetail,
+  getRestCollectMoney,
+  getBeforePayInfo,
+  getBankPayInfo,
+} from './getCollectMoney';
 export { getFarmThreeDeal } from './getFarmThreeDeal';
-export { applyStatus, applyOneStep } from './getCollectApply';
+export {
+  applyStatus,
+  applyOneStep,
+  applyTwoStep,
+  uploadImg,
+  applyThreeStep,
+  applyFourStep,
+} from './getCollectApply';
+export { getBoothDetail } from './getBooth';

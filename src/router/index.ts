@@ -454,7 +454,19 @@ const routes: RouteRecordRaw[] = [
   {
     //支付页
     path: '/pay',
+    meta: { needLogin: true },
     component: () => import('../views/pay/pay.vue'),
+  },
+  {
+    //支付方式页
+    path: '/pay_mode',
+    meta: { needLogin: true },
+    component: () => import('../views/pay_mode/pay_mode.vue'),
+  },
+  {
+    //支付页结果页
+    path: '/pay_result',
+    component: () => import('../views/pay_result/pay_result.vue'),
   },
   {
     //收款码
@@ -523,6 +535,12 @@ const routes: RouteRecordRaw[] = [
     path: '/farm_capital_deal',
     meta: { needLogin: true },
     component: () => import('../views/farm_capital_deal/farm_capital_deal.vue'),
+  },
+  {
+    //摊位详情
+    path: '/booth_detail',
+    // meta: { needLogin: true },
+    component: () => import('../views/booth_detail/booth_detail.vue'),
   },
 ];
 

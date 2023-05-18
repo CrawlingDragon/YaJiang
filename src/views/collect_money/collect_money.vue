@@ -13,10 +13,10 @@
       <div class="info">
         <div class="name">{{ name }}（{{ user_type }}）</div>
         <div class="company">{{ company }}</div>
-        <div class="money" v-if="isSet">¥ {{ money }}</div>
+        <div class="money" v-if="money !== 0">¥ {{ money }}</div>
         <van-image class="code-img" :src="code_images" fit="cover"></van-image>
         <div class="btn">
-          <div class="clean-money" @click="showSetMoney" v-if="!isSet">设置金额</div>
+          <div class="clean-money" @click="showSetMoney" v-if="money === 0">设置金额</div>
           <div class="clean-money" v-else @click="clearMoney">清除金额</div>
           <div class="switch-btn" @click="kindShow = true">切换</div>
           <van-popup v-model:show="kindShow" class="material" position="bottom" round>
@@ -47,7 +47,15 @@
         <div class="status">支付取消</div>
       </div>
     </div>
-    <SetMoney ref="SetMoneyRef" @setMoneyEmit="setMoney" :codeId="code_id" />
+    <SetMoney
+      ref="SetMoneyRef"
+      @setMoneyEmit="setMoney"
+      :codeId="code_id"
+      :money="money"
+      :type_id="type_id"
+      :is_auto="is_auto"
+      :weight="weight"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -57,14 +65,14 @@ import { useRouter } from 'vue-router';
 import SetMoney from './set_money.vue';
 import { ref, onMounted, computed } from 'vue';
 import { Dialog, Toast } from 'vant';
-import { getCollectMoney, getSetCollectMoney } from '@/service/base';
-import { useStore } from 'vuex';
+import { getCollectMoney, getRestCollectMoney, getSetCollectMoney } from '@/service/base';
+// import { useStore } from 'vuex';
 
-const store = useStore();
+// const store = useStore();
 const router = useRouter();
 useTitles('收款码');
 
-const uId = computed(() => store.state.uId);
+// const uId = computed(() => store.state.uId);
 const goCollectDetail = () => {
   router.push({
     path: '/collect_money_detail',
@@ -75,22 +83,25 @@ const defaultKind = '鲜品松茸';
 const materialShow = ref(false);
 //切换按钮
 const kindShow = ref(false);
-const isSet = ref(false);
 const kind = ref(defaultKind); //种类
-const money = ref(''); // 金额
+const type_id = ref(); //种类的后端数据表示，1：鲜品，2：干片
+const money = ref(); // 金额
 const code_images = ref(''); //二维码
 const name = ref(''); //用户名
 const user_type = ref(''); //用户类型
 const company = ref(''); //公司名
 const code_id = ref(''); //修改规格使用的code_id
+const weight = ref(0);
+const is_auto = ref(0);
 
 //设置子组件，确定后，回传设置的数据
 const setMoney = (obj: any) => {
   money.value = obj.money;
   kind.value = obj.kind;
   code_images.value = obj.code_images;
-  isSet.value = true;
-  // console.log('obj', obj);
+  weight.value = obj.weight;
+  is_auto.value = obj.is_auto;
+  console.log('obj', obj);
 };
 const SetMoneyRef = ref();
 
@@ -99,11 +110,13 @@ const showSetMoney = () => {
 };
 
 //清除金额
-const clearMoney = () => {
-  isSet.value = false;
-  money.value = '';
+const clearMoney = async () => {
+  money.value = 0;
   kind.value = defaultKind;
   SetMoneyRef.value.resetData();
+  let r = await getRestCollectMoney(code_id.value, '1');
+  console.log('r', r);
+  setFetchData(r);
 };
 
 const goMaterialPage = () => {
@@ -119,29 +132,46 @@ const showDescription = () => {
 };
 
 //切换按钮
-const switchKind = (kindStr: string) => {
+const switchKind = async (kindStr: string) => {
   kind.value = kindStr;
+  console.log('kindStr', kindStr);
+  let r = await getSetCollectMoney(
+    code_id.value,
+    kind.value == '鲜品松茸' ? 1 : 0,
+    money.value,
+    weight.value,
+    is_auto.value
+  );
   kindShow.value = false;
 };
 
 onMounted(async () => {
   let toast1 = Toast.loading({ duration: 0, message: '请求中...' });
-  let r = await getCollectMoney(uId.value);
+  let r = await getCollectMoney();
   // console.log('r', r);
   let abc_state = r.abc_state;
   toast1.clear();
   if (abc_state == 4) {
     // abc_state = 4 正常赋值，如果是其他数字状态说明需要申请付款码
     // /0:未开通，1:账户验证中，2:待银行审核，3:审核失败，4:正常，5:已禁用
-    code_images.value = r.code_images;
-    name.value = r.nickname;
-    user_type.value = r.user_type;
-    kind.value = r.type_id == 1 ? '鲜品松茸' : '干片松茸';
-    company.value = r.company_name;
-    code_id.value = r.code_id;
+    setFetchData(r);
   } else {
   }
 });
+
+// 因为重置，切换，都需要走接口，故把接口赋值给本地数据都放在一个函数内
+function setFetchData(data: any) {
+  code_images.value = data.code_images;
+  name.value = data.nickname;
+  user_type.value = data.user_type;
+  type_id.value = data.type_id;
+  kind.value = data.type_id == 1 ? '鲜品松茸' : '干片松茸';
+  company.value = data.company_name;
+  code_id.value = data.code_id;
+  money.value = data.amount;
+  weight.value = data.weight;
+  is_auto.value = data.is_auto;
+}
 </script>
 <style lang="scss" scoped>
 .info-box {

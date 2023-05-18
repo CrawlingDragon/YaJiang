@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import Header from '@/components/header/header.vue';
 import CollectApplyStepBar from '@/components/collect_apply_step_bar/collect_apply_step_bar.vue';
-import { useTitles } from '@/common/js/useTitles';
+
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { Toast } from 'vant';
@@ -51,7 +51,6 @@ const uId = computed(() => store.state.uId);
 const announce = computed(() => {
   return agree.value ? 0 : 1;
 });
-useTitles('申请收款码');
 
 const checked = ref(1);
 const agree = ref('');
@@ -72,7 +71,11 @@ const applyFn = async () => {
   t.clear();
   if (r.code) {
     Toast(r.message);
+    return;
   }
+  router.push({
+    path: '/collect_apply_two',
+  });
   console.log('r', r);
 };
 </script>

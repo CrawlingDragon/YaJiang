@@ -162,6 +162,11 @@ export default {
       let formData = new FormData();
       // console.log('result', result);
       formData.append('urls[]', file.file, file.name);
+      for (let [a, b] of formData.entries()) {
+        console.log('a', a);
+        console.log('b', b);
+      }
+      // console.log('formData', formData.entries());
       this.uploading = true;
       this.$axios.fetchPost('/Mobile/Wen/OssUploadFile', formData).then((res) => {
         if (res.data.code == 0) {

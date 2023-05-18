@@ -4,9 +4,9 @@
     <div class="pay-info">
       <div class="pay-object">
         <div class="object">
-          <div class="name-kind">付款给采摘户</div>
-          <div class="name">扎西</div>
-          <div class="company">雅江县永康绿色食品有限责任公司</div>
+          <div class="name-kind">付款给{{ user_type }}</div>
+          <div class="name">{{ nickname }}</div>
+          <div class="company">{{ company_name }}</div>
         </div>
         <van-image
           src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
@@ -16,7 +16,13 @@
       </div>
       <div class="pay-number">
         ¥
-        <input type="number" class="number" placeholder="100" v-model="moneyNumber" />
+        <input
+          type="number"
+          class="number"
+          placeholder="100"
+          v-model="moneyNumber"
+          @input="handleInput"
+        />
       </div>
       <div class="goods">
         {{ kindComputed }}
@@ -27,10 +33,10 @@
       <van-radio-group v-model="checked">
         <div class="item" @click="checked = 'bank1'">
           <div class="icon" id="1"></div>
-          <div class="bank-name">农行掌上银行支</div>
+          <div class="bank-name">农行掌上银行支付</div>
           <van-radio name="bank1" class="radio" checked-color="#FF6600"></van-radio>
         </div>
-        <div class="item" @click="checked = 'bank2'">
+        <div class="item" @click="checked = 'bank2'" v-if="false">
           <div class="icon"></div>
           <div class="bank-name">农行掌上银行支付农行掌上支</div>
           <van-radio name="bank2" class="radio" checked-color="#FF6600"></van-radio>
@@ -58,20 +64,20 @@
       <div class="switch-box">
         <div class="item">
           <div class="label">品种</div>
-          <van-radio-group v-model="checkedKind" class="radio-group">
-            <van-radio name="xian" checkedColor="#155BBB">鲜品松茸</van-radio>
-            <van-radio name="gan" checkedColor="#155BBB">干片松茸</van-radio>
+          <van-radio-group v-model="type_id" class="radio-group">
+            <van-radio :name="1" checkedColor="#155BBB">鲜品松茸</van-radio>
+            <van-radio :name="0" checkedColor="#155BBB">干片松茸</van-radio>
           </van-radio-group>
         </div>
         <div class="item item2">
           <div class="label">重量</div>
-          <van-radio-group v-model="checkedWeight" class="radio-group2">
-            <van-radio name="auto" class="r1" checkedColor="#155BBB">自动计算重量</van-radio>
-            <van-radio name="manual" checkedColor="#155BBB">
+          <van-radio-group v-model="is_auto" class="radio-group2">
+            <van-radio :name="1" class="r1" checkedColor="#155BBB">自动计算重量</van-radio>
+            <van-radio :name="0" checkedColor="#155BBB">
               <div class="weight-number">
                 输入重量
                 <van-field
-                  v-model="weightValue"
+                  v-model="weight"
                   type="number"
                   ref="weightInput"
                   class="weight-input"
@@ -90,38 +96,66 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useTitles } from '@/common/js/useTitles';
 import Header from '@/components/header/header.vue';
 import { Toast } from 'vant';
+import { useRoute } from 'vue-router';
+import { getBeforePayInfo, getBankPayInfo } from '@/service/getCollectMoney';
 
-// const kinds = {
-//   xian: '鲜品松茸',
-//   gan: '干片松茸',
-// };
-
+const route = useRoute();
+// reveice_code =d9t6tg0svr20230504285028
 useTitles('支付');
+
+const code = computed(() => route.query.reveice_code);
 
 // 选择支付方式 => 单选按钮
 const checked = ref('bank1');
 // 切换内容的显示隐藏
 const show = ref(false);
-// 种类切换 =＞　单选按钮
-const checkedKind = ref('xian');
-// 重量切换 => 单选按钮
-const checkedWeight = ref('auto');
+
+// ===数据类===========
+// 选择种类，是鲜品还是干片
+const type_id = ref(1);
+// 是否自动重量
+const is_auto = ref(1);
+// 公司名字
+const company_name = ref('');
+// 用户名字
+const nickname = ref('');
+// 用户类型
+const user_type = ref('');
+// 重量
+const weight = ref<string | number>(0);
+//支付金额
+const moneyNumber = ref();
+//支付时需要用到的code_id
+const code_id = ref('0');
+// ===数据类===========
+
 // 立即支付按钮的禁用
 const disabled = ref(true);
 // 立即支付按钮 ，是否可以再次点击
 const canSubmit = ref(true);
-//支付金额
-const moneyNumber = ref('');
+
 //选择的类型
 const kindComputed = computed(() => {
-  return checkedKind.value === 'xian' ? '鲜品松茸' : '干片松茸';
+  return type_id.value === 1 ? '鲜品松茸' : '干片松茸';
 });
-// 重量数值
-const weightValue = ref('');
+
+// 金额只能输入数字和正数
+const handleInput = (e: any) => {
+  let value = e.target.value;
+  // 只允许输入数字和小数点
+  value = value.replace(/[^\d.]/g, '');
+  // 只保留小数点后两位
+  value = value.replace(/^(\-)*(\d+)\.(\d{0,2}).*$/, '$1$2.$3');
+  // 不允许为负数
+  if (value < 0) {
+    value = '';
+  }
+  moneyNumber.value = value;
+};
 
 // 切换松茸品种，种类
 const switchKindFn = () => {
@@ -130,16 +164,30 @@ const switchKindFn = () => {
 // 切换松茸种类=>确定按钮
 const weightInput = ref();
 const switchKindBtnFn = () => {
-  if (checkedWeight.value === 'manual' && weightValue.value == '') {
+  if (is_auto.value === 0 && weight.value == '') {
     Toast('重量不能为空!');
     weightInput.value.focus();
     return;
   }
-  console.log('weightValue', weightValue.value);
+  // console.log('weight', weight.value);
+  // console.log('is_auto', is_auto);
   show.value = false;
 };
-// 立即支付
-const payNowFn = () => {
+
+onMounted(async () => {
+  let r = await getBeforePayInfo(code.value);
+  console.log('r', r);
+  moneyNumber.value = r.amount;
+  company_name.value = r.company_name;
+  is_auto.value = r.is_auto;
+  nickname.value = r.nickname;
+  type_id.value = r.type_id;
+  user_type.value = r.user_type;
+  weight.value = r.weight;
+  code_id.value = r.code_id;
+});
+// 立即支付按钮
+const payNowFn = async () => {
   if (moneyNumber.value == '') {
     Toast('请输入金额');
     return;
@@ -147,6 +195,19 @@ const payNowFn = () => {
   if (!canSubmit.value) return;
   canSubmit.value = false;
   Toast.loading('支付中...');
+  let r = await getBankPayInfo(
+    code_id.value,
+    moneyNumber.value,
+    type_id.value,
+    weight.value,
+    is_auto.value
+  );
+  if (r.code) {
+    Toast(r.message);
+    return;
+  }
+  window.location.href = r.url;
+  console.log('sub-r', r);
   setTimeout(() => {
     canSubmit.value = true;
   }, 3000);
@@ -244,6 +305,7 @@ watch(moneyNumber, (newVal) => {
       height: 50rem;
       background: url('@/assets/pay-mode.png') no-repeat;
       background-size: cover;
+      background-position: center center;
       margin-right: 20rem;
     }
     .bank-name {

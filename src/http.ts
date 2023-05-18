@@ -5,6 +5,7 @@ import { Toast } from 'vant';
 import store from './store/index.js';
 import { login } from './common/js/getToken.js';
 import router from './router/index.js';
+import storage from 'good-storage';
 
 const ERR_OK = 0;
 
@@ -18,7 +19,11 @@ axios.defaults.baseURL = import.meta.env.VITE_APP_API + '/api_app/';
 axios.interceptors.request.use(
   (config) => {
     //在发送请求之前做什么事
-    if (config.url === '/Mobile/Wen/OssUploadFile') {
+
+    if (
+      config.url === '/Mobile/Wen/OssUploadFile' ||
+      config.url === 'Mobile/SellerAbc/uploadImage'
+    ) {
       return config;
     }
     if (config.method === 'post') {
@@ -119,6 +124,15 @@ export function get(url: string, params?: any) {
 }
 
 export function post(url: string, params?: any) {
+  let uId = storage.session.get('uId');
+
+  if (uId) {
+    // 两个图片上传的接口不处理 params
+    if (url == '/Mobile/Wen/OssUploadFile' || 'Mobile/SellerAbc/uploadImage') {
+    } else {
+      params = { ...params, uId };
+    }
+  }
   return axios
     .post(url, params)
     .then((res) => {

@@ -8,3 +8,4 @@ declare module '*.vue' {
 }
 declare module 'good-storage';
 declare module 'js-cookie';
+declare module 'qs';
